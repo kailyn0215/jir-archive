@@ -4,12 +4,12 @@ title: Archive
 ---
 <div class="page-header">
   <h1>Master Archive</h1>
-  <p class="subtitle">{{ site.plushes | where: "status", "Master" | size }} verified Jirachi plushes</p>
+  <p class="subtitle">{{ site.plushes | where: "status", "Master" | size }} documented Jirachi plushes</p>
 </div>
 
 <div class="filters">
   <div class="filter-group">
-    <label>Company:</label>
+    <label for="filter-company">Company</label>
     <select id="filter-company">
       <option value="">All</option>
       {% assign companies = site.plushes | map: "company" | uniq | sort %}
@@ -19,7 +19,7 @@ title: Archive
     </select>
   </div>
   <div class="filter-group">
-    <label>Verification:</label>
+    <label for="filter-verification">Verification</label>
     <select id="filter-verification">
       <option value="">All</option>
       <option value="Verified">Verified</option>
@@ -28,7 +28,7 @@ title: Archive
     </select>
   </div>
   <div class="filter-group">
-    <label>Owned:</label>
+    <label for="filter-owned">Owned</label>
     <select id="filter-owned">
       <option value="">All</option>
       <option value="true">Owned</option>
@@ -36,7 +36,8 @@ title: Archive
     </select>
   </div>
   <div class="filter-group">
-    <input type="text" id="filter-search" placeholder="Search...">
+    <label for="filter-search">Search</label>
+    <input type="text" id="filter-search" placeholder="Name, company, keywords...">
   </div>
 </div>
 
@@ -65,9 +66,8 @@ title: Archive
       <th>Name</th>
       <th>Company</th>
       <th>Year</th>
-      <th>Product Line</th>
       <th>Region</th>
-      <th>Verification</th>
+      <th>Status</th>
       <th>Owned</th>
     </tr>
   </thead>
@@ -82,7 +82,6 @@ title: Archive
       <td><a href="{{ plush.url | relative_url }}">{{ plush.current_name }}</a></td>
       <td>{{ plush.company }}</td>
       <td>{% if plush.year %}{{ plush.year }}{% else %}—{% endif %}</td>
-      <td>{{ plush.product_line }}</td>
       <td>{{ plush.region }}</td>
       <td><span class="badge badge-{{ plush.verification | downcase }}">{{ plush.verification }}</span></td>
       <td>{% if plush.owned %}✓{% endif %}</td>
@@ -107,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const company = filterCompany.value;
     const verification = filterVerification.value;
     const owned = filterOwned.value;
-    const search = filterSearch.value.toLowerCase();
+    const search = filterSearch.value.toLowerCase().trim();
 
     [...gridItems, ...tableRows].forEach(item => {
       let show = true;

@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
   <meta name="description" content="{{ site.description }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
 <body>
@@ -13,9 +16,9 @@
       <a href="{{ '/' | relative_url }}" class="site-title">{{ site.title }}</a>
       <nav class="site-nav">
         <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>Archive</a>
-        <a href="{{ '/research' | relative_url }}" {% if page.url == '/research/' %}class="active"{% endif %}>Research</a>
-        <a href="{{ '/stats' | relative_url }}" {% if page.url == '/stats/' %}class="active"{% endif %}>Stats</a>
-        <a href="{{ '/guide' | relative_url }}" {% if page.url == '/guide/' %}class="active"{% endif %}>Guide</a>
+        <a href="{{ '/research' | relative_url }}" {% if page.url == '/research/' or page.url == '/research.html' %}class="active"{% endif %}>Research</a>
+        <a href="{{ '/stats' | relative_url }}" {% if page.url == '/stats/' or page.url == '/stats.html' %}class="active"{% endif %}>Stats</a>
+        <a href="{{ '/guide' | relative_url }}" {% if page.url == '/guide/' or page.url == '/guide.html' %}class="active"{% endif %}>Guide</a>
       </nav>
     </div>
   </header>
@@ -28,7 +31,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>{{ site.title }} &middot; v0.3 &middot; Evidence-based Jirachi plush documentation</p>
+      <p>{{ site.title }} · v1.0 · Evidence-based archive</p>
     </div>
   </footer>
 </body>

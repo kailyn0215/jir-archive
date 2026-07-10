@@ -1,14 +1,29 @@
 <a href="{{ plush.url | relative_url }}" class="plush-card">
-  <div class="plush-card-id">{{ plush.archive_id }}</div>
-  <div class="plush-card-content">
-    <h3>{{ plush.current_name }}</h3>
+  <div class="plush-card-image">
+    {% if plush.images.size > 0 %}
+    <img src="{{ '/assets/images/plushes/' | append: plush.archive_id | append: '/' | append: plush.images.first | relative_url }}" alt="{{ plush.current_name }}" loading="lazy">
+    {% else %}
+    <span class="plush-card-placeholder">{{ plush.archive_id }}</span>
+    {% endif %}
+  </div>
+  <div class="plush-card-body">
+    <div class="plush-card-id">{{ plush.archive_id }}</div>
+    <div class="plush-card-name">{{ plush.current_name }}</div>
     <div class="plush-card-meta">
-      <span class="company">{{ plush.company }}</span>
-      <span class="year">{% if plush.year %}{{ plush.year }}{% else %}—{% endif %}</span>
+      <span>{{ plush.company }}</span>
+      <span class="sep">·</span>
+      <span>{% if plush.year %}{{ plush.year }}{% else %}—{% endif %}</span>
     </div>
-    <div class="plush-card-badges">
+    <div class="plush-card-footer">
       <span class="badge badge-{{ plush.verification | downcase }}">{{ plush.verification }}</span>
-      {% if plush.owned %}<span class="badge badge-owned">Owned</span>{% endif %}
+      {% if plush.owned %}<span class="owned-indicator">Owned</span>{% endif %}
+      {% if plush.availability %}
+      <span class="rarity-meter" title="Rarity: {{ plush.availability }}/5">
+        {% for i in (1..5) %}
+        <span class="rarity-dot {% if i <= plush.availability %}filled{% endif %}"></span>
+        {% endfor %}
+      </span>
+      {% endif %}
     </div>
   </div>
 </a>
