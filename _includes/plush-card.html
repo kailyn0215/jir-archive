@@ -1,0 +1,14 @@
+<a href="{{ plush.url | relative_url }}" class="plush-card">
+  <div class="plush-card-id">{{ plush.archive_id }}</div>
+  <div class="plush-card-content">
+    <h3>{{ plush.current_name }}</h3>
+    <div class="plush-card-meta">
+      <span class="company">{{ plush.company }}</span>
+      <span class="year">{% if plush.year %}{{ plush.year }}{% else %}—{% endif %}</span>
+    </div>
+    <div class="plush-card-badges">
+      <span class="badge badge-{{ plush.verification | downcase }}">{{ plush.verification }}</span>
+      {% if plush.owned %}<span class="badge badge-owned">Owned</span>{% endif %}
+    </div>
+  </div>
+</a>

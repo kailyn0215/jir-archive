@@ -1,0 +1,137 @@
+---
+layout: default
+title: Stats
+---
+<div class="page-header">
+  <h1>Collection Statistics</h1>
+  <p class="subtitle">Archive overview and progress tracking</p>
+</div>
+
+{% assign all_plushes = site.plushes %}
+{% assign master_plushes = site.plushes | where: "status", "Master" %}
+{% assign research_plushes = site.plushes | where: "status", "Research" %}
+{% assign owned_plushes = site.plushes | where: "owned", true %}
+{% assign verified = site.plushes | where: "verification", "Verified" %}
+{% assign strong = site.plushes | where: "verification", "Strong" %}
+{% assign possible = site.plushes | where: "verification", "Possible" %}
+
+<div class="stats-grid">
+  <div class="stat-card stat-primary">
+    <div class="stat-value">{{ all_plushes.size }}</div>
+    <div class="stat-label">Total Entries</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ master_plushes.size }}</div>
+    <div class="stat-label">Master Archive</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ research_plushes.size }}</div>
+    <div class="stat-label">In Research</div>
+  </div>
+  <div class="stat-card stat-owned">
+    <div class="stat-value">{{ owned_plushes.size }}</div>
+    <div class="stat-label">Owned</div>
+    <div class="stat-percent">{% assign pct = owned_plushes.size | times: 100.0 | divided_by: master_plushes.size %}{{ pct | round: 1 }}%</div>
+  </div>
+</div>
+
+<div class="stats-section">
+  <h2>Verification Status</h2>
+  <div class="stats-bar-container">
+    <div class="stats-bar">
+      <div class="bar-segment bar-verified" style="width: {% assign w = verified.size | times: 100.0 | divided_by: all_plushes.size %}{{ w }}%">
+        {{ verified.size }}
+      </div>
+      <div class="bar-segment bar-strong" style="width: {% assign w = strong.size | times: 100.0 | divided_by: all_plushes.size %}{{ w }}%">
+        {{ strong.size }}
+      </div>
+      <div class="bar-segment bar-possible" style="width: {% assign w = possible.size | times: 100.0 | divided_by: all_plushes.size %}{{ w }}%">
+        {{ possible.size }}
+      </div>
+    </div>
+    <div class="stats-bar-legend">
+      <span class="legend-item"><span class="legend-color bg-verified"></span> Verified ({{ verified.size }})</span>
+      <span class="legend-item"><span class="legend-color bg-strong"></span> Strong ({{ strong.size }})</span>
+      <span class="legend-item"><span class="legend-color bg-possible"></span> Possible ({{ possible.size }})</span>
+    </div>
+  </div>
+</div>
+
+<div class="stats-section">
+  <h2>By Company</h2>
+  <table class="stats-table">
+    <thead>
+      <tr>
+        <th>Company</th>
+        <th>Total</th>
+        <th>Owned</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% assign companies = site.plushes | group_by: "company" | sort: "size" | reverse %}
+      {% for company in companies %}
+      {% assign company_owned = company.items | where: "owned", true %}
+      <tr>
+        <td>{{ company.name }}</td>
+        <td>{{ company.size }}</td>
+        <td>{{ company_owned.size }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="stats-section">
+  <h2>By Decade</h2>
+  <table class="stats-table">
+    <thead>
+      <tr>
+        <th>Decade</th>
+        <th>Count</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% assign plushes_2000s = site.plushes | where_exp: "p", "p.year >= 2000 and p.year < 2010" %}
+      {% assign plushes_2010s = site.plushes | where_exp: "p", "p.year >= 2010 and p.year < 2020" %}
+      {% assign plushes_2020s = site.plushes | where_exp: "p", "p.year >= 2020 and p.year < 2030" %}
+      {% assign plushes_unknown = site.plushes | where_exp: "p", "p.year == nil or p.year == ''" %}
+      <tr>
+        <td>2000s</td>
+        <td>{{ plushes_2000s.size }}</td>
+      </tr>
+      <tr>
+        <td>2010s</td>
+        <td>{{ plushes_2010s.size }}</td>
+      </tr>
+      <tr>
+        <td>2020s</td>
+        <td>{{ plushes_2020s.size }}</td>
+      </tr>
+      <tr>
+        <td>Unknown</td>
+        <td>{{ plushes_unknown.size }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="stats-section">
+  <h2>By Region</h2>
+  <table class="stats-table">
+    <thead>
+      <tr>
+        <th>Region</th>
+        <th>Count</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% assign regions = site.plushes | group_by: "region" | sort: "size" | reverse %}
+      {% for region in regions %}
+      <tr>
+        <td>{{ region.name }}</td>
+        <td>{{ region.size }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

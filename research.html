@@ -1,0 +1,43 @@
+---
+layout: default
+title: Research
+---
+<div class="page-header">
+  <h1>Research Queue</h1>
+  <p class="subtitle">{{ site.plushes | where: "status", "Research" | size }} items awaiting verification</p>
+</div>
+
+<div class="research-intro">
+  <p>Items in this list may exist but are not yet sufficiently documented to enter the Master Archive. Each requires additional evidence before promotion.</p>
+</div>
+
+<div class="plush-grid">
+  {% assign research_plushes = site.plushes | where: "status", "Research" | sort: "archive_id" %}
+  {% for plush in research_plushes %}
+  <div class="plush-item research-item">
+    {% include plush-card.html plush=plush %}
+    {% if plush.notes %}
+    <div class="research-note">
+      <strong>Needed:</strong> {{ plush.notes }}
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+{% if research_plushes.size == 0 %}
+<div class="empty-state">
+  <p>No items currently in research queue.</p>
+</div>
+{% endif %}
+
+<div class="research-guidelines">
+  <h2>Promotion Criteria</h2>
+  <p>An item can be promoted to Master when:</p>
+  <ul>
+    <li>Official manufacturer documentation exists, OR</li>
+    <li>Multiple independent examples with matching tags exist</li>
+    <li>Product line and company are confirmed</li>
+    <li>No conflicting evidence suggests it's a duplicate or bootleg</li>
+  </ul>
+</div>

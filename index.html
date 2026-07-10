@@ -1,0 +1,141 @@
+---
+layout: default
+title: Archive
+---
+<div class="page-header">
+  <h1>Master Archive</h1>
+  <p class="subtitle">{{ site.plushes | where: "status", "Master" | size }} verified Jirachi plushes</p>
+</div>
+
+<div class="filters">
+  <div class="filter-group">
+    <label>Company:</label>
+    <select id="filter-company">
+      <option value="">All</option>
+      {% assign companies = site.plushes | map: "company" | uniq | sort %}
+      {% for company in companies %}
+      <option value="{{ company }}">{{ company }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Verification:</label>
+    <select id="filter-verification">
+      <option value="">All</option>
+      <option value="Verified">Verified</option>
+      <option value="Strong">Strong</option>
+      <option value="Possible">Possible</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Owned:</label>
+    <select id="filter-owned">
+      <option value="">All</option>
+      <option value="true">Owned</option>
+      <option value="false">Not Owned</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <input type="text" id="filter-search" placeholder="Search...">
+  </div>
+</div>
+
+<div class="view-toggle">
+  <button class="view-btn active" data-view="grid">Grid</button>
+  <button class="view-btn" data-view="table">Table</button>
+</div>
+
+<div class="plush-grid" id="plush-container">
+  {% assign master_plushes = site.plushes | where: "status", "Master" | sort: "archive_id" %}
+  {% for plush in master_plushes %}
+  <div class="plush-item" 
+       data-company="{{ plush.company }}" 
+       data-verification="{{ plush.verification }}"
+       data-owned="{{ plush.owned }}"
+       data-search="{{ plush.current_name | downcase }} {{ plush.product_line | downcase }} {{ plush.company | downcase }} {{ plush.search_terms | join: ' ' | downcase }}">
+    {% include plush-card.html plush=plush %}
+  </div>
+  {% endfor %}
+</div>
+
+<table class="plush-table hidden" id="plush-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Company</th>
+      <th>Year</th>
+      <th>Product Line</th>
+      <th>Region</th>
+      <th>Verification</th>
+      <th>Owned</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for plush in master_plushes %}
+    <tr class="plush-row"
+        data-company="{{ plush.company }}" 
+        data-verification="{{ plush.verification }}"
+        data-owned="{{ plush.owned }}"
+        data-search="{{ plush.current_name | downcase }} {{ plush.product_line | downcase }} {{ plush.company | downcase }}">
+      <td><a href="{{ plush.url | relative_url }}">{{ plush.archive_id }}</a></td>
+      <td><a href="{{ plush.url | relative_url }}">{{ plush.current_name }}</a></td>
+      <td>{{ plush.company }}</td>
+      <td>{% if plush.year %}{{ plush.year }}{% else %}—{% endif %}</td>
+      <td>{{ plush.product_line }}</td>
+      <td>{{ plush.region }}</td>
+      <td><span class="badge badge-{{ plush.verification | downcase }}">{{ plush.verification }}</span></td>
+      <td>{% if plush.owned %}✓{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const filterCompany = document.getElementById('filter-company');
+  const filterVerification = document.getElementById('filter-verification');
+  const filterOwned = document.getElementById('filter-owned');
+  const filterSearch = document.getElementById('filter-search');
+  const gridItems = document.querySelectorAll('.plush-item');
+  const tableRows = document.querySelectorAll('.plush-row');
+  const viewBtns = document.querySelectorAll('.view-btn');
+  const gridContainer = document.getElementById('plush-container');
+  const tableContainer = document.getElementById('plush-table');
+
+  function applyFilters() {
+    const company = filterCompany.value;
+    const verification = filterVerification.value;
+    const owned = filterOwned.value;
+    const search = filterSearch.value.toLowerCase();
+
+    [...gridItems, ...tableRows].forEach(item => {
+      let show = true;
+      if (company && item.dataset.company !== company) show = false;
+      if (verification && item.dataset.verification !== verification) show = false;
+      if (owned && item.dataset.owned !== owned) show = false;
+      if (search && !item.dataset.search.includes(search)) show = false;
+      item.style.display = show ? '' : 'none';
+    });
+  }
+
+  filterCompany.addEventListener('change', applyFilters);
+  filterVerification.addEventListener('change', applyFilters);
+  filterOwned.addEventListener('change', applyFilters);
+  filterSearch.addEventListener('input', applyFilters);
+
+  viewBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      viewBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      if (this.dataset.view === 'grid') {
+        gridContainer.classList.remove('hidden');
+        tableContainer.classList.add('hidden');
+      } else {
+        gridContainer.classList.add('hidden');
+        tableContainer.classList.remove('hidden');
+      }
+    });
+  });
+});
+</script>

@@ -1,0 +1,24 @@
+title: Jirachi Plush Archive
+description: A comprehensive, evidence-based database of every officially licensed Jirachi plush
+url: ""
+baseurl: ""
+
+collections:
+  plushes:
+    output: true
+    permalink: /plush/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: "plushes"
+    values:
+      layout: "plush"
+
+# Build settings
+markdown: kramdown
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - "*.xlsx"
+  - README.md

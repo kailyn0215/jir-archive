@@ -1,0 +1,42 @@
+# Company/Manufacturer definitions
+# Each company has a prefix used in Company IDs
+
+- id: PCJ
+  name: Pokemon Center Japan
+  full_name: The Pokemon Company (Japan)
+  region: Japan
+
+- id: PCUS
+  name: Pokemon Center US
+  full_name: The Pokemon Company International
+  region: North America
+
+- id: PCTW
+  name: Top Insight Taiwan
+  full_name: Top Insight Co., Ltd.
+  region: Taiwan
+
+- id: TOMY
+  name: TOMY
+  full_name: TOMY Company, Ltd.
+  region: Japan
+
+- id: TTA
+  name: Takara Tomy Arts
+  full_name: Takara Tomy Arts Co., Ltd.
+  region: Japan
+
+- id: BAN
+  name: Banpresto
+  full_name: Banpresto Co., Ltd.
+  region: Japan
+
+- id: BANDAI
+  name: Bandai
+  full_name: Bandai Co., Ltd.
+  region: Japan
+
+- id: OTH
+  name: Unknown
+  full_name: Unknown Manufacturer
+  region: Unknown

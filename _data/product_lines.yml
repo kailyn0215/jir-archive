@@ -1,0 +1,142 @@
+# Product Line definitions
+# Groups plushes by their official product line/series
+
+- id: poke-doll
+  name: Poké Doll
+  japanese_name: ポケモンドール
+  description: Classic small plush line from Pokemon Centers
+
+- id: all-star
+  name: All Star Collection
+  japanese_name: オールスターコレクション
+  description: Takara Tomy Arts standard plush line
+
+- id: pokemon-fit
+  name: Pokemon Fit
+  japanese_name: ポケモンフィット
+  description: Palm-sized plush covering all Pokemon (Japan)
+
+- id: sitting-cuties
+  name: Sitting Cuties
+  japanese_name: null
+  description: North American release of Pokemon Fit
+
+- id: hoshi-tsunagi
+  name: Hoshi Tsunagi
+  japanese_name: 星つなぎ
+  description: Star-themed Pokemon Center collection
+
+- id: pokemon-get
+  name: Pokemon Get
+  japanese_name: ポケモンゲット
+  description: Takara Tomy Arts arcade/prize line
+
+- id: mecha-mofugutto
+  name: Mecha Mofugutto
+  japanese_name: メチャもふぐっと
+  description: Banpresto prize plush line
+
+- id: movie-prize
+  name: Movie Prize
+  japanese_name: null
+  description: Movie promotional prize plushes
+
+- id: ufo-prize
+  name: UFO Prize
+  japanese_name: null
+  description: UFO catcher/crane game prizes
+
+- id: super-dx
+  name: Super DX
+  japanese_name: スーパーDX
+  description: Extra large prize plushes
+
+- id: standard-plush
+  name: Standard Plush
+  japanese_name: null
+  description: Standard retail plush releases
+
+- id: bean-plush
+  name: Bean Plush
+  japanese_name: null
+  description: Small bean-filled plushes
+
+- id: keychain
+  name: Keychain
+  japanese_name: null
+  description: Keychain/mascot plushes
+
+- id: promotion
+  name: Promotion
+  japanese_name: null
+  description: Promotional campaign items
+
+- id: 20th-anniversary
+  name: 20th Anniversary
+  japanese_name: null
+  description: Pokemon 20th Anniversary collection
+
+- id: ditto-transformation
+  name: Ditto Transformation
+  japanese_name: メタモン へんしん
+  description: Ditto-themed plush variants
+
+- id: soda-pop
+  name: Soda Pop
+  japanese_name: ソーダポップ
+  description: Soda Pop themed collection
+
+- id: kokeshi
+  name: Kokeshi
+  japanese_name: こけし
+  description: Traditional Japanese doll style
+
+- id: petit
+  name: Petit
+  japanese_name: プチ
+  description: Small pastel-colored plushes
+
+- id: i-choose-you
+  name: I Choose You!
+  japanese_name: キミにきめた！
+  description: Movie 20 themed collection
+
+- id: comfy-cuddlers
+  name: Comfy Cuddlers
+  japanese_name: null
+  description: Soft cuddly plush line
+
+- id: peaceful-place
+  name: Peaceful Place
+  japanese_name: やすらぎの場所
+  description: Relaxation-themed collection
+
+- id: fuzzy
+  name: Fuzzy
+  japanese_name: null
+  description: Fuzzy textured plushes
+
+- id: prize
+  name: Prize
+  japanese_name: null
+  description: Generic prize plushes
+
+- id: diamond-pearl
+  name: Diamond & Pearl
+  japanese_name: ダイヤモンド・パール
+  description: Gen 4 era releases
+
+- id: life-size
+  name: Life Size
+  japanese_name: 等身大
+  description: Life-sized plush releases
+
+- id: regional
+  name: Regional
+  japanese_name: null
+  description: Regional exclusive releases
+
+- id: unknown
+  name: Unknown
+  japanese_name: null
+  description: Product line not yet identified
