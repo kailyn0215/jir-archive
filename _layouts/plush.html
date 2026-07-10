@@ -1,6 +1,31 @@
 ---
 layout: default
 ---
+{% comment %}
+  Auto-detect images from /assets/images/plushes/[archive_id]/
+  Priority for main image: main.* or thumb.* > first alphabetically
+{% endcomment %}
+
+{% assign plush_images = "" | split: "" %}
+{% assign plush_main = nil %}
+{% assign plush_folder = "/assets/images/plushes/" | append: page.archive_id | append: "/" %}
+
+{% for file in site.static_files %}
+  {% if file.path contains plush_folder %}
+    {% assign plush_images = plush_images | push: file %}
+    {% assign basename = file.basename | downcase %}
+    {% if basename == "main" or basename == "thumb" %}
+      {% assign plush_main = file %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{% assign plush_images_sorted = plush_images | sort: "name" %}
+
+{% if plush_main == nil and plush_images_sorted.size > 0 %}
+  {% assign plush_main = plush_images_sorted.first %}
+{% endif %}
+
 <article class="plush-detail">
   <header class="plush-header">
     <div class="plush-id">{{ page.archive_id }}</div>
@@ -22,12 +47,14 @@ layout: default
     {% endif %}
   </div>
 
-  {% if page.images.size > 0 %}
+  {% if plush_images_sorted.size > 0 %}
   <div class="plush-gallery">
     <h2>Images</h2>
     <div class="gallery-grid">
-      {% for image in page.images %}
-      <img src="{{ '/assets/images/plushes/' | append: page.archive_id | append: '/' | append: image | relative_url }}" alt="{{ page.current_name }} - {{ image }}" loading="lazy">
+      {% for img in plush_images_sorted %}
+      <a href="{{ img.path | relative_url }}" target="_blank">
+        <img src="{{ img.path | relative_url }}" alt="{{ page.current_name }} - {{ img.name }}" loading="lazy">
+      </a>
       {% endfor %}
     </div>
   </div>

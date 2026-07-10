@@ -87,8 +87,6 @@ sources:
   - type: catalog
     url: https://example.com
     notes: Official announcement
-images:
-  - front.jpg
 notes: Description here
 search_terms:
   - relevant
@@ -96,7 +94,7 @@ search_terms:
 ---
 ```
 
-2. Place any images in `assets/images/plushes/JIR-0036/`
+2. Add images to `assets/images/plushes/JIR-0036/` (see Image Convention below)
 
 3. Commit and push
 
@@ -139,9 +137,33 @@ Archive IDs are permanent and never change:
 | `status` | Master or Research |
 | `availability` | Market rarity (1-5 scale) |
 | `sources` | Evidence documentation |
-| `images` | Photo filenames |
 | `notes` | Additional context |
 | `search_terms` | Keywords for filtering |
+
+## Image Convention
+
+Images are **automatically loaded** from folder structure—no YAML configuration required.
+
+### Folder Structure
+
+```
+assets/images/plushes/
+├── JIR-0011/
+│   ├── main.jpg      ← Thumbnail (if exists)
+│   ├── back.jpg      ← Additional images
+│   └── tag.png       ← All images shown in gallery
+└── JIR-0012/
+    └── 01-front.webp ← First alphabetically becomes thumbnail
+```
+
+### Thumbnail Priority
+
+1. `main.*` or `thumb.*` (any extension) → used as thumbnail
+2. If neither exists → first file alphabetically
+
+### Supported Formats
+
+Any web-compatible image format: `.jpg`, `.jpeg`, `.png`, `.webp`, `.gif`
 
 ## Migration from Excel
 

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guide | Jirachi Plush Archive</title>
+  <meta name="description" content="A comprehensive, evidence-based database of every officially licensed Jirachi plush">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/jir-archive/assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="/jir-archive/" class="site-title">Jirachi Plush Archive</a>
+      <nav class="site-nav">
+        <a href="/jir-archive/" >Archive</a>
+        <a href="/jir-archive/research" >Research</a>
+        <a href="/jir-archive/stats" >Stats</a>
+        <a href="/jir-archive/guide" class="active">Guide</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <div class="container">
+      <h1 id="database-guide--research-standards">Database Guide &amp; Research Standards</h1>
+
+<p><strong>Version:</strong> v0.3 (Pre-v1.0)</p>
+
+<hr />
+
+<h2 id="purpose">Purpose</h2>
+
+<p>The Jirachi Plush Archive is intended to become the most comprehensive, evidence-based database of every officially licensed Jirachi plush ever released.</p>
+
+<p>This project is not simply a checklist. It is a historical archive that documents every known official Jirachi plush release, its manufacturer, product line, release information, rarity, and supporting evidence.</p>
+
+<p>The archive prioritizes <strong>accuracy over completeness</strong>. It is acceptable for an item to remain in the Research queue until sufficient evidence exists.</p>
+
+<hr />
+
+<h2 id="philosophy">Philosophy</h2>
+
+<p>The archive follows one simple rule:</p>
+
+<blockquote>
+  <p><strong>If it cannot be supported by evidence, it does not belong in the Master Archive.</strong></p>
+</blockquote>
+
+<p>Evidence is more important than assumptions. Whenever new information becomes available, the archive should be updated using the standards below.</p>
+
+<hr />
+
+<h2 id="database-structure">Database Structure</h2>
+
+<h3 id="master-archive">Master Archive</h3>
+
+<p>This is the primary database. Every entry represents one official plush release.</p>
+
+<ul>
+  <li>No duplicates</li>
+  <li>No bootlegs</li>
+  <li>No fan-made customs</li>
+  <li>Only officially licensed products belong here</li>
+</ul>
+
+<h3 id="research-queue">Research Queue</h3>
+
+<p>Contains items that may exist but are not yet sufficiently documented.</p>
+
+<p>An item should remain here until enough evidence exists to promote it to the Master Archive.</p>
+
+<p>Possible reasons include:</p>
+<ul>
+  <li>Unknown manufacturer</li>
+  <li>Unknown year</li>
+  <li>Only one known listing</li>
+  <li>Missing official product name</li>
+  <li>Missing tag photos</li>
+</ul>
+
+<p>Nothing in Research should be considered confirmed.</p>
+
+<hr />
+
+<h2 id="archive-ids">Archive IDs</h2>
+
+<p>Every plush receives one permanent Archive ID.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>JIR-0001
+JIR-0002
+JIR-0003
+</code></pre></div></div>
+
+<p>Archive IDs <strong>never change</strong>. Even if new plushes are discovered later, existing IDs remain permanent.</p>
+
+<hr />
+
+<h2 id="company-ids">Company IDs</h2>
+
+<p>Each manufacturer maintains its own numbering.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Prefix</th>
+      <th>Company</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>PCJ</td>
+      <td>Pokemon Center Japan</td>
+    </tr>
+    <tr>
+      <td>PCUS</td>
+      <td>Pokemon Center US</td>
+    </tr>
+    <tr>
+      <td>PCTW</td>
+      <td>Top Insight Taiwan</td>
+    </tr>
+    <tr>
+      <td>TOMY</td>
+      <td>TOMY</td>
+    </tr>
+    <tr>
+      <td>TTA</td>
+      <td>Takara Tomy Arts</td>
+    </tr>
+    <tr>
+      <td>BAN</td>
+      <td>Banpresto</td>
+    </tr>
+    <tr>
+      <td>BANDAI</td>
+      <td>Bandai</td>
+    </tr>
+    <tr>
+      <td>OTH</td>
+      <td>Unknown</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These IDs help organize releases by manufacturer. If additional companies are discovered, new prefixes may be added.</p>
+
+<hr />
+
+<h2 id="sculpt-ids">Sculpt IDs</h2>
+
+<p>Sculpt IDs represent unique physical plush designs. Multiple releases may share one sculpt.</p>
+
+<p><strong>Example:</strong></p>
+<ul>
+  <li>Pokemon Fit (Japan) → <code class="language-plaintext highlighter-rouge">SC-002</code></li>
+  <li>Sitting Cuties (North America) → <code class="language-plaintext highlighter-rouge">SC-002</code></li>
+</ul>
+
+<p>Both are separate releases. Both use the same sculpt.</p>
+
+<p>This allows the archive to answer two different questions:</p>
+<ol>
+  <li>How many unique plush designs exist?</li>
+  <li>How many official releases exist?</li>
+</ol>
+
+<p>Those numbers are not always the same.</p>
+
+<hr />
+
+<h2 id="what-counts-as-a-separate-entry">What Counts As A Separate Entry</h2>
+
+<p>A new archive entry should be created when:</p>
+
+<ul>
+  <li>Different sculpt</li>
+  <li>Different size</li>
+  <li>Different product line</li>
+  <li>Different manufacturer</li>
+  <li>Different region (if officially released as a separate retail product)</li>
+  <li>Different promotional release</li>
+  <li>Different prize release</li>
+  <li>Different seasonal collection</li>
+</ul>
+
+<hr />
+
+<h2 id="what-does-not-count">What Does NOT Count</h2>
+
+<p>Do NOT create new entries for:</p>
+
+<ul>
+  <li>Different hang tag revisions</li>
+  <li>Different tush tag revisions</li>
+  <li>Factory changes</li>
+  <li>Minor embroidery differences</li>
+  <li>Manufacturing defects</li>
+  <li>Price stickers</li>
+  <li>Barcode stickers</li>
+  <li>Packaging revisions</li>
+</ul>
+
+<p>These should instead be documented inside the Notes field.</p>
+
+<hr />
+
+<h2 id="verification-standards">Verification Standards</h2>
+
+<p>Every plush receives one verification level.</p>
+
+<h3 id="verified">Verified</h3>
+<p>Official manufacturer documentation exists, OR multiple independent examples with matching tags and metadata exist.</p>
+
+<p>These belong in the Master Archive.</p>
+
+<h3 id="strong">Strong</h3>
+<p>High confidence. Likely official. Needs one additional reliable source.</p>
+
+<p>Usually belongs in the Master Archive with a note.</p>
+
+<h3 id="possible">Possible</h3>
+<p>Interesting lead. Needs significantly more evidence.</p>
+
+<p>Remains in Research.</p>
+
+<h3 id="unverified">Unverified</h3>
+<p>Insufficient documentation. Should not enter the Master Archive.</p>
+
+<hr />
+
+<h2 id="research-methodology">Research Methodology</h2>
+
+<p>The archive should never rely solely on search engines.</p>
+
+<p>Instead, research should proceed by manufacturer:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Banpresto
+    ↓
+Every yearly catalog
+    ↓
+Every Pokemon release
+    ↓
+Was Jirachi included?
+    ↓
+Document evidence
+</code></pre></div></div>
+
+<p>Repeat for each manufacturer. This approach minimizes missing obscure releases.</p>
+
+<hr />
+
+<h2 id="source-reliability">Source Reliability</h2>
+
+<h3 id="tier-s-primary">Tier S (Primary)</h3>
+<ul>
+  <li>Official manufacturer catalogs</li>
+  <li>Official retailer pages</li>
+  <li>Official Pokemon Center pages</li>
+  <li>Original advertisements</li>
+</ul>
+
+<h3 id="tier-a">Tier A</h3>
+<ul>
+  <li>Archived retailer pages</li>
+  <li>Mandarake</li>
+  <li>Suruga-ya</li>
+  <li>Official scans</li>
+</ul>
+
+<h3 id="tier-b">Tier B</h3>
+<ul>
+  <li>Yahoo Auctions</li>
+  <li>Mercari</li>
+  <li>Rakuten</li>
+</ul>
+
+<h3 id="tier-c">Tier C</h3>
+<ul>
+  <li>Collector websites</li>
+  <li>Blogs</li>
+  <li>Reddit</li>
+  <li>Flickr</li>
+</ul>
+
+<p>Lower tiers are excellent for discovering items but should not be the sole source used for verification.</p>
+
+<hr />
+
+<h2 id="naming-convention">Naming Convention</h2>
+
+<p>Whenever possible, every plush should contain:</p>
+
+<ul>
+  <li><strong>Official English Name</strong></li>
+  <li><strong>Official Japanese Name</strong></li>
+  <li><strong>Common Collector Name</strong></li>
+</ul>
+
+<p>Many plushes are better known by unofficial names. Both should be preserved.</p>
+
+<hr />
+
+<h2 id="availability-rating">Availability Rating</h2>
+
+<p>Instead of subjective rarity, the archive tracks availability:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Rating</th>
+      <th>Meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>★★★★★</td>
+      <td>Frequently available</td>
+    </tr>
+    <tr>
+      <td>★★★★☆</td>
+      <td>Available with patience</td>
+    </tr>
+    <tr>
+      <td>★★★☆☆</td>
+      <td>Uncommon</td>
+    </tr>
+    <tr>
+      <td>★★☆☆☆</td>
+      <td>Difficult to obtain</td>
+    </tr>
+    <tr>
+      <td>★☆☆☆☆</td>
+      <td>Extremely difficult to find</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Availability is based on observed market frequency, not opinion.</p>
+
+<hr />
+
+<h2 id="research-rules">Research Rules</h2>
+
+<ol>
+  <li>Never assume</li>
+  <li>Never estimate</li>
+  <li>Never merge two plushes without evidence</li>
+  <li>Never split one plush into multiple entries without evidence</li>
+  <li>When uncertain, place the item in Research instead of Master</li>
+</ol>
+
+<hr />
+
+<h2 id="long-term-goal">Long-Term Goal</h2>
+
+<p>The objective is to create a permanent historical record of every officially licensed Jirachi plush.</p>
+
+<p>Every release should eventually include:</p>
+<ul>
+  <li>Official name</li>
+  <li>Japanese name</li>
+  <li>Manufacturer</li>
+  <li>Release year</li>
+  <li>Product line</li>
+  <li>Region</li>
+  <li>Size</li>
+  <li>Product number</li>
+  <li>JAN code</li>
+  <li>Original MSRP</li>
+  <li>Images</li>
+  <li>Search terms</li>
+  <li>Verification sources</li>
+  <li>Collector notes</li>
+</ul>
+
+<p>The archive should be accurate enough that another collector can independently verify every entry using the included evidence.</p>
+
+<p>If future official releases occur, they should be added without changing any existing Archive IDs.</p>
+
+<p>The archive should remain <strong>stable, expandable, and evidence-based</strong> for many years to come.</p>
+
+<hr />
+
+<h2 id="adding-new-entries">Adding New Entries</h2>
+
+<p>To add a new plush, create a new file in <code class="language-plaintext highlighter-rouge">_plushes/</code>:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
+<span class="na">archive_id</span><span class="pi">:</span> <span class="s">JIR-0036</span>
+<span class="na">company_id</span><span class="pi">:</span> <span class="s">PCJ-015</span>
+<span class="na">company</span><span class="pi">:</span> <span class="s">Pokemon Center Japan</span>
+<span class="na">year</span><span class="pi">:</span> <span class="m">2024</span>
+<span class="na">product_line</span><span class="pi">:</span> <span class="s">New Collection</span>
+<span class="na">current_name</span><span class="pi">:</span> <span class="s">New Jirachi Plush</span>
+<span class="na">official_name</span><span class="pi">:</span> 
+<span class="na">japanese_name</span><span class="pi">:</span> 
+<span class="na">region</span><span class="pi">:</span> <span class="s">Japan</span>
+<span class="na">size</span><span class="pi">:</span> 
+<span class="na">sculpt_id</span><span class="pi">:</span> 
+<span class="na">owned</span><span class="pi">:</span> <span class="kc">false</span>
+<span class="na">verification</span><span class="pi">:</span> <span class="s">Verified</span>
+<span class="na">status</span><span class="pi">:</span> <span class="s">Master</span>
+<span class="na">availability</span><span class="pi">:</span> 
+<span class="na">sources</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">catalog</span>
+    <span class="na">url</span><span class="pi">:</span> <span class="s">https://example.com</span>
+    <span class="na">notes</span><span class="pi">:</span> <span class="s">Official announcement</span>
+<span class="na">images</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">front.jpg</span>
+<span class="na">notes</span><span class="pi">:</span> <span class="s">Description here</span>
+<span class="na">search_terms</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">relevant</span>
+  <span class="pi">-</span> <span class="s">keywords</span>
+<span class="nn">---</span>
+
+<span class="s">Optional extended notes in markdown format.</span>
+</code></pre></div></div>
+
+<p>Save as <code class="language-plaintext highlighter-rouge">JIR-0036.md</code> and commit to the repository.</p>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Jirachi Plush Archive · v1.0 · Evidence-based archive</p>
+    </div>
+  </footer>
+</body>
+</html>
