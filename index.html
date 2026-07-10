@@ -4,7 +4,16 @@ title: Archive
 ---
 <div class="page-header">
   <h1>Master Archive</h1>
-  <p class="subtitle">{{ site.plushes | where: "status", "Master" | size }} documented Jirachi plushes</p>
+  <p class="subtitle">{{ site.plushes | where: "status", "Master" | size }} documented Jirachi plushes · <span id="owned-count">0</span> in your collection</p>
+</div>
+
+<div class="toolbar">
+  <button class="btn btn-export" id="export-btn">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M8 2v8m0 0l-3-3m3 3l3-3M3 14h10"/>
+    </svg>
+    Export My Collection
+  </button>
 </div>
 
 <div class="filters">
@@ -28,11 +37,11 @@ title: Archive
     </select>
   </div>
   <div class="filter-group">
-    <label for="filter-owned">Owned</label>
+    <label for="filter-owned">Collection</label>
     <select id="filter-owned">
-      <option value="">All</option>
-      <option value="true">Owned</option>
-      <option value="false">Not Owned</option>
+      <option value="">All Plushes</option>
+      <option value="owned">My Collection</option>
+      <option value="not-owned">Not Owned</option>
     </select>
   </div>
   <div class="filter-group">
@@ -50,9 +59,9 @@ title: Archive
   {% assign master_plushes = site.plushes | where: "status", "Master" | sort: "archive_id" %}
   {% for plush in master_plushes %}
   <div class="plush-item" 
+       data-id="{{ plush.archive_id }}"
        data-company="{{ plush.company }}" 
        data-verification="{{ plush.verification }}"
-       data-owned="{{ plush.owned }}"
        data-search="{{ plush.current_name | downcase }} {{ plush.product_line | downcase }} {{ plush.company | downcase }} {{ plush.search_terms | join: ' ' | downcase }}">
     {% include plush-card.html plush=plush %}
   </div>
@@ -74,9 +83,9 @@ title: Archive
   <tbody>
     {% for plush in master_plushes %}
     <tr class="plush-row"
+        data-id="{{ plush.archive_id }}"
         data-company="{{ plush.company }}" 
         data-verification="{{ plush.verification }}"
-        data-owned="{{ plush.owned }}"
         data-search="{{ plush.current_name | downcase }} {{ plush.product_line | downcase }} {{ plush.company | downcase }}">
       <td><a href="{{ plush.url | relative_url }}">{{ plush.archive_id }}</a></td>
       <td><a href="{{ plush.url | relative_url }}">{{ plush.current_name }}</a></td>
@@ -84,14 +93,98 @@ title: Archive
       <td>{% if plush.year %}{{ plush.year }}{% else %}—{% endif %}</td>
       <td>{{ plush.region }}</td>
       <td><span class="badge badge-{{ plush.verification | downcase }}">{{ plush.verification }}</span></td>
-      <td>{% if plush.owned %}✓{% endif %}</td>
+      <td class="table-owned-cell" data-id="{{ plush.archive_id }}"></td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
 
+<!-- Plush data for export -->
+<script id="plush-data" type="application/json">
+[{% assign master_plushes = site.plushes | where: "status", "Master" | sort: "archive_id" %}{% for plush in master_plushes %}{"archive_id":"{{ plush.archive_id }}","current_name":"{{ plush.current_name | escape }}","official_name":"{{ plush.official_name | escape }}","japanese_name":"{{ plush.japanese_name | escape }}","company":"{{ plush.company | escape }}","company_id":"{{ plush.company_id | escape }}","year":"{{ plush.year }}","product_line":"{{ plush.product_line | escape }}","region":"{{ plush.region | escape }}","size":"{{ plush.size | escape }}","verification":"{{ plush.verification }}","notes":"{{ plush.notes | escape }}"}{% unless forloop.last %},{% endunless %}{% endfor %}]
+</script>
+
+<!-- SheetJS for XLSX export -->
+<script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  const STORAGE_KEY = 'jir-owned';
+  
+  // Get owned IDs from localStorage
+  function getOwned() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    } catch {
+      return [];
+    }
+  }
+  
+  // Save owned IDs to localStorage
+  function saveOwned(ids) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
+  }
+  
+  // Toggle owned status
+  function toggleOwned(id) {
+    const owned = getOwned();
+    const index = owned.indexOf(id);
+    if (index === -1) {
+      owned.push(id);
+    } else {
+      owned.splice(index, 1);
+    }
+    saveOwned(owned);
+    return owned.includes(id);
+  }
+  
+  // Update UI for owned status
+  function updateOwnedUI() {
+    const owned = getOwned();
+    
+    // Update cards
+    document.querySelectorAll('.plush-card').forEach(card => {
+      const id = card.dataset.id;
+      const isOwned = owned.includes(id);
+      card.classList.toggle('is-owned', isOwned);
+    });
+    
+    // Update table cells
+    document.querySelectorAll('.table-owned-cell').forEach(cell => {
+      const id = cell.dataset.id;
+      cell.textContent = owned.includes(id) ? '✓' : '';
+    });
+    
+    // Update plush items data attribute for filtering
+    document.querySelectorAll('.plush-item').forEach(item => {
+      const id = item.dataset.id;
+      item.dataset.userOwned = owned.includes(id) ? 'true' : 'false';
+    });
+    
+    document.querySelectorAll('.plush-row').forEach(row => {
+      const id = row.dataset.id;
+      row.dataset.userOwned = owned.includes(id) ? 'true' : 'false';
+    });
+    
+    // Update count
+    document.getElementById('owned-count').textContent = owned.length;
+  }
+  
+  // Initialize owned toggles
+  document.querySelectorAll('.owned-toggle').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const id = this.dataset.id;
+      toggleOwned(id);
+      updateOwnedUI();
+    });
+  });
+  
+  // Initial UI update
+  updateOwnedUI();
+  
+  // Filters
   const filterCompany = document.getElementById('filter-company');
   const filterVerification = document.getElementById('filter-verification');
   const filterOwned = document.getElementById('filter-owned');
@@ -112,7 +205,8 @@ document.addEventListener('DOMContentLoaded', function() {
       let show = true;
       if (company && item.dataset.company !== company) show = false;
       if (verification && item.dataset.verification !== verification) show = false;
-      if (owned && item.dataset.owned !== owned) show = false;
+      if (owned === 'owned' && item.dataset.userOwned !== 'true') show = false;
+      if (owned === 'not-owned' && item.dataset.userOwned !== 'false') show = false;
       if (search && !item.dataset.search.includes(search)) show = false;
       item.style.display = show ? '' : 'none';
     });
@@ -135,6 +229,55 @@ document.addEventListener('DOMContentLoaded', function() {
         tableContainer.classList.remove('hidden');
       }
     });
+  });
+  
+  // Export functionality
+  document.getElementById('export-btn').addEventListener('click', function() {
+    const owned = getOwned();
+    const plushData = JSON.parse(document.getElementById('plush-data').textContent);
+    
+    // Build export data with user's owned status
+    const exportData = plushData.map(plush => ({
+      'Archive ID': plush.archive_id,
+      'Current Name': plush.current_name,
+      'Official Name': plush.official_name,
+      'Japanese Name': plush.japanese_name,
+      'Company': plush.company,
+      'Company ID': plush.company_id,
+      'Year': plush.year,
+      'Product Line': plush.product_line,
+      'Region': plush.region,
+      'Size': plush.size,
+      'Verification': plush.verification,
+      'Owned': owned.includes(plush.archive_id) ? 'Yes' : 'No',
+      'Notes': plush.notes
+    }));
+    
+    // Create workbook
+    const ws = XLSX.utils.json_to_sheet(exportData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'My Jirachi Collection');
+    
+    // Set column widths
+    ws['!cols'] = [
+      { wch: 10 }, // Archive ID
+      { wch: 30 }, // Current Name
+      { wch: 30 }, // Official Name
+      { wch: 20 }, // Japanese Name
+      { wch: 25 }, // Company
+      { wch: 10 }, // Company ID
+      { wch: 6 },  // Year
+      { wch: 25 }, // Product Line
+      { wch: 12 }, // Region
+      { wch: 10 }, // Size
+      { wch: 10 }, // Verification
+      { wch: 6 },  // Owned
+      { wch: 40 }  // Notes
+    ];
+    
+    // Download
+    const date = new Date().toISOString().split('T')[0];
+    XLSX.writeFile(wb, `Jirachi_Collection_${date}.xlsx`);
   });
 });
 </script>
