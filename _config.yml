@@ -1,7 +1,7 @@
 title: Jirachi Plush Archive
 description: A comprehensive, evidence-based database of every officially licensed Jirachi plush
-url: ""
-baseurl: ""
+url: "https://kailyn0215.github.io"
+baseurl: "/jir-archive"
 
 collections:
   plushes:
