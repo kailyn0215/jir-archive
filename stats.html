@@ -82,35 +82,22 @@ title: Stats
 </div>
 
 <div class="stats-section">
-  <h2>By Decade</h2>
+  <h2>By Year</h2>
   <table class="stats-table">
     <thead>
       <tr>
-        <th>Decade</th>
+        <th>Year</th>
         <th>Count</th>
       </tr>
     </thead>
     <tbody>
-      {% assign plushes_2000s = site.plushes | where_exp: "p", "p.year >= 2000 and p.year < 2010" %}
-      {% assign plushes_2010s = site.plushes | where_exp: "p", "p.year >= 2010 and p.year < 2020" %}
-      {% assign plushes_2020s = site.plushes | where_exp: "p", "p.year >= 2020 and p.year < 2030" %}
-      {% assign plushes_unknown = site.plushes | where_exp: "p", "p.year == nil or p.year == ''" %}
+      {% assign years = site.plushes | group_by: "year" | sort: "name" | reverse %}
+      {% for year in years %}
       <tr>
-        <td>2000s</td>
-        <td>{{ plushes_2000s.size }}</td>
+        <td>{% if year.name == "" or year.name == nil %}Unknown{% else %}{{ year.name }}{% endif %}</td>
+        <td>{{ year.size }}</td>
       </tr>
-      <tr>
-        <td>2010s</td>
-        <td>{{ plushes_2010s.size }}</td>
-      </tr>
-      <tr>
-        <td>2020s</td>
-        <td>{{ plushes_2020s.size }}</td>
-      </tr>
-      <tr>
-        <td>Unknown</td>
-        <td>{{ plushes_unknown.size }}</td>
-      </tr>
+      {% endfor %}
     </tbody>
   </table>
 </div>
