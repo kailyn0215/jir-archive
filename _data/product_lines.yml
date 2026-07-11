@@ -136,6 +136,91 @@
   japanese_name: null
   description: Regional exclusive releases
 
+- id: fluffy-tomy-plush
+  name: Fluffy TOMY Plush
+  japanese_name: null
+  description: Soft fluffy plush line by TOMY
+
+- id: henshin-metamon
+  name: Henshin! Metamon
+  japanese_name: 変身！メタモン
+  description: Transforming Ditto plush collection
+
+- id: ichiban-kuji
+  name: Ichiban Kuji
+  japanese_name: 一番くじ
+  description: Prize lottery/raffle plushes
+
+- id: keychain-plush
+  name: Keychain Plush
+  japanese_name: null
+  description: Small keychain format plushes
+
+- id: korotto-manmaru
+  name: Korotto Manmaru
+  japanese_name: ころっとまんまる
+  description: Round and cute plush collection
+
+- id: kururin-mascot-jumbo-part-3
+  name: Kururin Mascot Jumbo Part 3
+  japanese_name: くるりん マスコット ジャンボ Part3
+  description: Large mascot plush release
+
+- id: kuttari-nuigurumi
+  name: Kuttari Nuigurumi
+  japanese_name: くったり ぬいぐるみ
+  description: Droopy/relaxed plush collection
+
+- id: mochi-mochi-diecut-makura
+  name: Mochi Mochi Diecut Makura
+  japanese_name: もちもちダイカット枕
+  description: Plush pillow/cushion collection
+
+- id: movie-10th-anniversary
+  name: Movie 10th Anniversary
+  japanese_name: 映画10周年
+  description: Tenth anniversary movie promotion
+
+- id: nanayo-no-negaiboshi-lottery
+  name: Nanayo no Negaiboshi Lottery
+  japanese_name: 七夜の願い星
+  description: Lottery/raffle collection
+
+- id: pokepeace
+  name: PokéPeace
+  japanese_name: ポケピース
+  description: Peace-themed Pokemon collection
+
+- id: pokemon-focus
+  name: Pokémon Focus
+  japanese_name: ポケモンフォーカス
+  description: Focused selection Pokemon plushes
+
+- id: saiko-soda
+  name: Saiko Soda
+  japanese_name: 最高ソーダ
+  description: Premium soda-themed collection
+
+- id: speed-star
+  name: Speed Star
+  japanese_name: スピードスター
+  description: Speed-themed plush collection
+
+- id: swing-nuiguru
+  name: Swing Nuiguru
+  japanese_name: スウィングぬいぐる
+  description: Swing/hanging plush collection
+
+- id: tohoku-renewal
+  name: Tohoku Renewal
+  japanese_name: 東北復興
+  description: Tohoku recovery support collection
+
+- id: yawaraka-pokemon-nuigurumi-4
+  name: Yawaraka Pokémon Nuigurumi 4
+  japanese_name: やわらかポケモンぬいぐるみ 4
+  description: Soft Pokemon plush line version 4
+
 - id: unknown
   name: Unknown
   japanese_name: null
