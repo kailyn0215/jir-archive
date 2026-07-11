@@ -21,7 +21,7 @@ title: Archive
     <label for="filter-company">Company</label>
     <select id="filter-company">
       <option value="">All</option>
-      {% assign companies = site.plushes | map: "company" | uniq | sort %}
+      {% assign companies = site.plushes | map: "company" | uniq | compact | sort %}
       {% for company in companies %}
       <option value="{{ company }}">{{ company }}</option>
       {% endfor %}
