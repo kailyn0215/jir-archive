@@ -86,6 +86,12 @@ layout: default
         <span class="meta-label">Region</span>
         <span class="meta-value">{{ page.region }}</span>
       </div>
+      {% if page.price %}
+      <div class="meta-item">
+        <span class="meta-label">Price</span>
+        <span class="meta-value">{{ page.price }}</span>
+      </div>
+      {% endif %}
       {% if page.size %}
       <div class="meta-item">
         <span class="meta-label">Size</span>
@@ -108,15 +114,15 @@ layout: default
   </div>
   {% endif %}
 
-  {% if page.sources.size > 0 %}
-  <div class="plush-sources">
-    <h2>Sources</h2>
+  {% if page.links.size > 0 %}
+  <div class="plush-links">
+    <h2>Links</h2>
     <ul>
-      {% for source in page.sources %}
+      {% for link in page.links %}
       <li>
-        <strong>{{ source.type }}</strong>
-        {% if source.url %}<a href="{{ source.url }}" target="_blank" rel="noopener">View source ↗</a>{% endif %}
-        {% if source.notes %}<span class="source-note">{{ source.notes }}</span>{% endif %}
+        <strong>{{ link.type }}</strong>
+        {% if link.url %}<a href="{{ link.url }}" target="_blank" rel="noopener">View ↗</a>{% endif %}
+        {% if link.notes %}<span class="link-note">{{ link.notes }}</span>{% endif %}
       </li>
       {% endfor %}
     </ul>
@@ -132,6 +138,25 @@ layout: default
       {% endfor %}
     </div>
   </div>
+  {% endif %}
+
+  {% if page.product_line_id %}
+  {% assign same_line_plushes = site.plushes | where: "product_line_id", page.product_line_id | where_exp: "plush", "plush.archive_id != page.archive_id" %}
+  {% if same_line_plushes.size > 0 %}
+  <div class="plush-related">
+    <h2>Other Plushies in {{ page.product_line }}</h2>
+    <div class="related-grid">
+      {% for plush in same_line_plushes %}
+      <div class="related-item">
+        <a href="{{ plush.url | relative_url }}" class="related-link">
+          <div class="related-title">{{ plush.current_name }}</div>
+          <div class="related-id">{{ plush.archive_id }}</div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
   {% endif %}
 
   {% if content != "" %}
