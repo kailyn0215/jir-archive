@@ -1,320 +1,490 @@
 ---
 layout: default
 title: Guide
+description: How to use the Jirachi Plush Archive, understand verification levels, and contribute to the project.
 ---
 
-# Database Guide & Research Standards
+<div class="page-header">
+  <h1>Archive Guide</h1>
+  <p class="subtitle">Understanding the archive, verification system, and how to contribute</p>
+</div>
 
-**Version:** v0.3 (Pre-v1.0)
-
----
-
-## Purpose
-
-The Jirachi Plush Archive is intended to become the most comprehensive, evidence-based database of every officially licensed Jirachi plush ever released.
-
-This project is not simply a checklist. It is a historical archive that documents every known official Jirachi plush release, its manufacturer, product line, release information, rarity, and supporting evidence.
-
-The archive prioritizes **accuracy over completeness**. It is acceptable for an item to remain in the Research queue until sufficient evidence exists.
-
----
-
-## Philosophy
-
-The archive follows one simple rule:
-
-> **If it cannot be supported by evidence, it does not belong in the Master Archive.**
-
-Evidence is more important than assumptions. Whenever new information becomes available, the archive should be updated using the standards below.
+<nav class="guide-toc">
+  <h2>Contents</h2>
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#id-system">ID System</a></li>
+    <li><a href="#verification">Verification Levels</a></li>
+    <li><a href="#availability">Availability Scale</a></li>
+    <li><a href="#sources">Source Tiers</a></li>
+    <li><a href="#collection">Personal Collection</a></li>
+    <li><a href="#contributing">How to Contribute</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+</nav>
 
 ---
 
-## Database Structure
+<section markdown="1" id="overview">
+## Overview
 
-### Master Archive
+The **Jirachi Plush Archive** is a comprehensive, evidence-based catalog documenting every Jirachi Pokémon plush ever manufactured. Our goal is to create the definitive reference for collectors and researchers.
 
-This is the primary database. Every entry represents one official plush release.
+### Key Principles
 
-- No duplicates
-- No bootlegs
-- No fan-made customs
-- Only officially licensed products belong here
-
-### Research Queue
-
-Contains items that may exist but are not yet sufficiently documented.
-
-An item should remain here until enough evidence exists to promote it to the Master Archive.
-
-Possible reasons include:
-- Unknown manufacturer
-- Unknown year
-- Only one known listing
-- Missing official product name
-- Missing tag photos
-
-Nothing in Research should be considered confirmed.
+1. **Evidence-Based**: Every entry requires verifiable sources
+2. **Scholarly**: We document with academic rigor
+3. **Complete**: All plushes—common to ultra-rare—are included
+4. **Open**: Anyone can contribute with proper evidence
+</section>
 
 ---
 
-## Archive IDs
+<section markdown="1" id="id-system">
+## ID System
 
-Every plush receives one permanent Archive ID.
+Each plush receives a unique **Archive ID** following this format:
 
 ```
-JIR-0001
-JIR-0002
-JIR-0003
+JIR-[COMPANY]-[NUMBER]
 ```
 
-Archive IDs **never change**. Even if new plushes are discovered later, existing IDs remain permanent.
+### Examples
+
+| ID | Meaning |
+|---|---|
+| `JIR-TOMY-0001` | First Tomy plush cataloged |
+| `JIR-BAN-0005` | Fifth Banpresto plush |
+| `JIR-JPPC-0012` | Twelfth Japanese Pokémon Center plush |
+| `JIR-USPC-0003` | Third US Pokémon Center plush |
+
+### Company Codes
+
+| Code | Company |
+|---|---|
+| `TOMY` | Tomy / Takara Tomy |
+| `BAN` | Banpresto |
+| `JPPC` | Pokémon Center Japan |
+| `USPC` | Pokémon Center US/International |
+| `SAN` | San-ei / All-Star Collection |
+| `BNS` | Build-A-Bear / Other specialty |
+| `UNK` | Unknown manufacturer |
+
+### Variants
+
+Variants of the same base plush share a parent ID:
+- Parent: `JIR-TOMY-0001`
+- Re-release: `JIR-TOMY-0001a`
+- Color variant: `JIR-TOMY-0001b`
+</section>
 
 ---
 
-## Company IDs
+<section markdown="1" id="verification">
+## Verification Levels
 
-Each manufacturer maintains its own numbering.
+Every item in the archive has a verification status indicating how confident we are in its documentation.
 
-| Prefix | Company |
-|--------|---------|
-| PCJ | Pokemon Center Japan |
-| PCUS | Pokemon Center US |
-| PCTW | Top Insight Taiwan |
-| TOMY | TOMY |
-| TTA | Takara Tomy Arts |
-| BAN | Banpresto |
-| BANDAI | Bandai |
-| OTH | Unknown |
+<div class="verification-grid">
+  <div class="verification-item">
+    <span class="badge badge-verification badge-verification-verified">Verified</span>
+    <h4>Verified</h4>
+    <p>Highest confidence. Meets ALL criteria:</p>
+    <ul>
+      <li>Official source (catalog, press release, retailer listing)</li>
+      <li>Clear photos of the physical item</li>
+      <li>Visible, legible tush tag</li>
+      <li>Multiple independent examples documented</li>
+    </ul>
+    <p><em>These are in the Master Archive.</em></p>
+  </div>
+  
+  <div class="verification-item">
+    <span class="badge badge-verification badge-verification-strong">Strong</span>
+    <h4>Strong Confidence</h4>
+    <p>High confidence, minor gaps:</p>
+    <ul>
+      <li>Multiple reliable sources confirm existence</li>
+      <li>May be missing: official images, precise dimensions, or catalog scans</li>
+      <li>Physical examples exist but tags are unclear</li>
+    </ul>
+    <p><em>In Research, close to promotion.</em></p>
+  </div>
+  
+  <div class="verification-item">
+    <span class="badge badge-verification badge-verification-possible">Possible</span>
+    <h4>Possible</h4>
+    <p>Existence likely but unconfirmed:</p>
+    <ul>
+      <li>Single source only</li>
+      <li>May be misidentified variant</li>
+      <li>Could be bootleg or custom</li>
+      <li>Requires corroboration</li>
+    </ul>
+    <p><em>In Research, needs investigation.</em></p>
+  </div>
+</div>
 
-These IDs help organize releases by manufacturer. If additional companies are discovered, new prefixes may be added.
-
----
-
-## Sculpt IDs
-
-Sculpt IDs represent unique physical plush designs. Multiple releases may share one sculpt.
-
-**Example:**
-- Pokemon Fit (Japan) → `SC-002`
-- Sitting Cuties (North America) → `SC-002`
-
-Both are separate releases. Both use the same sculpt.
-
-This allows the archive to answer two different questions:
-1. How many unique plush designs exist?
-2. How many official releases exist?
-
-Those numbers are not always the same.
-
----
-
-## What Counts As A Separate Entry
-
-A new archive entry should be created when:
-
-- Different sculpt
-- Different size
-- Different product line
-- Different manufacturer
-- Different region (if officially released as a separate retail product)
-- Different promotional release
-- Different prize release
-- Different seasonal collection
-
----
-
-## What Does NOT Count
-
-Do NOT create new entries for:
-
-- Different hang tag revisions
-- Different tush tag revisions
-- Factory changes
-- Minor embroidery differences
-- Manufacturing defects
-- Price stickers
-- Barcode stickers
-- Packaging revisions
-
-These should instead be documented inside the Notes field.
-
----
-
-## Verification Standards
-
-Every plush receives one verification level.
-
-### Verified
-Official manufacturer documentation exists, OR multiple independent examples with matching tags and metadata exist.
-
-These belong in the Master Archive.
-
-### Strong
-High confidence. Likely official. Needs one additional reliable source.
-
-Usually belongs in the Master Archive with a note.
-
-### Possible
-Interesting lead. Needs significantly more evidence.
-
-Remains in Research.
-
-### Unverified
-Insufficient documentation. Should not enter the Master Archive.
-
----
-
-## Research Methodology
-
-The archive should never rely solely on search engines.
-
-Instead, research should proceed by manufacturer:
+### Promotion Path
 
 ```
-Banpresto
-    ↓
-Every yearly catalog
-    ↓
-Every Pokemon release
-    ↓
-Was Jirachi included?
-    ↓
-Document evidence
+Possible → Strong → Verified
+   ↓         ↓         ↓
+Research  Research  Master Archive
 ```
 
-Repeat for each manufacturer. This approach minimizes missing obscure releases.
+An item moves to the Master Archive when it achieves **Verified** status.
+</section>
 
 ---
 
-## Source Reliability
+<section markdown="1" id="availability">
+## Availability Scale
 
-### Tier S (Primary)
-- Official manufacturer catalogs
-- Official retailer pages
-- Official Pokemon Center pages
-- Original advertisements
+We rate each plush's current market availability on a 1-5 scale:
 
-### Tier A
-- Archived retailer pages
-- Mandarake
-- Suruga-ya
-- Official scans
+<div class="availability-guide">
+  <div class="availability-item">
+    <span class="rarity-meter">
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot"></span>
+      <span class="rarity-dot"></span>
+      <span class="rarity-dot"></span>
+      <span class="rarity-dot"></span>
+    </span>
+    <strong>Level 1: Common</strong>
+    <p>Easily found at retail or secondary market. Current production or abundant supply.</p>
+  </div>
+  
+  <div class="availability-item">
+    <span class="rarity-meter">
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot"></span>
+      <span class="rarity-dot"></span>
+      <span class="rarity-dot"></span>
+    </span>
+    <strong>Level 2: Uncommon</strong>
+    <p>Regularly appears on auction sites. May require patience to find at good price.</p>
+  </div>
+  
+  <div class="availability-item">
+    <span class="rarity-meter">
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot"></span>
+      <span class="rarity-dot"></span>
+    </span>
+    <strong>Level 3: Scarce</strong>
+    <p>Appears occasionally. Limited production run or older release. Moderate collector demand.</p>
+  </div>
+  
+  <div class="availability-item">
+    <span class="rarity-meter">
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot"></span>
+    </span>
+    <strong>Level 4: Rare</strong>
+    <p>Seldom appears. Event exclusives, old releases, or very limited production.</p>
+  </div>
+  
+  <div class="availability-item">
+    <span class="rarity-meter">
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+    </span>
+    <strong>Level 5: Ultra-Rare</strong>
+    <p>Extremely difficult to find. May appear once a year or less. High collector value.</p>
+  </div>
+</div>
 
-### Tier B
-- Yahoo Auctions
-- Mercari
-- Rakuten
-
-### Tier C
-- Collector websites
-- Blogs
-- Reddit
-- Flickr
-
-Lower tiers are excellent for discovering items but should not be the sole source used for verification.
-
----
-
-## Naming Convention
-
-Whenever possible, every plush should contain:
-
-- **Official English Name**
-- **Official Japanese Name**
-- **Common Collector Name**
-
-Many plushes are better known by unofficial names. Both should be preserved.
-
----
-
-## Availability Rating
-
-Instead of subjective rarity, the archive tracks availability:
-
-| Rating | Meaning |
-|--------|---------|
-| ★★★★★ | Frequently available |
-| ★★★★☆ | Available with patience |
-| ★★★☆☆ | Uncommon |
-| ★★☆☆☆ | Difficult to obtain |
-| ★☆☆☆☆ | Extremely difficult to find |
-
-Availability is based on observed market frequency, not opinion.
-
----
-
-## Research Rules
-
-1. Never assume
-2. Never estimate
-3. Never merge two plushes without evidence
-4. Never split one plush into multiple entries without evidence
-5. When uncertain, place the item in Research instead of Master
-
----
-
-## Long-Term Goal
-
-The objective is to create a permanent historical record of every officially licensed Jirachi plush.
-
-Every release should eventually include:
-- Official name
-- Japanese name
-- Manufacturer
-- Release year
-- Product line
-- Region
-- Size
-- Product number
-- JAN code
-- Original MSRP
-- Images
-- Search terms
-- Verification sources
-- Collector notes
-
-The archive should be accurate enough that another collector can independently verify every entry using the included evidence.
-
-If future official releases occur, they should be added without changing any existing Archive IDs.
-
-The archive should remain **stable, expandable, and evidence-based** for many years to come.
+*Note: Availability is subjective and changes over time. We update ratings based on market observations.*
+</section>
 
 ---
 
-## Adding New Entries
+<section markdown="1" id="sources">
+## Source Tiers
 
-To add a new plush, create a new file in `_plushes/`:
+We evaluate sources by reliability tier:
 
-```yaml
----
-archive_id: JIR-0036
-company_id: PCJ-015
-company: Pokemon Center Japan
-year: 2024
-product_line: New Collection
-current_name: New Jirachi Plush
-official_name: 
-japanese_name: 
-region: Japan
-size: 
-sculpt_id: 
-owned: false
-verification: Verified
-status: Master
-availability: 
-sources:
-  - type: catalog
-    url: https://example.com
-    notes: Official announcement
-images:
-  - front.jpg
-notes: Description here
-search_terms:
-  - relevant
-  - keywords
+| Tier | Type | Reliability |
+|---|---|---|
+| **S** | Official manufacturer catalog, press release, or product page | Highest—direct confirmation |
+| **A** | Physical item with clear, legible tags | Strong—verifiable details |
+| **B** | Major retailer listing, archived web pages (Wayback Machine) | Good—requires corroboration |
+| **C** | Social media posts, forum threads, auction listings | Helpful but needs verification |
+
+### Citing Sources
+
+Every claim should cite evidence. Our entries include:
+- **Primary Source**: Most authoritative evidence
+- **Additional Sources**: Corroborating evidence
+- **Archive URLs**: Wayback Machine links for web sources
+- **Access Dates**: When sources were last verified
+</section>
+
 ---
 
-Optional extended notes in markdown format.
-```
+<section markdown="1" id="collection">
+## Personal Collection
 
-Save as `JIR-0036.md` and commit to the repository.
+The archive includes personal collection tracking, stored locally in your browser.
+
+### Collection States
+
+- **Owned**: You have this plush in your collection
+- **Wanted**: You're looking for this plush
+- **For Trade**: You have this and would consider trading
+
+### Features
+
+- **Track your collection** directly on plush cards and detail pages
+- **Export your data** as JSON or CSV for backup
+- **Import data** to restore or transfer your collection
+- **Stats page** shows your completion progress
+
+### Privacy
+
+All collection data is stored in your browser's localStorage. We do not collect or transmit your collection information.
+</section>
+
+---
+
+<section markdown="1" id="contributing">
+## How to Contribute
+
+We welcome contributions from the collector community!
+
+### Ways to Help
+
+1. **Submit Evidence** for existing Research items
+2. **Report New Finds** we haven't documented
+3. **Provide Corrections** to existing entries
+4. **Share Photos** especially tush tags and hang tags
+
+### What We Need
+
+For a new entry or promotion to Verified:
+
+| Required | Helpful |
+|---|---|
+| Clear front photo | Multiple angles |
+| Tush tag photo | Hang tag photo |
+| Manufacturer name | Exact dimensions |
+| Approximate date | Original price |
+| Source citation | Context/provenance |
+
+### Submission Process
+
+1. Go to the [Research page](/research#submit-form)
+2. Fill out the contribution form
+3. Generate a structured submission
+4. Submit via:
+   - **GitHub Issue** (preferred for tracking)
+   - **Discord** @kardashi
+
+### Photo Guidelines
+
+- **Lighting**: Natural light preferred, avoid harsh flash
+- **Focus**: Tush tag text must be legible
+- **Background**: Neutral, uncluttered
+- **Size Reference**: Include ruler or common object for scale
+- **Multiple Angles**: Front, side, back, and tag close-ups
+</section>
+
+---
+
+<section markdown="1" id="faq">
+## Frequently Asked Questions
+
+### Is this an official Pokémon project?
+
+No. This is a fan-made documentation project. We are not affiliated with The Pokémon Company, Nintendo, or any manufacturers.
+
+### Can I use these images?
+
+Images are sourced from various places with attribution. Please respect original photographers' rights. Our own documentation photos may be used with credit.
+
+### Why isn't my plush listed?
+
+Either we haven't documented it yet, or it may be a bootleg/custom. Check the Research page or submit it for review.
+
+### How do I know if my plush is authentic?
+
+Look for official tush tags with manufacturer info, proper licensing text, and consistent construction. When in doubt, compare to verified entries or reach out for help on the PokePlush subreddit/discord server.
+
+### Do you buy/sell/trade plushes?
+
+No. We are a documentation project only. We don't facilitate transactions.
+
+### How can I contact the maintainers?
+
+Open a GitHub issue or use the contribution form on the Research page.
+</section>
+
+<style>
+.guide-toc {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  margin-bottom: var(--sp-6);
+}
+
+.guide-toc h2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  margin-bottom: var(--sp-2);
+}
+
+.guide-toc ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.guide-toc a {
+  color: var(--c-accent);
+  text-decoration: none;
+  font-size: var(--text-sm);
+}
+
+.guide-toc a:hover {
+  text-decoration: underline;
+}
+
+section {
+  margin-bottom: var(--sp-8);
+}
+
+section h2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  margin-bottom: var(--sp-4);
+}
+
+section h3 {
+  font-size: var(--text-base);
+  margin-top: var(--sp-4);
+  margin-bottom: var(--sp-2);
+}
+
+section h4 {
+  font-size: var(--text-sm);
+  margin-bottom: var(--sp-1);
+}
+
+section p, section li {
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+section ul {
+  margin-left: var(--sp-4);
+  margin-bottom: var(--sp-3);
+}
+
+section table {
+  width: 100%;
+  margin: var(--sp-3) 0;
+  border-collapse: collapse;
+}
+
+section th, section td {
+  padding: var(--sp-2) var(--sp-3);
+  text-align: left;
+  border: 1px solid var(--c-border);
+  font-size: var(--text-sm);
+}
+
+section th {
+  background: var(--c-surface);
+  font-weight: 600;
+}
+
+section code {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  background: var(--c-surface);
+  padding: 0.1em 0.3em;
+  border-radius: var(--radius-sm);
+}
+
+section pre {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-3);
+  overflow-x: auto;
+  font-size: var(--text-sm);
+}
+
+section pre code {
+  background: none;
+  padding: 0;
+}
+
+.verification-grid {
+  display: grid;
+  gap: var(--sp-4);
+}
+
+.verification-item {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+}
+
+.verification-item .badge {
+  margin-bottom: var(--sp-2);
+}
+
+.verification-item ul {
+  margin: var(--sp-2) 0 var(--sp-2) var(--sp-4);
+}
+
+.availability-guide {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.availability-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2) var(--sp-3);
+  padding: var(--sp-3);
+  background: var(--c-surface);
+  border-radius: var(--radius);
+}
+
+.availability-item strong {
+  min-width: 140px;
+}
+
+.availability-item p {
+  flex: 1;
+  min-width: 200px;
+  margin: 0;
+  color: var(--c-text-secondary);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--c-border);
+  margin: var(--sp-8) 0;
+}
+</style>

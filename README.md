@@ -1,180 +1,284 @@
 # Jirachi Plush Archive
 
-An evidence-based database documenting every officially licensed Jirachi plush.
+A comprehensive, evidence-based catalog documenting every Jirachi Pokémon plush ever manufactured.
 
-**Version:** v0.3 (Pre-v1.0)
+🌐 **Live Site**: [Coming Soon]
 
 ## Overview
 
-This archive transforms a spreadsheet-based collection tracker into a structured, maintainable Jekyll site with:
+The Jirachi Plush Archive is the definitive reference for collectors and researchers documenting Jirachi plush toys from all manufacturers worldwide.
 
-- **35 documented plushes** from manufacturers including Pokemon Center Japan, Banpresto, TOMY, Takara Tomy Arts, and more
-- **Filterable archive** with grid and table views
-- **Research queue** for unverified items
-- **Collection statistics** with breakdowns by company, decade, and region
-- **Comprehensive documentation** standards for long-term accuracy
+### Features
 
-## Quick Start
+- **Master Archive**: Verified plushes with complete documentation
+- **Research Queue**: Items awaiting verification
+- **Personal Collection**: Track owned/wanted/for-trade (stored locally)
+- **Advanced Search**: Fuzzy search with multi-select filters
+- **Dark Mode**: Automatic system preference detection
+- **Mobile-First**: Fully responsive design
+
+## Tech Stack
+
+- **Static Site Generator**: [Jekyll](https://jekyllrb.com/)
+- **Hosting**: GitHub Pages (or any static host)
+- **Styling**: Custom CSS with design tokens (no frameworks)
+- **JavaScript**: Vanilla JS + Fuse.js for search
+- **Data**: YAML front matter in Markdown files
+
+## Getting Started
 
 ### Prerequisites
 
-- Ruby 2.7+
-- Bundler (`gem install bundler`)
+- Ruby 2.7+ with Bundler
+- Git
 
-### Local Development
+### Installation
 
 ```bash
-cd jir
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/jirachi-archive.git
+cd jirachi-archive
+
+# Install dependencies
 bundle install
-bundle exec jekyll serve
+
+# Start development server
+bundle exec jekyll serve --livereload
 ```
 
-Open http://localhost:4000 in your browser.
+Visit `http://localhost:4000` to view the site.
 
-### GitHub Pages Deployment
+### Build for Production
 
-This site is ready for GitHub Pages. Push to your repository and enable Pages in settings.
+```bash
+bundle exec jekyll build
+```
 
-## Structure
+Output goes to `_site/` directory.
+
+## Project Structure
 
 ```
-jir/
+jir-archive/
 ├── _config.yml          # Jekyll configuration
 ├── _data/
-│   ├── companies.yml    # Manufacturer reference data
-│   └── product_lines.yml # Product line reference data
+│   ├── companies.yml    # Company/manufacturer definitions
+│   ├── product_lines.yml # Product line definitions
+│   └── tags.yml         # Tag taxonomy
 ├── _includes/
-│   └── plush-card.html  # Reusable plush card component
+│   └── plush-card.html  # Reusable card component
 ├── _layouts/
 │   ├── default.html     # Base layout
-│   └── plush.html       # Individual plush page layout
-├── _plushes/            # Collection of plush entries
-│   ├── JIR-0001.md
-│   ├── JIR-0002.md
+│   └── plush.html       # Individual plush detail page
+├── _plushes/            # Plush data files (one per item)
+│   ├── JIR-TOMY-0001.md
 │   └── ...
 ├── assets/
-│   └── css/
-│       └── style.css    # Site styling
-├── index.html           # Master archive page
-├── research.html        # Research queue page
+│   ├── css/style.css    # All styles
+│   └── images/
+│       └── plushes/     # Plush images organized by ID
+├── scripts/
+│   └── new_plush.rb     # Helper script for adding plushes
+├── index.html           # Master Archive page
+├── research.html        # Research Queue page
 ├── stats.html           # Statistics page
-├── guide.md             # Documentation standards
-└── Gemfile              # Ruby dependencies
+├── guide.md             # User guide
+├── SCHEMA.md            # Data schema documentation
+└── README.md            # This file
+```
+
+## Data Model
+
+See [SCHEMA.md](SCHEMA.md) for complete schema documentation.
+
+### Quick Reference
+
+Each plush is a Markdown file in `_plushes/` with YAML front matter:
+
+```yaml
+---
+layout: plush
+archive_id: JIR-TOMY-0001
+name: "Jirachi Plush"
+name_jp: "ジラーチ ぬいぐるみ"
+company: Tomy
+product_line: Pokémon Plush Collection
+year: 2003
+region: Japan
+status: Master          # Master, Research, or Missing
+verification: Verified  # Verified, Strong, or Possible
+availability: 3         # 1-5 scale
+
+images:
+  primary: /assets/images/plushes/JIR-TOMY-0001/front.jpg
+  gallery:
+    - url: /assets/images/plushes/JIR-TOMY-0001/side.jpg
+      alt: Side view
+    - url: /assets/images/plushes/JIR-TOMY-0001/tush-tag.jpg
+      alt: Tush tag
+
+price:
+  amount: 1200
+  currency: JPY
+
+dimensions:
+  height_cm: 15
+
+sources:
+  - type: MFC
+    description: "Tomy 2003 Product Catalog"
+    url: https://example.com
+    tier: S
+
+tags:
+  - standing
+  - open-eyes
+---
+
+Optional notes about this plush go here as Markdown content.
 ```
 
 ## Adding a New Plush
 
-1. Create a new file in `_plushes/` with the next available ID:
+### Option 1: Use the Helper Script
 
-```yaml
----
-archive_id: JIR-0036
-company_id: PCJ-015
-company: Pokemon Center Japan
-year: 2024
-product_line: New Collection
-current_name: New Jirachi Plush
-official_name: 
-japanese_name: 
-region: Japan
-size: 
-sculpt_id: 
-owned: false
-verification: Verified
-status: Master
-availability: 
-sources:
-  - type: catalog
-    url: https://example.com
-    notes: Official announcement
-notes: Description here
-search_terms:
-  - relevant
-  - keywords
----
+```bash
+ruby scripts/new_plush.rb
 ```
 
-2. Add images to `assets/images/plushes/JIR-0036/` (see Image Convention below)
+Follow the prompts to generate a new plush file.
 
-3. Commit and push
+### Option 2: Manual Creation
+
+1. Create a new file: `_plushes/JIR-[COMPANY]-[NNNN].md`
+2. Copy the template from another plush or SCHEMA.md
+3. Fill in all required fields
+4. Add images to `assets/images/plushes/[ID]/`
+5. Commit and push
+
+### ID Format
+
+```
+JIR-[COMPANY]-[NUMBER]
+```
+
+- `JIR` - Jirachi prefix (always)
+- `COMPANY` - Company code (see below)
+- `NUMBER` - 4-digit sequential number
+
+**Company Codes:**
+
+| Code | Company |
+|------|---------|
+| TOMY | Tomy / Takara Tomy |
+| BAN | Banpresto |
+| JPPC | Pokémon Center Japan |
+| USPC | Pokémon Center US/International |
+| SAN | San-ei / All-Star Collection |
+| BNS | Build-A-Bear / Other specialty |
+| UNK | Unknown manufacturer |
 
 ## Verification Levels
 
-| Level | Description |
-|-------|-------------|
-| **Verified** | Official documentation exists or multiple independent examples with matching tags |
-| **Strong** | High confidence, likely official, needs one additional reliable source |
-| **Possible** | Interesting lead, needs significantly more evidence |
+| Level | Description | Location |
+|-------|-------------|----------|
+| **Verified** | Complete documentation, multiple sources | Master Archive |
+| **Strong** | High confidence, minor gaps | Research Queue |
+| **Possible** | Needs corroboration | Research Queue |
 
-## Status Types
+## Image Guidelines
 
-- **Master**: Confirmed entry in the main archive
-- **Research**: Needs additional verification before promotion
+- **Format**: WebP preferred, JPEG/PNG acceptable
+- **Size**: 800px minimum width, optimize for web
+- **Structure**: Each plush has its own folder:
+  ```
+  assets/images/plushes/JIR-TOMY-0001/
+  ├── front.jpg      # Primary image
+  ├── side.jpg
+  ├── back.jpg
+  ├── tush-tag.jpg   # Critical for verification
+  └── hang-tag.jpg
+  ```
 
-## Archive IDs
+### Required Photos for Verified Status
 
-Archive IDs are permanent and never change:
-- `JIR-0001` through `JIR-0035` are currently assigned
-- New entries receive the next sequential number
+1. Front view (clear, well-lit)
+2. Tush tag (legible manufacturer info)
 
-## Data Fields
+### Recommended Additional Photos
 
-| Field | Description |
-|-------|-------------|
-| `archive_id` | Permanent unique identifier (JIR-XXXX) |
-| `company_id` | Manufacturer-specific ID (e.g., PCJ-001) |
-| `company` | Manufacturer name |
-| `year` | Release year (blank if unknown) |
-| `product_line` | Product series/collection |
-| `current_name` | Common collector name |
-| `official_name` | Official English name (if known) |
-| `japanese_name` | Official Japanese name (if known) |
-| `region` | Primary release region |
-| `size` | Physical dimensions |
-| `sculpt_id` | Shared sculpt identifier |
-| `owned` | Whether you own this plush |
-| `verification` | Evidence confidence level |
-| `status` | Master or Research |
-| `availability` | Market rarity (1-5 scale) |
-| `sources` | Evidence documentation |
-| `notes` | Additional context |
-| `search_terms` | Keywords for filtering |
+- Side view
+- Back view
+- Hang tag (if present)
+- Size reference (ruler/coin)
 
-## Image Convention
+## Contributing
 
-Images are **automatically loaded** from folder structure—no YAML configuration required.
+We welcome contributions! See the [Guide](/guide#contributing) for details.
 
-### Folder Structure
+### Quick Contribution Steps
 
+1. Fork the repository
+2. Create a feature branch
+3. Add or update plush data
+4. Ensure images are optimized
+5. Submit a pull request
+
+### Reporting Issues
+
+- Use GitHub Issues for bugs and feature requests
+- Use the Research page submission form for new plush reports
+
+## Design System
+
+### CSS Variables
+
+The site uses CSS custom properties for theming:
+
+```css
+--c-bg          /* Background */
+--c-surface     /* Card/panel background */
+--c-text        /* Primary text */
+--c-accent      /* Brand accent color */
+--c-border      /* Border color */
+--sp-1 to --sp-12  /* Spacing scale */
+--text-xs to --text-2xl  /* Type scale */
 ```
-assets/images/plushes/
-├── JIR-0011/
-│   ├── main.jpg      ← Thumbnail (if exists)
-│   ├── back.jpg      ← Additional images
-│   └── tag.png       ← All images shown in gallery
-└── JIR-0012/
-    └── 01-front.webp ← First alphabetically becomes thumbnail
-```
 
-### Thumbnail Priority
+### Color Modes
 
-1. `main.*` or `thumb.*` (any extension) → used as thumbnail
-2. If neither exists → first file alphabetically
+- Light mode: Default
+- Dark mode: Automatic via `prefers-color-scheme` or manual toggle
 
-### Supported Formats
+## Browser Support
 
-Any web-compatible image format: `.jpg`, `.jpeg`, `.png`, `.webp`, `.gif`
+- Chrome/Edge 90+
+- Firefox 90+
+- Safari 14+
+- Mobile browsers (iOS Safari, Chrome Android)
 
-## Migration from Excel
+## Performance
 
-This site was converted from `Jirachi Comprehensive List.xlsx`. The original file is preserved for reference but should not be used for updates. All changes should be made to the markdown files in `_plushes/`.
+Target Lighthouse scores: 95+ across all categories
 
-## Philosophy
-
-> **If it cannot be supported by evidence, it does not belong in the Master Archive.**
-
-The archive prioritizes accuracy over completeness. Items remain in the Research queue until sufficient evidence exists for promotion.
+Key optimizations:
+- Lazy loading images
+- Minimal CSS (no frameworks)
+- Vanilla JavaScript
+- Static site (no server rendering)
 
 ## License
 
-Personal archive project. Pokemon and Jirachi are trademarks of Nintendo/The Pokemon Company.
+Content: Creative Commons Attribution (CC BY 4.0)
+Code: MIT License
+
+## Credits
+
+- Maintained by [Your Name]
+- Built with Jekyll
+- Search powered by Fuse.js
+- Images sourced with attribution
+
+---
+
+*This is a fan project and is not affiliated with The Pokémon Company, Nintendo, or any plush manufacturers.*

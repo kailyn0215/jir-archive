@@ -2,42 +2,642 @@
 layout: default
 title: Research
 ---
+{% assign research_plushes = site.plushes | where: "status", "Research" | sort: "archive_id" %}
+{% assign strong_confidence = research_plushes | where: "confidence", "Strong" %}
+{% assign possible_confidence = research_plushes | where: "confidence", "Possible" %}
+{% assign missing_plushes = site.plushes | where: "status", "Missing" | sort: "archive_id" %}
+
 <div class="page-header">
   <h1>Research Queue</h1>
-  <p class="subtitle">{{ site.plushes | where: "status", "Research" | size }} items awaiting verification</p>
+  <p class="subtitle">{{ research_plushes.size }} items awaiting verification · {{ missing_plushes.size }} missing/wanted</p>
 </div>
 
+<!-- Research Intro -->
 <div class="research-intro">
-  <p>Items in this list may exist but are not yet sufficiently documented to enter the Master Archive. Each requires additional evidence before promotion.</p>
+  <p>Items here are known to exist but lack sufficient documentation for the Master Archive. Help us verify these by providing additional evidence.</p>
 </div>
 
-<div class="plush-grid">
-  {% assign research_plushes = site.plushes | where: "status", "Research" | sort: "archive_id" %}
-  {% for plush in research_plushes %}
-  <div class="plush-item research-item">
-    {% include plush-card.html plush=plush %}
-    {% if plush.notes %}
-    <div class="research-note">
-      <strong>Needed:</strong> {{ plush.notes }}
-    </div>
-    {% endif %}
+<!-- Stats Overview -->
+<div class="research-stats">
+  <div class="research-stat">
+    <span class="research-stat-value">{{ strong_confidence.size }}</span>
+    <span class="research-stat-label">Strong Confidence</span>
   </div>
-  {% endfor %}
+  <div class="research-stat">
+    <span class="research-stat-value">{{ possible_confidence.size }}</span>
+    <span class="research-stat-label">Possible</span>
+  </div>
+  <div class="research-stat">
+    <span class="research-stat-value">{{ missing_plushes.size }}</span>
+    <span class="research-stat-label">Missing Photos</span>
+  </div>
 </div>
 
-{% if research_plushes.size == 0 %}
+<!-- Confidence Level Explanation -->
+<div class="confidence-explainer">
+  <h3>Confidence Levels</h3>
+  <div class="confidence-levels">
+    <div class="confidence-level">
+      <span class="badge badge-confidence badge-confidence-strong">Strong</span>
+      <p>Multiple reliable sources confirm existence. Missing: official images, precise dimensions, or catalog verification.</p>
+    </div>
+    <div class="confidence-level">
+      <span class="badge badge-confidence badge-confidence-possible">Possible</span>
+      <p>Single source or unverified photos only. May be a variant, bootleg, or misidentification. Requires corroboration.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Filter Tabs -->
+<div class="research-tabs">
+  <button class="tab-btn active" data-filter="all">All Research ({{ research_plushes.size }})</button>
+  <button class="tab-btn" data-filter="strong">Strong ({{ strong_confidence.size }})</button>
+  <button class="tab-btn" data-filter="possible">Possible ({{ possible_confidence.size }})</button>
+  <button class="tab-btn" data-filter="missing">Missing ({{ missing_plushes.size }})</button>
+</div>
+
+<!-- Research Items - Strong Confidence -->
+{% if strong_confidence.size > 0 %}
+<section class="research-section" data-section="strong">
+  <h2>Strong Confidence</h2>
+  <p class="section-desc">Near-certain to exist. Just need final verification.</p>
+  <div class="plush-grid">
+    {% for plush in strong_confidence %}
+    {% include plush-card.html plush=plush %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- Research Items - Possible -->
+{% if possible_confidence.size > 0 %}
+<section class="research-section" data-section="possible">
+  <h2>Possible</h2>
+  <p class="section-desc">May exist but requires additional evidence.</p>
+  <div class="plush-grid">
+    {% for plush in possible_confidence %}
+    {% include plush-card.html plush=plush %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- Missing Items -->
+{% if missing_plushes.size > 0 %}
+<section class="research-section" data-section="missing">
+  <h2>Missing/Wanted</h2>
+  <p class="section-desc">Known to exist but we need photos or physical examples.</p>
+  <div class="plush-grid">
+    {% for plush in missing_plushes %}
+    {% include plush-card.html plush=plush %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if research_plushes.size == 0 and missing_plushes.size == 0 %}
 <div class="empty-state">
-  <p>No items currently in research queue.</p>
+  <div class="empty-state-icon">🔬</div>
+  <div class="empty-state-title">No items in research</div>
+  <p class="empty-state-text">All known plushes have been documented. Know of one we're missing?</p>
 </div>
 {% endif %}
 
+<!-- Contribution Section -->
+<div class="contribute-section">
+  <h2>Contribute to the Archive</h2>
+  <p>Found a Jirachi plush we haven't documented? Help us complete the archive!</p>
+  
+  <div class="contribute-options">
+    <div class="contribute-card">
+      <h3>📷 Submit Evidence</h3>
+      <p>Have photos of a plush in Research or Missing? Send us clear images including:</p>
+      <ul>
+        <li>Full front view</li>
+        <li>Tush tag (brand/manufacturer)</li>
+        <li>Hang tag (if present)</li>
+        <li>Size reference (ruler/coin)</li>
+      </ul>
+      <a href="#submit-form" class="btn">Submit Photos</a>
+    </div>
+    
+    <div class="contribute-card">
+      <h3>🆕 Report New Find</h3>
+      <p>Discovered a Jirachi plush not in our archive? Tell us about it:</p>
+      <ul>
+        <li>Where you found it (store, auction, etc.)</li>
+        <li>Manufacturer if known</li>
+        <li>Any identifying details</li>
+        <li>Photos if available</li>
+      </ul>
+      <a href="#submit-form" class="btn">Report New Plush</a>
+    </div>
+  </div>
+</div>
+
+<!-- Submission Form -->
+<div class="submit-section" id="submit-form">
+  <h2>Submit Information</h2>
+  <p>Fill out this form to generate a structured submission. You can then open a GitHub issue or message me on Discord @kardashi.</p>
+  
+  <form id="contribution-form" class="contribution-form">
+    <div class="form-group">
+      <label for="submit-type">Submission Type</label>
+      <select id="submit-type" required>
+        <option value="">Select...</option>
+        <option value="evidence">Add evidence to existing item</option>
+        <option value="new">Report new plush</option>
+        <option value="correction">Correction to existing entry</option>
+      </select>
+    </div>
+    
+    <div class="form-group" id="existing-id-group" style="display: none;">
+      <label for="existing-id">Archive ID (if known)</label>
+      <input type="text" id="existing-id" placeholder="e.g., JIR-TOMY-0001">
+    </div>
+    
+    <div class="form-group">
+      <label for="plush-name">Plush Name/Description</label>
+      <input type="text" id="plush-name" placeholder="e.g., Pokémon Center Jirachi Sitting Plush" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="company">Company/Manufacturer (if known)</label>
+      <input type="text" id="company" placeholder="e.g., Pokémon Center, Banpresto, Tomy">
+    </div>
+    
+    <div class="form-group">
+      <label for="source-type">Source Type</label>
+      <select id="source-type">
+        <option value="personal">Personal photo (I own this)</option>
+        <option value="auction">Auction/marketplace listing</option>
+        <option value="catalog">Official catalog/website</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="source-url">Source URL (if applicable)</label>
+      <input type="url" id="source-url" placeholder="https://...">
+    </div>
+    
+    <div class="form-group">
+      <label for="notes">Additional Notes</label>
+      <textarea id="notes" rows="4" placeholder="Any other details: size, release date, where purchased, etc."></textarea>
+    </div>
+    
+    <div class="form-actions">
+      <button type="button" class="btn" id="generate-submission">Generate Submission</button>
+    </div>
+  </form>
+  
+  <!-- Generated Output -->
+  <div id="submission-output" class="submission-output" style="display: none;">
+    <h3>Your Submission</h3>
+    <pre id="submission-text"></pre>
+    <div class="output-actions">
+      <button class="btn" id="copy-submission">Copy to Clipboard</button>
+      <a class="btn" id="github-issue" href="#" target="_blank">Open GitHub Issue</a>
+    </div>
+  </div>
+</div>
+
+<!-- Promotion Guidelines -->
 <div class="research-guidelines">
   <h2>Promotion Criteria</h2>
-  <p>An item can be promoted to Master when:</p>
-  <ul>
-    <li>Official manufacturer documentation exists, OR</li>
-    <li>Multiple independent examples with matching tags exist</li>
-    <li>Product line and company are confirmed</li>
-    <li>No conflicting evidence suggests it's a duplicate or bootleg</li>
-  </ul>
+  <p>An item moves from Research to Master Archive when:</p>
+  
+  <div class="criteria-grid">
+    <div class="criteria-item">
+      <div class="criteria-icon">📄</div>
+      <h4>Official Documentation</h4>
+      <p>Catalog listing, press release, or official product page confirms existence</p>
+    </div>
+    <div class="criteria-item">
+      <div class="criteria-icon">🏷️</div>
+      <h4>Verified Tags</h4>
+      <p>Clear photos of tush tag showing manufacturer and product code</p>
+    </div>
+    <div class="criteria-item">
+      <div class="criteria-icon">👥</div>
+      <h4>Multiple Examples</h4>
+      <p>2+ independent examples with matching characteristics</p>
+    </div>
+    <div class="criteria-item">
+      <div class="criteria-icon">✓</div>
+      <h4>No Conflicts</h4>
+      <p>No evidence suggesting bootleg, custom, or duplicate entry</p>
+    </div>
+  </div>
+  
+  <h3>Source Reliability Tiers</h3>
+  <table class="stats-table">
+    <thead>
+      <tr>
+        <th>Tier</th>
+        <th>Source Type</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="source-tier source-tier-s">S</span></td>
+        <td>Official manufacturer catalog/website</td>
+        <td>Highest reliability, direct confirmation</td>
+      </tr>
+      <tr>
+        <td><span class="source-tier source-tier-a">A</span></td>
+        <td>Physical item with clear tags</td>
+        <td>Strong evidence, verifiable details</td>
+      </tr>
+      <tr>
+        <td><span class="source-tier source-tier-b">B</span></td>
+        <td>Major retailer listing, archived pages</td>
+        <td>Good evidence, requires corroboration</td>
+      </tr>
+      <tr>
+        <td><span class="source-tier source-tier-c">C</span></td>
+        <td>Social media, forums, auctions</td>
+        <td>Helpful but needs verification</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
+
+<style>
+/* Research Stats */
+.research-stats {
+  display: flex;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-6);
+}
+
+.research-stat {
+  flex: 1;
+  text-align: center;
+  padding: var(--sp-4);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+}
+
+.research-stat-value {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: var(--c-text);
+}
+
+.research-stat-label {
+  font-size: var(--text-sm);
+  color: var(--c-text-secondary);
+}
+
+/* Confidence Explainer */
+.confidence-explainer {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  margin-bottom: var(--sp-6);
+}
+
+.confidence-explainer h3 {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  margin-bottom: var(--sp-3);
+}
+
+.confidence-levels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--sp-4);
+}
+
+.confidence-level {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.confidence-level p {
+  font-size: var(--text-sm);
+  color: var(--c-text-secondary);
+  margin: 0;
+}
+
+/* Research Tabs */
+.research-tabs {
+  display: flex;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-6);
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  padding: var(--sp-2) var(--sp-4);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--c-text-secondary);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.tab-btn:hover {
+  border-color: var(--c-accent);
+  color: var(--c-text);
+}
+
+.tab-btn.active {
+  background: var(--c-accent);
+  border-color: var(--c-accent);
+  color: white;
+}
+
+/* Research Sections */
+.research-section {
+  margin-bottom: var(--sp-8);
+}
+
+.research-section h2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  margin-bottom: var(--sp-1);
+}
+
+.section-desc {
+  font-size: var(--text-sm);
+  color: var(--c-text-secondary);
+  margin-bottom: var(--sp-4);
+}
+
+/* Contribute Section */
+.contribute-section {
+  margin-top: var(--sp-12);
+  padding: var(--sp-6);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+}
+
+.contribute-section h2 {
+  font-family: var(--font-serif);
+  margin-bottom: var(--sp-2);
+}
+
+.contribute-section > p {
+  color: var(--c-text-secondary);
+  margin-bottom: var(--sp-4);
+}
+
+.contribute-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--sp-4);
+}
+
+.contribute-card {
+  padding: var(--sp-4);
+  background: var(--c-bg);
+  border-radius: var(--radius);
+}
+
+.contribute-card h3 {
+  font-size: var(--text-base);
+  margin-bottom: var(--sp-2);
+}
+
+.contribute-card p {
+  font-size: var(--text-sm);
+  color: var(--c-text-secondary);
+  margin-bottom: var(--sp-2);
+}
+
+.contribute-card ul {
+  font-size: var(--text-sm);
+  color: var(--c-text-secondary);
+  margin-left: var(--sp-4);
+  margin-bottom: var(--sp-3);
+}
+
+.contribute-card li {
+  margin-bottom: var(--sp-1);
+}
+
+/* Submit Section */
+.submit-section {
+  margin-top: var(--sp-8);
+  padding: var(--sp-6);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+}
+
+.submit-section h2 {
+  font-family: var(--font-serif);
+  margin-bottom: var(--sp-2);
+}
+
+.submit-section > p {
+  color: var(--c-text-secondary);
+  margin-bottom: var(--sp-4);
+}
+
+/* Form Styles */
+.contribution-form {
+  max-width: 600px;
+}
+
+.form-group {
+  margin-bottom: var(--sp-4);
+}
+
+.form-group label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  margin-bottom: var(--sp-1);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--text-sm);
+  color: var(--c-text);
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--c-accent);
+}
+
+.form-actions {
+  margin-top: var(--sp-4);
+}
+
+/* Submission Output */
+.submission-output {
+  margin-top: var(--sp-6);
+  padding: var(--sp-4);
+  background: var(--c-bg);
+  border-radius: var(--radius);
+}
+
+.submission-output h3 {
+  font-size: var(--text-base);
+  margin-bottom: var(--sp-3);
+}
+
+.submission-output pre {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  padding: var(--sp-3);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+.output-actions {
+  display: flex;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+
+/* Criteria Grid */
+.criteria-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--sp-4);
+  margin: var(--sp-4) 0;
+}
+
+.criteria-item {
+  padding: var(--sp-4);
+  background: var(--c-bg);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.criteria-icon {
+  font-size: 2rem;
+  margin-bottom: var(--sp-2);
+}
+
+.criteria-item h4 {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  margin-bottom: var(--sp-1);
+}
+
+.criteria-item p {
+  font-size: var(--text-xs);
+  color: var(--c-text-secondary);
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .research-stats {
+    flex-direction: column;
+  }
+  
+  .research-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Tab filtering
+  const tabs = document.querySelectorAll('.tab-btn');
+  const sections = document.querySelectorAll('.research-section');
+  
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const filter = tab.dataset.filter;
+      
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      
+      sections.forEach(section => {
+        if (filter === 'all') {
+          section.style.display = 'block';
+        } else {
+          section.style.display = section.dataset.section === filter ? 'block' : 'none';
+        }
+      });
+    });
+  });
+  
+  // Form handling
+  const submitType = document.getElementById('submit-type');
+  const existingIdGroup = document.getElementById('existing-id-group');
+  
+  submitType.addEventListener('change', () => {
+    existingIdGroup.style.display = 
+      submitType.value === 'evidence' || submitType.value === 'correction' 
+        ? 'block' : 'none';
+  });
+  
+  // Generate submission
+  document.getElementById('generate-submission').addEventListener('click', () => {
+    const type = document.getElementById('submit-type').value;
+    const existingId = document.getElementById('existing-id').value;
+    const name = document.getElementById('plush-name').value;
+    const company = document.getElementById('company').value;
+    const sourceType = document.getElementById('source-type').value;
+    const sourceUrl = document.getElementById('source-url').value;
+    const notes = document.getElementById('notes').value;
+    
+    const submission = `## Jirachi Plush Archive Submission
+
+**Type:** ${type || 'Not specified'}
+${existingId ? `**Archive ID:** ${existingId}` : ''}
+**Plush Name:** ${name}
+**Company/Manufacturer:** ${company || 'Unknown'}
+**Source Type:** ${sourceType}
+${sourceUrl ? `**Source URL:** ${sourceUrl}` : ''}
+
+### Notes
+${notes || 'No additional notes.'}
+
+---
+*Submitted via Jirachi Plush Archive Research Form*`;
+    
+    document.getElementById('submission-text').textContent = submission;
+    document.getElementById('submission-output').style.display = 'block';
+    
+    // Set up GitHub issue link
+    const title = encodeURIComponent(`[Submission] ${name}`);
+    const body = encodeURIComponent(submission);
+    document.getElementById('github-issue').href = 
+      `https://github.com/YOUR_USERNAME/jirachi-archive/issues/new?title=${title}&body=${body}`;
+  });
+  
+  // Copy to clipboard
+  document.getElementById('copy-submission').addEventListener('click', () => {
+    const text = document.getElementById('submission-text').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      document.getElementById('copy-submission').textContent = 'Copied!';
+      setTimeout(() => {
+        document.getElementById('copy-submission').textContent = 'Copy to Clipboard';
+      }, 2000);
+    });
+  });
+});
+</script>

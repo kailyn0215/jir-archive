@@ -5,25 +5,91 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stats | Jirachi Plush Archive</title>
   <meta name="description" content="A comprehensive, evidence-based database of every officially licensed Jirachi plush">
+  <meta name="author" content="Jirachi Plush Archive">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="http://localhost:4000/jir-archive/stats.html">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://localhost:4000/jir-archive/stats.html">
+  <meta property="og:title" content="Stats | Jirachi Plush Archive">
+  <meta property="og:description" content="A comprehensive, evidence-based database of every officially licensed Jirachi plush">
+  <meta property="og:site_name" content="Jirachi Plush Archive">
+  
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Stats | Jirachi Plush Archive">
+  <meta name="twitter:description" content="A comprehensive, evidence-based database of every officially licensed Jirachi plush">
+  
+  
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/jir-archive/assets/images/favicon.svg">
+  <link rel="apple-touch-icon" href="/jir-archive/assets/images/apple-touch-icon.png">
+  
+  <!-- Fonts (preload critical) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
   <link rel="stylesheet" href="/jir-archive/assets/css/style.css">
+  
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Jirachi Plush Archive",
+    "description": "A comprehensive, evidence-based database of every officially licensed Jirachi plush",
+    "url": "http://localhost:4000",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "http://localhost:4000?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  
+  
+  
+  <!-- Theme Script (prevents flash) -->
+  <script>
+    (function() {
+      const stored = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = stored || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
 </head>
 <body>
-  <header class="site-header">
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <header class="site-header" role="banner">
     <div class="container">
-      <a href="/jir-archive/" class="site-title">Jirachi Plush Archive</a>
-      <nav class="site-nav">
+      <a href="/jir-archive/" class="site-title" aria-label="Jirachi Plush Archive - Home">Jirachi Plush Archive</a>
+      <nav class="site-nav" role="navigation" aria-label="Main navigation">
         <a href="/jir-archive/" >Archive</a>
         <a href="/jir-archive/research" >Research</a>
-        <a href="/jir-archive/stats" class="active">Stats</a>
+        <a href="/jir-archive/stats" class="active" aria-current="page">Stats</a>
         <a href="/jir-archive/guide" >Guide</a>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
+          <span class="theme-icon-light" aria-hidden="true">☀️</span>
+          <span class="theme-icon-dark" aria-hidden="true">🌙</span>
+        </button>
       </nav>
     </div>
   </header>
 
-  <main class="site-main">
+  <main class="site-main" id="main-content" role="main" tabindex="-1">
     <div class="container">
       <div class="page-header">
   <h1>Collection Statistics</h1>
@@ -38,48 +104,642 @@
 
 
 
+<!-- Primary Stats -->
 <div class="stats-grid">
   <div class="stat-card stat-primary">
-    <div class="stat-value">35</div>
-    <div class="stat-label">Total Entries</div>
+    <div class="stat-value">46</div>
+    <div class="stat-label">Total Documented</div>
   </div>
   <div class="stat-card">
-    <div class="stat-value">29</div>
+    <div class="stat-value">39</div>
     <div class="stat-label">Master Archive</div>
   </div>
   <div class="stat-card">
-    <div class="stat-value">6</div>
+    <div class="stat-value">7</div>
     <div class="stat-label">In Research</div>
   </div>
-  <div class="stat-card stat-owned">
-    <div class="stat-value">1</div>
-    <div class="stat-label">Owned</div>
-    <div class="stat-percent">3.4%</div>
+  <div class="stat-card">
+    <div class="stat-value">0</div>
+    <div class="stat-label">Missing/Wanted</div>
   </div>
 </div>
 
+<!-- Personal Collection Stats (Dynamic via JS) -->
+<div class="stats-section" id="collection-stats">
+  <h2>Your Collection</h2>
+  <div class="stats-grid" id="collection-grid">
+    <div class="stat-card stat-owned">
+      <div class="stat-value" id="stat-owned">—</div>
+      <div class="stat-label">Owned</div>
+      <div class="stat-percent" id="stat-owned-pct">—</div>
+    </div>
+    <div class="stat-card" style="border-color: var(--c-accent);">
+      <div class="stat-value" id="stat-wanted">—</div>
+      <div class="stat-label">Wanted</div>
+    </div>
+    <div class="stat-card" style="border-color: var(--c-strong);">
+      <div class="stat-value" id="stat-trade">—</div>
+      <div class="stat-label">For Trade</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="stat-missing-owned">—</div>
+      <div class="stat-label">Until Complete</div>
+      <div class="stat-percent" style="color: var(--c-text-secondary);">Master Archive</div>
+    </div>
+  </div>
+  
+  <!-- Collection Progress Bar -->
+  <div class="progress-container" style="margin-top: var(--sp-4);">
+    <div class="progress-header">
+      <span class="progress-label">Master Archive Completion</span>
+      <span class="progress-value" id="progress-pct">—</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Verification Status -->
 <div class="stats-section">
   <h2>Verification Status</h2>
   <div class="stats-bar-container">
     <div class="stats-bar">
-      <div class="bar-segment bar-verified" style="width: 34.285714285714285%">
-        12
+      
+      <div class="bar-segment bar-verified" style="width: 84.78260869565217%" title="Verified: 39">
+        39
       </div>
-      <div class="bar-segment bar-strong" style="width: 51.42857142857143%">
-        18
+      
+      
+      <div class="bar-segment bar-strong" style="width: 2.1739130434782608%" title="Strong: 1">
+        
       </div>
-      <div class="bar-segment bar-possible" style="width: 14.285714285714286%">
+      
+      
+      <div class="bar-segment bar-possible" style="width: 10.869565217391305%" title="Possible: 5">
         5
       </div>
+      
     </div>
     <div class="stats-bar-legend">
-      <span class="legend-item"><span class="legend-color bg-verified"></span> Verified (12)</span>
-      <span class="legend-item"><span class="legend-color bg-strong"></span> Strong (18)</span>
+      <span class="legend-item"><span class="legend-color bg-verified"></span> Verified (39)</span>
+      <span class="legend-item"><span class="legend-color bg-strong"></span> Strong (1)</span>
       <span class="legend-item"><span class="legend-color bg-possible"></span> Possible (5)</span>
     </div>
   </div>
 </div>
 
+<!-- Availability Distribution -->
+<div class="stats-section">
+  <h2>Availability Distribution</h2>
+  <div class="availability-chart">
+    
+      
+      
+      <div class="availability-row">
+        <span class="availability-label">
+          <span class="rarity-meter">
+            
+            <span class="rarity-dot filled"></span>
+            
+            <span class="rarity-dot "></span>
+            
+            <span class="rarity-dot "></span>
+            
+            <span class="rarity-dot "></span>
+            
+            <span class="rarity-dot "></span>
+            
+          </span>
+          <span>Level 1</span>
+        </span>
+        <div class="availability-bar">
+          <div class="availability-fill" style="width: 0.0%"></div>
+        </div>
+        <span class="availability-count">0</span>
+      </div>
+    
+      
+      
+      <div class="availability-row">
+        <span class="availability-label">
+          <span class="rarity-meter">
+            
+            <span class="rarity-dot filled"></span>
+            
+            <span class="rarity-dot filled"></span>
+            
+            <span class="rarity-dot "></span>
+            
+            <span class="rarity-dot "></span>
+            
+            <span class="rarity-dot "></span>
+            
+          </span>
+          <span>Level 2</span>
+        </span>
+        <div class="availability-bar">
+          <div class="availability-fill" style="width: 0.0%"></div>
+        </div>
+        <span class="availability-count">0</span>
+      </div>
+    
+      
+      
+      <div class="availability-row">
+        <span class="availability-label">
+          <span class="rarity-meter">
+            
+            <span class="rarity-dot filled"></span>
+            
+            <span class="rarity-dot filled"></span>
+            
+            <span class="rarity-dot filled"></span>
+            
+            <span class="rarity-dot "></span>
+            
+            <span class="rarity-dot "></span>
+            
+          </span>
+          <span>Level 3</span>
+        </span>
+        <div class="availability-bar">
+          <div class="availability-fill" style="width: 0.0%"></div>
+        </div>
+        <span class="availability-count">0</span>
+      </div>
+    
+      
+      
+      <div class="availability-row">
+        <span class="availability-label">
+          <span class="rarity-meter">
+            
+            <span class="rarity-dot filled"></span>
+            
+            <span class="rarity-dot filled"></span>
+            
+            <span class="rarity-dot filled"></span>
+            
+            <span class="rarity-dot filled"></span>
+            
+            <span class="rarity-dot "></span>
+            
+          </span>
+          <span>Level 4</span>
+        </span>
+        <div class="availability-bar">
+          <div class="availability-fill" style="width: 0.0%"></div>
+        </div>
+        <span class="availability-count">0</span>
+      </div>
+    
+      
+      
+      <div class="availability-row">
+        <span class="availability-label">
+          <span class="rarity-meter">
+            
+            <span class="rarity-dot filled"></span>
+            
+            <span class="rarity-dot filled"></span>
+            
+            <span class="rarity-dot filled"></span>
+            
+            <span class="rarity-dot filled"></span>
+            
+            <span class="rarity-dot filled"></span>
+            
+          </span>
+          <span>Level 5</span>
+        </span>
+        <div class="availability-bar">
+          <div class="availability-fill" style="width: 0.0%"></div>
+        </div>
+        <span class="availability-count">0</span>
+      </div>
+    
+  </div>
+</div>
+
+<!-- Progress by Product Line -->
+<div class="stats-section">
+  <h2>Progress by Product Line</h2>
+  <div class="product-line-progress">
+    
+    
+    
+    <div class="progress-row" data-line="Poké Doll">
+      <div class="progress-info">
+        <span class="progress-label">Poké Doll</span>
+        <span class="progress-count" data-total="5">
+          <span class="owned-count">0</span> / 5
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Fluffy TOMY Plush">
+      <div class="progress-info">
+        <span class="progress-label">Fluffy TOMY Plush</span>
+        <span class="progress-count" data-total="4">
+          <span class="owned-count">0</span> / 4
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Super DX">
+      <div class="progress-info">
+        <span class="progress-label">Super DX</span>
+        <span class="progress-count" data-total="3">
+          <span class="owned-count">0</span> / 3
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Mythical Lights">
+      <div class="progress-info">
+        <span class="progress-label">Mythical Lights</span>
+        <span class="progress-count" data-total="2">
+          <span class="owned-count">0</span> / 2
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Hoshi Tsunagi">
+      <div class="progress-info">
+        <span class="progress-label">Hoshi Tsunagi</span>
+        <span class="progress-count" data-total="2">
+          <span class="owned-count">0</span> / 2
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Saiko Soda">
+      <div class="progress-info">
+        <span class="progress-label">Saiko Soda</span>
+        <span class="progress-count" data-total="2">
+          <span class="owned-count">0</span> / 2
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Ichiban Kuji">
+      <div class="progress-info">
+        <span class="progress-label">Ichiban Kuji</span>
+        <span class="progress-count" data-total="2">
+          <span class="owned-count">0</span> / 2
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Tohoku Renewal">
+      <div class="progress-info">
+        <span class="progress-label">Tohoku Renewal</span>
+        <span class="progress-count" data-total="2">
+          <span class="owned-count">0</span> / 2
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Kuttari Nuigurumi">
+      <div class="progress-info">
+        <span class="progress-label">Kuttari Nuigurumi</span>
+        <span class="progress-count" data-total="2">
+          <span class="owned-count">0</span> / 2
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Henshin! Metamon">
+      <div class="progress-info">
+        <span class="progress-label">Henshin! Metamon</span>
+        <span class="progress-count" data-total="2">
+          <span class="owned-count">0</span> / 2
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Mochi Mochi Diecut Makura">
+      <div class="progress-info">
+        <span class="progress-label">Mochi Mochi Diecut Makura</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="I Choose You!">
+      <div class="progress-info">
+        <span class="progress-label">I Choose You!</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Speed Star">
+      <div class="progress-info">
+        <span class="progress-label">Speed Star</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Pokémon Fit">
+      <div class="progress-info">
+        <span class="progress-label">Pokémon Fit</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Mecha Mofugutto">
+      <div class="progress-info">
+        <span class="progress-label">Mecha Mofugutto</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Yawaraka Pokémon Nuigurumi 4">
+      <div class="progress-info">
+        <span class="progress-label">Yawaraka Pokémon Nuigurumi 4</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Pokémon Focus">
+      <div class="progress-info">
+        <span class="progress-label">Pokémon Focus</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Korotto Manmaru">
+      <div class="progress-info">
+        <span class="progress-label">Korotto Manmaru</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Nanayo no Negaiboshi Lottery">
+      <div class="progress-info">
+        <span class="progress-label">Nanayo no Negaiboshi Lottery</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="poke-doll">
+      <div class="progress-info">
+        <span class="progress-label">poke-doll</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Comfy Cuddlers">
+      <div class="progress-info">
+        <span class="progress-label">Comfy Cuddlers</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Sitting Cuties">
+      <div class="progress-info">
+        <span class="progress-label">Sitting Cuties</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Keychain Plush">
+      <div class="progress-info">
+        <span class="progress-label">Keychain Plush</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="PokéPeace">
+      <div class="progress-info">
+        <span class="progress-label">PokéPeace</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="All Star Collection">
+      <div class="progress-info">
+        <span class="progress-label">All Star Collection</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Movie 10th Anniversary">
+      <div class="progress-info">
+        <span class="progress-label">Movie 10th Anniversary</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Kururin Mascot Jumbo Part 3">
+      <div class="progress-info">
+        <span class="progress-label">Kururin Mascot Jumbo Part 3</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="progress-row" data-line="Swing Nuiguru">
+      <div class="progress-info">
+        <span class="progress-label">Swing Nuiguru</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div class="progress-row" data-line="Poké Plush">
+      <div class="progress-info">
+        <span class="progress-label">Poké Plush</span>
+        <span class="progress-count" data-total="1">
+          <span class="owned-count">0</span> / 1
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    
+  </div>
+</div>
+
+<!-- By Company -->
 <div class="stats-section">
   <h2>By Company</h2>
   <table class="stats-table">
@@ -88,147 +748,284 @@
         <th>Company</th>
         <th>Total</th>
         <th>Owned</th>
+        <th>Progress</th>
       </tr>
     </thead>
     <tbody>
       
       
-      
-      <tr>
-        <td>Pokemon Center Japan</td>
-        <td>14</td>
-        <td>0</td>
+      <tr data-company="Pokémon Center Japan">
+        <td>Pokémon Center Japan</td>
+        <td>16</td>
+        <td class="owned-count">—</td>
+        <td class="progress-cell">
+          <div class="progress-bar progress-bar-inline">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+        </td>
       </tr>
       
-      
-      <tr>
+      <tr data-company="Banpresto">
         <td>Banpresto</td>
-        <td>8</td>
-        <td>0</td>
+        <td>9</td>
+        <td class="owned-count">—</td>
+        <td class="progress-cell">
+          <div class="progress-bar progress-bar-inline">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+        </td>
       </tr>
       
-      
-      <tr>
+      <tr data-company="TOMY">
         <td>TOMY</td>
-        <td>5</td>
-        <td>0</td>
+        <td>8</td>
+        <td class="owned-count">—</td>
+        <td class="progress-cell">
+          <div class="progress-bar progress-bar-inline">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+        </td>
       </tr>
       
-      
-      <tr>
-        <td>Unknown</td>
-        <td>3</td>
-        <td>0</td>
+      <tr data-company="Pokémon Center US">
+        <td>Pokémon Center US</td>
+        <td>7</td>
+        <td class="owned-count">—</td>
+        <td class="progress-cell">
+          <div class="progress-bar progress-bar-inline">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+        </td>
       </tr>
       
-      
-      <tr>
-        <td>Takara Tomy Arts</td>
+      <tr data-company="Takara Tomy A.R.T.S">
+        <td>Takara Tomy A.R.T.S</td>
         <td>2</td>
-        <td>0</td>
+        <td class="owned-count">—</td>
+        <td class="progress-cell">
+          <div class="progress-bar progress-bar-inline">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+        </td>
       </tr>
       
-      
-      <tr>
-        <td>Bandai</td>
+      <tr data-company="Morishita / JPPC">
+        <td>Morishita / JPPC</td>
         <td>1</td>
-        <td>0</td>
+        <td class="owned-count">—</td>
+        <td class="progress-cell">
+          <div class="progress-bar progress-bar-inline">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+        </td>
       </tr>
       
-      
-      <tr>
-        <td>Pokemon Center US</td>
+      <tr data-company="Pokémon Center Japan / PokéPark">
+        <td>Pokémon Center Japan / PokéPark</td>
         <td>1</td>
-        <td>0</td>
+        <td class="owned-count">—</td>
+        <td class="progress-cell">
+          <div class="progress-bar progress-bar-inline">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+        </td>
       </tr>
       
+      <tr data-company="Bandai Spirits">
+        <td>Bandai Spirits</td>
+        <td>1</td>
+        <td class="owned-count">—</td>
+        <td class="progress-cell">
+          <div class="progress-bar progress-bar-inline">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+        </td>
+      </tr>
       
-      <tr>
-        <td>Top Insight Taiwan</td>
+      <tr data-company="Takara Tomy">
+        <td>Takara Tomy</td>
         <td>1</td>
-        <td>1</td>
+        <td class="owned-count">—</td>
+        <td class="progress-cell">
+          <div class="progress-bar progress-bar-inline">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+        </td>
       </tr>
       
     </tbody>
   </table>
 </div>
 
+<!-- By Year -->
 <div class="stats-section">
   <h2>By Year</h2>
-  <table class="stats-table">
-    <thead>
-      <tr>
-        <th>Year</th>
-        <th>Count</th>
-      </tr>
-    </thead>
-    <tbody>
+  <div class="timeline-chart" id="timeline-chart">
+    
+    
+    
+    <div class="timeline-bars">
       
       
-      <tr>
-        <td>2026</td>
-        <td>1</td>
-      </tr>
       
-      <tr>
-        <td>2025</td>
-        <td>1</td>
-      </tr>
       
-      <tr>
-        <td>2024</td>
-        <td>1</td>
-      </tr>
+      <div class="timeline-bar" title="2003: 10 items">
+        <div class="timeline-fill" style="height: 100.0%">
+          <span class="timeline-count">10</span>
+        </div>
+        <span class="timeline-label">03</span>
+      </div>
       
-      <tr>
-        <td>2023</td>
-        <td>3</td>
-      </tr>
       
-      <tr>
-        <td>2019</td>
-        <td>1</td>
-      </tr>
       
-      <tr>
-        <td>2018</td>
-        <td>1</td>
-      </tr>
+      <div class="timeline-bar" title="2004: 3 items">
+        <div class="timeline-fill" style="height: 30.0%">
+          <span class="timeline-count">3</span>
+        </div>
+        <span class="timeline-label">04</span>
+      </div>
       
-      <tr>
-        <td>2017</td>
-        <td>1</td>
-      </tr>
       
-      <tr>
-        <td>2016</td>
-        <td>1</td>
-      </tr>
       
-      <tr>
-        <td>2009</td>
-        <td>1</td>
-      </tr>
+      <div class="timeline-bar" title="2005: 2 items">
+        <div class="timeline-fill" style="height: 20.0%">
+          <span class="timeline-count">2</span>
+        </div>
+        <span class="timeline-label">05</span>
+      </div>
       
-      <tr>
-        <td>2004</td>
-        <td>4</td>
-      </tr>
       
-      <tr>
-        <td>2003</td>
-        <td>6</td>
-      </tr>
       
-      <tr>
-        <td>Unknown</td>
-        <td>14</td>
-      </tr>
+      <div class="timeline-bar" title="2007: 1 items">
+        <div class="timeline-fill" style="height: 10.0%">
+          <span class="timeline-count">1</span>
+        </div>
+        <span class="timeline-label">07</span>
+      </div>
       
-    </tbody>
-  </table>
+      
+      
+      <div class="timeline-bar" title="2009: 1 items">
+        <div class="timeline-fill" style="height: 10.0%">
+          <span class="timeline-count">1</span>
+        </div>
+        <span class="timeline-label">09</span>
+      </div>
+      
+      
+      
+      <div class="timeline-bar" title="2013: 1 items">
+        <div class="timeline-fill" style="height: 10.0%">
+          <span class="timeline-count">1</span>
+        </div>
+        <span class="timeline-label">13</span>
+      </div>
+      
+      
+      
+      <div class="timeline-bar" title="2014: 2 items">
+        <div class="timeline-fill" style="height: 20.0%">
+          <span class="timeline-count">2</span>
+        </div>
+        <span class="timeline-label">14</span>
+      </div>
+      
+      
+      
+      <div class="timeline-bar" title="2016: 2 items">
+        <div class="timeline-fill" style="height: 20.0%">
+          <span class="timeline-count">2</span>
+        </div>
+        <span class="timeline-label">16</span>
+      </div>
+      
+      
+      
+      <div class="timeline-bar" title="2017: 3 items">
+        <div class="timeline-fill" style="height: 30.0%">
+          <span class="timeline-count">3</span>
+        </div>
+        <span class="timeline-label">17</span>
+      </div>
+      
+      
+      
+      <div class="timeline-bar" title="2018: 1 items">
+        <div class="timeline-fill" style="height: 10.0%">
+          <span class="timeline-count">1</span>
+        </div>
+        <span class="timeline-label">18</span>
+      </div>
+      
+      
+      
+      <div class="timeline-bar" title="2019: 3 items">
+        <div class="timeline-fill" style="height: 30.0%">
+          <span class="timeline-count">3</span>
+        </div>
+        <span class="timeline-label">19</span>
+      </div>
+      
+      
+      
+      <div class="timeline-bar" title="2021: 2 items">
+        <div class="timeline-fill" style="height: 20.0%">
+          <span class="timeline-count">2</span>
+        </div>
+        <span class="timeline-label">21</span>
+      </div>
+      
+      
+      
+      <div class="timeline-bar" title="2022: 1 items">
+        <div class="timeline-fill" style="height: 10.0%">
+          <span class="timeline-count">1</span>
+        </div>
+        <span class="timeline-label">22</span>
+      </div>
+      
+      
+      
+      <div class="timeline-bar" title="2023: 5 items">
+        <div class="timeline-fill" style="height: 50.0%">
+          <span class="timeline-count">5</span>
+        </div>
+        <span class="timeline-label">23</span>
+      </div>
+      
+      
+      
+      <div class="timeline-bar" title="2024: 2 items">
+        <div class="timeline-fill" style="height: 20.0%">
+          <span class="timeline-count">2</span>
+        </div>
+        <span class="timeline-label">24</span>
+      </div>
+      
+      
+      
+      <div class="timeline-bar" title="2025: 2 items">
+        <div class="timeline-fill" style="height: 20.0%">
+          <span class="timeline-count">2</span>
+        </div>
+        <span class="timeline-label">25</span>
+      </div>
+      
+      
+      
+      <div class="timeline-bar" title="Unknown: 2 items">
+        <div class="timeline-fill" style="height: 20.0%">
+          <span class="timeline-count">2</span>
+        </div>
+        <span class="timeline-label">kn</span>
+      </div>
+      
+      
+    </div>
+  </div>
 </div>
 
+<!-- By Region -->
 <div class="stats-section">
   <h2>By Region</h2>
   <table class="stats-table">
@@ -236,46 +1033,362 @@
       <tr>
         <th>Region</th>
         <th>Count</th>
+        <th>%</th>
       </tr>
     </thead>
     <tbody>
       
       
+      
       <tr>
         <td>Japan</td>
-        <td>27</td>
+        <td>37</td>
+        <td>80.4%</td>
       </tr>
       
-      <tr>
-        <td>Unknown</td>
-        <td>4</td>
-      </tr>
-      
-      <tr>
-        <td>US</td>
-        <td>2</td>
-      </tr>
-      
-      <tr>
-        <td>Taiwan</td>
-        <td>1</td>
-      </tr>
       
       <tr>
         <td>North America</td>
-        <td>1</td>
+        <td>7</td>
+        <td>15.2%</td>
+      </tr>
+      
+      
+      <tr>
+        <td>Unknown</td>
+        <td>2</td>
+        <td>4.3%</td>
       </tr>
       
     </tbody>
   </table>
 </div>
+
+<style>
+/* Progress Components */
+.progress-container {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--sp-2);
+}
+
+.progress-label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.progress-value {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--c-accent);
+}
+
+.progress-bar {
+  height: 12px;
+  background: var(--c-bg);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.progress-bar-sm {
+  height: 8px;
+}
+
+.progress-bar-inline {
+  height: 6px;
+  width: 80px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--c-accent), var(--c-verified));
+  border-radius: var(--radius-sm);
+  transition: width 0.5s ease;
+}
+
+/* Product Line Progress */
+.product-line-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+}
+
+.progress-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-sm);
+}
+
+.progress-count {
+  font-family: var(--font-mono);
+  color: var(--c-text-secondary);
+}
+
+/* Availability Chart */
+.availability-chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+}
+
+.availability-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.availability-label {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100px;
+  font-size: var(--text-sm);
+}
+
+.availability-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--c-bg);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.availability-fill {
+  height: 100%;
+  background: var(--c-text-tertiary);
+  border-radius: var(--radius-sm);
+}
+
+.availability-count {
+  width: 40px;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--c-text-secondary);
+}
+
+/* Timeline Chart */
+.timeline-chart {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  overflow-x: auto;
+}
+
+.timeline-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-2);
+  height: 160px;
+  padding-bottom: var(--sp-6);
+}
+
+.timeline-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 32px;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.timeline-fill {
+  width: 100%;
+  background: linear-gradient(180deg, var(--c-accent), var(--c-accent-subtle));
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: var(--sp-1);
+  min-height: 20px;
+}
+
+.timeline-count {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: white;
+  font-weight: 600;
+}
+
+.timeline-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--c-text-tertiary);
+  margin-top: var(--sp-2);
+}
+
+/* Progress cell in table */
+.progress-cell {
+  width: 100px;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Load collection from localStorage
+  const collectionKey = 'jirachi-plush-collection';
+  let collection = {};
+  try {
+    collection = JSON.parse(localStorage.getItem(collectionKey)) || {};
+  } catch (e) {
+    collection = {};
+  }
+  
+  const totalMaster = 39;
+  
+  // Count collection statuses
+  let owned = 0, wanted = 0, trade = 0;
+  Object.values(collection).forEach(status => {
+    if (status === 'owned') owned++;
+    else if (status === 'wanted') wanted++;
+    else if (status === 'trade') trade++;
+  });
+  
+  // Update stat cards
+  document.getElementById('stat-owned').textContent = owned;
+  document.getElementById('stat-wanted').textContent = wanted;
+  document.getElementById('stat-trade').textContent = trade;
+  document.getElementById('stat-missing-owned').textContent = totalMaster - owned;
+  
+  // Update percentages
+  const ownedPct = totalMaster > 0 ? ((owned / totalMaster) * 100).toFixed(1) : 0;
+  document.getElementById('stat-owned-pct').textContent = ownedPct + '%';
+  document.getElementById('progress-pct').textContent = ownedPct + '%';
+  document.getElementById('progress-fill').style.width = ownedPct + '%';
+  
+  // Update company stats
+  document.querySelectorAll('[data-company]').forEach(row => {
+    const company = row.dataset.company;
+    const total = parseInt(row.querySelector('td:nth-child(2)').textContent);
+    let companyOwned = 0;
+    
+    // Count owned for this company (we'd need plush data here)
+    Object.keys(collection).forEach(id => {
+      if (collection[id] === 'owned') {
+        // We'd need to map IDs to companies - simplified for now
+        companyOwned++;
+      }
+    });
+    
+    // For now, show placeholder
+    row.querySelector('.owned-count').textContent = '—';
+  });
+  
+  // Update product line progress
+  document.querySelectorAll('[data-line]').forEach(row => {
+    const line = row.dataset.line;
+    const total = parseInt(row.querySelector('.progress-count').dataset.total);
+    // Similar - would need full mapping
+    row.querySelector('.owned-count').textContent = '0';
+  });
+});
+</script>
     </div>
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer" role="contentinfo">
     <div class="container">
-      <p>Jirachi Plush Archive · v1.0 · Evidence-based archive</p>
+      <p>Jirachi Plush Archive · v1.0 · Evidence-based Jirachi plush documentation</p>
+      <p class="footer-links">
+        <a href="/jir-archive/guide">How to Contribute</a> ·
+        <a href="https://github.com/YOUR_USERNAME/jirachi-archive">GitHub</a>
+      </p>
     </div>
   </footer>
+
+  <!-- Theme Toggle Script -->
+  <script>
+  (function() {
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    
+    function getPreferredTheme() {
+      const stored = localStorage.getItem('theme');
+      if (stored) return stored;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    
+    function setTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      toggle.setAttribute('aria-pressed', theme === 'dark');
+    }
+    
+    // Initialize aria-pressed
+    toggle.setAttribute('aria-pressed', getPreferredTheme() === 'dark');
+    
+    toggle.addEventListener('click', function() {
+      const current = html.getAttribute('data-theme') || getPreferredTheme();
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+    
+    // Keyboard support
+    toggle.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggle.click();
+      }
+    });
+    
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('theme')) {
+        const newTheme = e.matches ? 'dark' : 'light';
+        html.setAttribute('data-theme', newTheme);
+        toggle.setAttribute('aria-pressed', newTheme === 'dark');
+      }
+    });
+  })();
+  </script>
+  
+  <!-- Lazy Loading for Images -->
+  <script>
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          if (img.dataset.src) {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+          }
+          if (img.dataset.srcset) {
+            img.srcset = img.dataset.srcset;
+            img.removeAttribute('data-srcset');
+          }
+          img.classList.add('loaded');
+          observer.unobserve(img);
+        }
+      });
+    }, { rootMargin: '50px 0px', threshold: 0.01 });
+    
+    document.querySelectorAll('img[data-src], img[loading="lazy"]').forEach(img => {
+      imageObserver.observe(img);
+    });
+  }
+  </script>
 </body>
 </html>

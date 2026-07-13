@@ -1,0 +1,120 @@
+# Controlled Vocabulary Tags
+# Tags use category:value format for filtering and faceted search
+# Reference: SCHEMA.md
+
+# === SIZE TAGS ===
+size:
+  - id: mini
+    name: Mini
+    description: Under 4" / 10cm
+  - id: small
+    name: Small
+    description: 4-8" / 10-20cm
+  - id: medium
+    name: Medium
+    description: 8-14" / 20-35cm
+  - id: large
+    name: Large
+    description: 14-24" / 35-60cm
+  - id: jumbo
+    name: Jumbo
+    description: Over 24" / 60cm
+  - id: life-size
+    name: Life Size
+    description: Life-sized (20+ inches)
+
+# === MATERIAL TAGS ===
+material:
+  - id: minky
+    name: Minky
+    description: Soft minky fabric
+  - id: velboa
+    name: Velboa
+    description: Velboa plush fabric
+  - id: polyester
+    name: Polyester
+    description: Polyester fill/fabric
+  - id: cotton
+    name: Cotton
+    description: Cotton fabric
+  - id: felt
+    name: Felt
+    description: Felt material accents
+  - id: plush
+    name: Plush
+    description: Generic plush material
+
+# === TYPE TAGS ===
+type:
+  - id: standard
+    name: Standard
+    description: Standard retail plush
+  - id: prize
+    name: Prize
+    description: Arcade/crane game prize
+  - id: lottery
+    name: Lottery
+    description: Ichiban kuji / lottery prize
+  - id: keychain
+    name: Keychain
+    description: Keychain/mascot size
+  - id: cushion
+    name: Cushion
+    description: Pillow/cushion style
+  - id: puppet
+    name: Puppet
+    description: Hand puppet
+  - id: pokedoll
+    name: Poké Doll
+    description: Poké Doll line
+
+# === EVENT TAGS ===
+event:
+  - id: promo
+    name: Promotional
+    description: Promotional/limited release
+  - id: movie
+    name: Movie
+    description: Movie tie-in release
+  - id: anniversary
+    name: Anniversary
+    description: Anniversary collection
+  - id: holiday
+    name: Holiday
+    description: Holiday/seasonal release
+  - id: regional
+    name: Regional
+    description: Regional exclusive
+
+# === VARIANT TAGS ===
+variant:
+  - id: rerelease
+    name: Re-release
+    description: Re-release of existing sculpt
+  - id: color
+    name: Color Variant
+    description: Color variant
+  - id: size
+    name: Size Variant
+    description: Size variant of same sculpt
+  - id: regional
+    name: Regional Variant
+    description: Regional variant (same sculpt, different market)
+
+# === SPECIAL TAGS ===
+special:
+  - id: sleeping
+    name: Sleeping
+    description: Sleeping pose
+  - id: sitting
+    name: Sitting
+    description: Sitting pose
+  - id: standing
+    name: Standing
+    description: Standing pose
+  - id: ditto
+    name: Ditto
+    description: Ditto transformation variant
+  - id: shiny
+    name: Shiny
+    description: Shiny coloring

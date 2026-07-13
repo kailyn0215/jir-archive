@@ -1,6 +1,6 @@
 {% comment %}
   Auto-detect images from /assets/images/plushes/[archive_id]/
-  Priority for thumbnail: main.* > first alphabetically
+  Priority for thumbnail: main.* > thumb.* > first alphabetically
 {% endcomment %}
 
 {% assign plush_images = "" | split: "" %}
@@ -23,37 +23,79 @@
   {% assign plush_main = plush_images_sorted.first %}
 {% endif %}
 
-<div class="plush-card" data-id="{{ plush.archive_id }}">
+<article class="plush-card" data-id="{{ plush.archive_id }}" data-status="{{ plush.status | downcase }}">
   <a href="{{ plush.url | relative_url }}" class="plush-card-link">
     <div class="plush-card-image">
       {% if plush_main %}
-      <img src="{{ plush_main.path | relative_url }}" alt="{{ plush.current_name }}" loading="lazy">
+      <img src="{{ plush_main.path | relative_url }}" 
+           alt="{{ plush.current_name }}" 
+           loading="lazy"
+           width="260"
+           height="195">
       {% else %}
       <span class="plush-card-placeholder">{{ plush.archive_id }}</span>
       {% endif %}
+      
+      {% comment %} Status indicator for Missing items {% endcomment %}
+      {% if plush.status == "Missing" %}
+      <span class="card-status-overlay">
+        <span class="badge badge-missing">Missing</span>
+      </span>
+      {% endif %}
     </div>
+    
     <div class="plush-card-body">
       <div class="plush-card-id">{{ plush.archive_id }}</div>
-      <div class="plush-card-name">{{ plush.current_name }}</div>
+      <h3 class="plush-card-name">{{ plush.current_name }}</h3>
+      
       <div class="plush-card-meta">
         <span>{{ plush.company }}</span>
-        <span class="sep">·</span>
+        <span class="sep" aria-hidden="true">·</span>
         <span>{% if plush.year %}{{ plush.year }}{% else %}—{% endif %}</span>
       </div>
+      
+      {% comment %} Tags preview (show first 2 - value only, no category prefix) {% endcomment %}
+      {% if plush.tags and plush.tags.size > 0 %}
+      <div class="plush-card-tags">
+        {% for tag in plush.tags limit:2 %}
+          {% assign tag_parts = tag | split: ":" %}
+          <span class="tag">{% if tag_parts.size > 1 %}{{ tag_parts[1] }}{% else %}{{ tag }}{% endif %}</span>
+        {% endfor %}
+        {% if plush.tags.size > 2 %}
+          <span class="tag tag-more">+{{ plush.tags.size | minus: 2 }}</span>
+        {% endif %}
+      </div>
+      {% endif %}
+      
       <div class="plush-card-footer">
-        <span class="badge badge-{{ plush.verification | downcase }}">{{ plush.verification }}</span>
+        {% comment %} Status Badge {% endcomment %}
+        {% if plush.status == "Research" %}
+          <span class="badge badge-research">Research</span>
+          {% if plush.confidence %}
+            <span class="badge badge-confidence badge-confidence-{{ plush.confidence | downcase }}">{{ plush.confidence }}</span>
+          {% endif %}
+        {% elsif plush.status == "Missing" %}
+          <span class="badge badge-missing">Missing</span>
+        {% else %}
+          {% comment %} Master status - show verification {% endcomment %}
+          <span class="badge badge-{{ plush.verification | downcase }}">{{ plush.verification }}</span>
+        {% endif %}
+        
+        {% comment %} Availability meter {% endcomment %}
         {% if plush.availability %}
-        <span class="rarity-meter" title="Rarity: {{ plush.availability }}/5">
+        <span class="rarity-meter" title="Availability: {{ plush.availability }}/5" aria-label="Availability {{ plush.availability }} of 5">
           {% for i in (1..5) %}
-          <span class="rarity-dot {% if i <= plush.availability %}filled{% endif %}"></span>
+          <span class="rarity-dot {% if i <= plush.availability %}filled{% endif %}" aria-hidden="true"></span>
           {% endfor %}
         </span>
         {% endif %}
       </div>
     </div>
   </a>
-  <button class="owned-toggle" data-id="{{ plush.archive_id }}" title="Toggle owned status">
-    <span class="owned-toggle-icon"></span>
-    <span class="owned-toggle-label">Owned</span>
-  </button>
-</div>
+  
+  <button class="collection-toggle owned-toggle" 
+          data-id="{{ plush.archive_id }}"
+          data-status=""
+          title="Add to collection"
+          aria-label="Add {{ plush.current_name }} to collection">+</button>
+</article>

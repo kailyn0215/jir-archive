@@ -4,430 +4,776 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Guide | Jirachi Plush Archive</title>
-  <meta name="description" content="A comprehensive, evidence-based database of every officially licensed Jirachi plush">
+  <meta name="description" content="How to use the Jirachi Plush Archive, understand verification levels, and contribute to the project.">
+  <meta name="author" content="Jirachi Plush Archive">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="http://localhost:4000/jir-archive/guide.html">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://localhost:4000/jir-archive/guide.html">
+  <meta property="og:title" content="Guide | Jirachi Plush Archive">
+  <meta property="og:description" content="How to use the Jirachi Plush Archive, understand verification levels, and contribute to the project.">
+  <meta property="og:site_name" content="Jirachi Plush Archive">
+  
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Guide | Jirachi Plush Archive">
+  <meta name="twitter:description" content="How to use the Jirachi Plush Archive, understand verification levels, and contribute to the project.">
+  
+  
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/jir-archive/assets/images/favicon.svg">
+  <link rel="apple-touch-icon" href="/jir-archive/assets/images/apple-touch-icon.png">
+  
+  <!-- Fonts (preload critical) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
   <link rel="stylesheet" href="/jir-archive/assets/css/style.css">
+  
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Jirachi Plush Archive",
+    "description": "A comprehensive, evidence-based database of every officially licensed Jirachi plush",
+    "url": "http://localhost:4000",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "http://localhost:4000?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  
+  
+  
+  <!-- Theme Script (prevents flash) -->
+  <script>
+    (function() {
+      const stored = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = stored || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
 </head>
 <body>
-  <header class="site-header">
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <header class="site-header" role="banner">
     <div class="container">
-      <a href="/jir-archive/" class="site-title">Jirachi Plush Archive</a>
-      <nav class="site-nav">
+      <a href="/jir-archive/" class="site-title" aria-label="Jirachi Plush Archive - Home">Jirachi Plush Archive</a>
+      <nav class="site-nav" role="navigation" aria-label="Main navigation">
         <a href="/jir-archive/" >Archive</a>
         <a href="/jir-archive/research" >Research</a>
         <a href="/jir-archive/stats" >Stats</a>
-        <a href="/jir-archive/guide" class="active">Guide</a>
+        <a href="/jir-archive/guide" class="active" aria-current="page">Guide</a>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
+          <span class="theme-icon-light" aria-hidden="true">☀️</span>
+          <span class="theme-icon-dark" aria-hidden="true">🌙</span>
+        </button>
       </nav>
     </div>
   </header>
 
-  <main class="site-main">
+  <main class="site-main" id="main-content" role="main" tabindex="-1">
     <div class="container">
-      <h1 id="database-guide--research-standards">Database Guide &amp; Research Standards</h1>
+      <div class="page-header">
+  <h1>Archive Guide</h1>
+  <p class="subtitle">Understanding the archive, verification system, and how to contribute</p>
+</div>
 
-<p><strong>Version:</strong> v0.3 (Pre-v1.0)</p>
-
-<hr />
-
-<h2 id="purpose">Purpose</h2>
-
-<p>The Jirachi Plush Archive is intended to become the most comprehensive, evidence-based database of every officially licensed Jirachi plush ever released.</p>
-
-<p>This project is not simply a checklist. It is a historical archive that documents every known official Jirachi plush release, its manufacturer, product line, release information, rarity, and supporting evidence.</p>
-
-<p>The archive prioritizes <strong>accuracy over completeness</strong>. It is acceptable for an item to remain in the Research queue until sufficient evidence exists.</p>
-
-<hr />
-
-<h2 id="philosophy">Philosophy</h2>
-
-<p>The archive follows one simple rule:</p>
-
-<blockquote>
-  <p><strong>If it cannot be supported by evidence, it does not belong in the Master Archive.</strong></p>
-</blockquote>
-
-<p>Evidence is more important than assumptions. Whenever new information becomes available, the archive should be updated using the standards below.</p>
+<nav class="guide-toc">
+  <h2>Contents</h2>
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#id-system">ID System</a></li>
+    <li><a href="#verification">Verification Levels</a></li>
+    <li><a href="#availability">Availability Scale</a></li>
+    <li><a href="#sources">Source Tiers</a></li>
+    <li><a href="#collection">Personal Collection</a></li>
+    <li><a href="#contributing">How to Contribute</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+</nav>
 
 <hr />
 
-<h2 id="database-structure">Database Structure</h2>
+<section id="overview">
+  <h2 id="overview">Overview</h2>
 
-<h3 id="master-archive">Master Archive</h3>
+  <p>The <strong>Jirachi Plush Archive</strong> is a comprehensive, evidence-based catalog documenting every Jirachi Pokémon plush ever manufactured. Our goal is to create the definitive reference for collectors and researchers.</p>
 
-<p>This is the primary database. Every entry represents one official plush release.</p>
+  <h3 id="key-principles">Key Principles</h3>
 
-<ul>
-  <li>No duplicates</li>
-  <li>No bootlegs</li>
-  <li>No fan-made customs</li>
-  <li>Only officially licensed products belong here</li>
-</ul>
-
-<h3 id="research-queue">Research Queue</h3>
-
-<p>Contains items that may exist but are not yet sufficiently documented.</p>
-
-<p>An item should remain here until enough evidence exists to promote it to the Master Archive.</p>
-
-<p>Possible reasons include:</p>
-<ul>
-  <li>Unknown manufacturer</li>
-  <li>Unknown year</li>
-  <li>Only one known listing</li>
-  <li>Missing official product name</li>
-  <li>Missing tag photos</li>
-</ul>
-
-<p>Nothing in Research should be considered confirmed.</p>
+  <ol>
+    <li><strong>Evidence-Based</strong>: Every entry requires verifiable sources</li>
+    <li><strong>Scholarly</strong>: We document with academic rigor</li>
+    <li><strong>Complete</strong>: All plushes—common to ultra-rare—are included</li>
+    <li><strong>Open</strong>: Anyone can contribute with proper evidence</li>
+  </ol>
+</section>
 
 <hr />
 
-<h2 id="archive-ids">Archive IDs</h2>
+<section id="id-system">
+  <h2 id="id-system">ID System</h2>
 
-<p>Every plush receives one permanent Archive ID.</p>
+  <p>Each plush receives a unique <strong>Archive ID</strong> following this format:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>JIR-0001
-JIR-0002
-JIR-0003
-</code></pre></div></div>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>JIR-[COMPANY]-[NUMBER]
+</code></pre></div>  </div>
 
-<p>Archive IDs <strong>never change</strong>. Even if new plushes are discovered later, existing IDs remain permanent.</p>
+  <h3 id="examples">Examples</h3>
 
-<hr />
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Meaning</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">JIR-TOMY-0001</code></td>
+        <td>First Tomy plush cataloged</td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">JIR-BAN-0005</code></td>
+        <td>Fifth Banpresto plush</td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">JIR-JPPC-0012</code></td>
+        <td>Twelfth Japanese Pokémon Center plush</td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">JIR-USPC-0003</code></td>
+        <td>Third US Pokémon Center plush</td>
+      </tr>
+    </tbody>
+  </table>
 
-<h2 id="company-ids">Company IDs</h2>
+  <h3 id="company-codes">Company Codes</h3>
 
-<p>Each manufacturer maintains its own numbering.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Company</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">TOMY</code></td>
+        <td>Tomy / Takara Tomy</td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">BAN</code></td>
+        <td>Banpresto</td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">JPPC</code></td>
+        <td>Pokémon Center Japan</td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">USPC</code></td>
+        <td>Pokémon Center US/International</td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">SAN</code></td>
+        <td>San-ei / All-Star Collection</td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">BNS</code></td>
+        <td>Build-A-Bear / Other specialty</td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">UNK</code></td>
+        <td>Unknown manufacturer</td>
+      </tr>
+    </tbody>
+  </table>
 
-<table>
-  <thead>
-    <tr>
-      <th>Prefix</th>
-      <th>Company</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>PCJ</td>
-      <td>Pokemon Center Japan</td>
-    </tr>
-    <tr>
-      <td>PCUS</td>
-      <td>Pokemon Center US</td>
-    </tr>
-    <tr>
-      <td>PCTW</td>
-      <td>Top Insight Taiwan</td>
-    </tr>
-    <tr>
-      <td>TOMY</td>
-      <td>TOMY</td>
-    </tr>
-    <tr>
-      <td>TTA</td>
-      <td>Takara Tomy Arts</td>
-    </tr>
-    <tr>
-      <td>BAN</td>
-      <td>Banpresto</td>
-    </tr>
-    <tr>
-      <td>BANDAI</td>
-      <td>Bandai</td>
-    </tr>
-    <tr>
-      <td>OTH</td>
-      <td>Unknown</td>
-    </tr>
-  </tbody>
-</table>
+  <h3 id="variants">Variants</h3>
 
-<p>These IDs help organize releases by manufacturer. If additional companies are discovered, new prefixes may be added.</p>
-
-<hr />
-
-<h2 id="sculpt-ids">Sculpt IDs</h2>
-
-<p>Sculpt IDs represent unique physical plush designs. Multiple releases may share one sculpt.</p>
-
-<p><strong>Example:</strong></p>
-<ul>
-  <li>Pokemon Fit (Japan) → <code class="language-plaintext highlighter-rouge">SC-002</code></li>
-  <li>Sitting Cuties (North America) → <code class="language-plaintext highlighter-rouge">SC-002</code></li>
-</ul>
-
-<p>Both are separate releases. Both use the same sculpt.</p>
-
-<p>This allows the archive to answer two different questions:</p>
-<ol>
-  <li>How many unique plush designs exist?</li>
-  <li>How many official releases exist?</li>
-</ol>
-
-<p>Those numbers are not always the same.</p>
-
-<hr />
-
-<h2 id="what-counts-as-a-separate-entry">What Counts As A Separate Entry</h2>
-
-<p>A new archive entry should be created when:</p>
-
-<ul>
-  <li>Different sculpt</li>
-  <li>Different size</li>
-  <li>Different product line</li>
-  <li>Different manufacturer</li>
-  <li>Different region (if officially released as a separate retail product)</li>
-  <li>Different promotional release</li>
-  <li>Different prize release</li>
-  <li>Different seasonal collection</li>
-</ul>
+  <p>Variants of the same base plush share a parent ID:</p>
+  <ul>
+    <li>Parent: <code class="language-plaintext highlighter-rouge">JIR-TOMY-0001</code></li>
+    <li>Re-release: <code class="language-plaintext highlighter-rouge">JIR-TOMY-0001a</code></li>
+    <li>Color variant: <code class="language-plaintext highlighter-rouge">JIR-TOMY-0001b</code></li>
+  </ul>
+</section>
 
 <hr />
 
-<h2 id="what-does-not-count">What Does NOT Count</h2>
+<section id="verification">
+  <h2 id="verification-levels">Verification Levels</h2>
 
-<p>Do NOT create new entries for:</p>
+  <p>Every item in the archive has a verification status indicating how confident we are in its documentation.</p>
 
-<ul>
-  <li>Different hang tag revisions</li>
-  <li>Different tush tag revisions</li>
-  <li>Factory changes</li>
-  <li>Minor embroidery differences</li>
-  <li>Manufacturing defects</li>
-  <li>Price stickers</li>
-  <li>Barcode stickers</li>
-  <li>Packaging revisions</li>
-</ul>
+  <div class="verification-grid">
+  <div class="verification-item">
+    <span class="badge badge-verification badge-verification-verified">Verified</span>
+    <h4>Verified</h4>
+    <p>Highest confidence. Meets ALL criteria:</p>
+    <ul>
+      <li>Official source (catalog, press release, retailer listing)</li>
+      <li>Clear photos of the physical item</li>
+      <li>Visible, legible tush tag</li>
+      <li>Multiple independent examples documented</li>
+    </ul>
+    <p><em>These are in the Master Archive.</em></p>
+  </div>
+  
+  <div class="verification-item">
+    <span class="badge badge-verification badge-verification-strong">Strong</span>
+    <h4>Strong Confidence</h4>
+    <p>High confidence, minor gaps:</p>
+    <ul>
+      <li>Multiple reliable sources confirm existence</li>
+      <li>May be missing: official images, precise dimensions, or catalog scans</li>
+      <li>Physical examples exist but tags are unclear</li>
+    </ul>
+    <p><em>In Research, close to promotion.</em></p>
+  </div>
+  
+  <div class="verification-item">
+    <span class="badge badge-verification badge-verification-possible">Possible</span>
+    <h4>Possible</h4>
+    <p>Existence likely but unconfirmed:</p>
+    <ul>
+      <li>Single source only</li>
+      <li>May be misidentified variant</li>
+      <li>Could be bootleg or custom</li>
+      <li>Requires corroboration</li>
+    </ul>
+    <p><em>In Research, needs investigation.</em></p>
+  </div>
+</div>
 
-<p>These should instead be documented inside the Notes field.</p>
+  <h3 id="promotion-path">Promotion Path</h3>
 
-<hr />
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Possible → Strong → Verified
+   ↓         ↓         ↓
+Research  Research  Master Archive
+</code></pre></div>  </div>
 
-<h2 id="verification-standards">Verification Standards</h2>
-
-<p>Every plush receives one verification level.</p>
-
-<h3 id="verified">Verified</h3>
-<p>Official manufacturer documentation exists, OR multiple independent examples with matching tags and metadata exist.</p>
-
-<p>These belong in the Master Archive.</p>
-
-<h3 id="strong">Strong</h3>
-<p>High confidence. Likely official. Needs one additional reliable source.</p>
-
-<p>Usually belongs in the Master Archive with a note.</p>
-
-<h3 id="possible">Possible</h3>
-<p>Interesting lead. Needs significantly more evidence.</p>
-
-<p>Remains in Research.</p>
-
-<h3 id="unverified">Unverified</h3>
-<p>Insufficient documentation. Should not enter the Master Archive.</p>
-
-<hr />
-
-<h2 id="research-methodology">Research Methodology</h2>
-
-<p>The archive should never rely solely on search engines.</p>
-
-<p>Instead, research should proceed by manufacturer:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Banpresto
-    ↓
-Every yearly catalog
-    ↓
-Every Pokemon release
-    ↓
-Was Jirachi included?
-    ↓
-Document evidence
-</code></pre></div></div>
-
-<p>Repeat for each manufacturer. This approach minimizes missing obscure releases.</p>
+  <p>An item moves to the Master Archive when it achieves <strong>Verified</strong> status.</p>
+</section>
 
 <hr />
 
-<h2 id="source-reliability">Source Reliability</h2>
+<section id="availability">
+  <h2 id="availability-scale">Availability Scale</h2>
 
-<h3 id="tier-s-primary">Tier S (Primary)</h3>
-<ul>
-  <li>Official manufacturer catalogs</li>
-  <li>Official retailer pages</li>
-  <li>Official Pokemon Center pages</li>
-  <li>Original advertisements</li>
-</ul>
+  <p>We rate each plush’s current market availability on a 1-5 scale:</p>
 
-<h3 id="tier-a">Tier A</h3>
-<ul>
-  <li>Archived retailer pages</li>
-  <li>Mandarake</li>
-  <li>Suruga-ya</li>
-  <li>Official scans</li>
-</ul>
+  <div class="availability-guide">
+  <div class="availability-item">
+    <span class="rarity-meter">
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot"></span>
+      <span class="rarity-dot"></span>
+      <span class="rarity-dot"></span>
+      <span class="rarity-dot"></span>
+    </span>
+    <strong>Level 1: Common</strong>
+    <p>Easily found at retail or secondary market. Current production or abundant supply.</p>
+  </div>
+  
+  <div class="availability-item">
+    <span class="rarity-meter">
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot"></span>
+      <span class="rarity-dot"></span>
+      <span class="rarity-dot"></span>
+    </span>
+    <strong>Level 2: Uncommon</strong>
+    <p>Regularly appears on auction sites. May require patience to find at good price.</p>
+  </div>
+  
+  <div class="availability-item">
+    <span class="rarity-meter">
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot"></span>
+      <span class="rarity-dot"></span>
+    </span>
+    <strong>Level 3: Scarce</strong>
+    <p>Appears occasionally. Limited production run or older release. Moderate collector demand.</p>
+  </div>
+  
+  <div class="availability-item">
+    <span class="rarity-meter">
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot"></span>
+    </span>
+    <strong>Level 4: Rare</strong>
+    <p>Seldom appears. Event exclusives, old releases, or very limited production.</p>
+  </div>
+  
+  <div class="availability-item">
+    <span class="rarity-meter">
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+      <span class="rarity-dot filled"></span>
+    </span>
+    <strong>Level 5: Ultra-Rare</strong>
+    <p>Extremely difficult to find. May appear once a year or less. High collector value.</p>
+  </div>
+</div>
 
-<h3 id="tier-b">Tier B</h3>
-<ul>
-  <li>Yahoo Auctions</li>
-  <li>Mercari</li>
-  <li>Rakuten</li>
-</ul>
-
-<h3 id="tier-c">Tier C</h3>
-<ul>
-  <li>Collector websites</li>
-  <li>Blogs</li>
-  <li>Reddit</li>
-  <li>Flickr</li>
-</ul>
-
-<p>Lower tiers are excellent for discovering items but should not be the sole source used for verification.</p>
-
-<hr />
-
-<h2 id="naming-convention">Naming Convention</h2>
-
-<p>Whenever possible, every plush should contain:</p>
-
-<ul>
-  <li><strong>Official English Name</strong></li>
-  <li><strong>Official Japanese Name</strong></li>
-  <li><strong>Common Collector Name</strong></li>
-</ul>
-
-<p>Many plushes are better known by unofficial names. Both should be preserved.</p>
-
-<hr />
-
-<h2 id="availability-rating">Availability Rating</h2>
-
-<p>Instead of subjective rarity, the archive tracks availability:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Rating</th>
-      <th>Meaning</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>★★★★★</td>
-      <td>Frequently available</td>
-    </tr>
-    <tr>
-      <td>★★★★☆</td>
-      <td>Available with patience</td>
-    </tr>
-    <tr>
-      <td>★★★☆☆</td>
-      <td>Uncommon</td>
-    </tr>
-    <tr>
-      <td>★★☆☆☆</td>
-      <td>Difficult to obtain</td>
-    </tr>
-    <tr>
-      <td>★☆☆☆☆</td>
-      <td>Extremely difficult to find</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>Availability is based on observed market frequency, not opinion.</p>
+  <p><em>Note: Availability is subjective and changes over time. We update ratings based on market observations.</em></p>
+</section>
 
 <hr />
 
-<h2 id="research-rules">Research Rules</h2>
+<section id="sources">
+  <h2 id="source-tiers">Source Tiers</h2>
 
-<ol>
-  <li>Never assume</li>
-  <li>Never estimate</li>
-  <li>Never merge two plushes without evidence</li>
-  <li>Never split one plush into multiple entries without evidence</li>
-  <li>When uncertain, place the item in Research instead of Master</li>
-</ol>
+  <p>We evaluate sources by reliability tier:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tier</th>
+        <th>Type</th>
+        <th>Reliability</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>S</strong></td>
+        <td>Official manufacturer catalog, press release, or product page</td>
+        <td>Highest—direct confirmation</td>
+      </tr>
+      <tr>
+        <td><strong>A</strong></td>
+        <td>Physical item with clear, legible tags</td>
+        <td>Strong—verifiable details</td>
+      </tr>
+      <tr>
+        <td><strong>B</strong></td>
+        <td>Major retailer listing, archived web pages (Wayback Machine)</td>
+        <td>Good—requires corroboration</td>
+      </tr>
+      <tr>
+        <td><strong>C</strong></td>
+        <td>Social media posts, forum threads, auction listings</td>
+        <td>Helpful but needs verification</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="citing-sources">Citing Sources</h3>
+
+  <p>Every claim should cite evidence. Our entries include:</p>
+  <ul>
+    <li><strong>Primary Source</strong>: Most authoritative evidence</li>
+    <li><strong>Additional Sources</strong>: Corroborating evidence</li>
+    <li><strong>Archive URLs</strong>: Wayback Machine links for web sources</li>
+    <li><strong>Access Dates</strong>: When sources were last verified</li>
+  </ul>
+</section>
 
 <hr />
 
-<h2 id="long-term-goal">Long-Term Goal</h2>
+<section id="collection">
+  <h2 id="personal-collection">Personal Collection</h2>
 
-<p>The objective is to create a permanent historical record of every officially licensed Jirachi plush.</p>
+  <p>The archive includes personal collection tracking, stored locally in your browser.</p>
 
-<p>Every release should eventually include:</p>
-<ul>
-  <li>Official name</li>
-  <li>Japanese name</li>
-  <li>Manufacturer</li>
-  <li>Release year</li>
-  <li>Product line</li>
-  <li>Region</li>
-  <li>Size</li>
-  <li>Product number</li>
-  <li>JAN code</li>
-  <li>Original MSRP</li>
-  <li>Images</li>
-  <li>Search terms</li>
-  <li>Verification sources</li>
-  <li>Collector notes</li>
-</ul>
+  <h3 id="collection-states">Collection States</h3>
 
-<p>The archive should be accurate enough that another collector can independently verify every entry using the included evidence.</p>
+  <ul>
+    <li><strong>Owned</strong>: You have this plush in your collection</li>
+    <li><strong>Wanted</strong>: You’re looking for this plush</li>
+    <li><strong>For Trade</strong>: You have this and would consider trading</li>
+  </ul>
 
-<p>If future official releases occur, they should be added without changing any existing Archive IDs.</p>
+  <h3 id="features">Features</h3>
 
-<p>The archive should remain <strong>stable, expandable, and evidence-based</strong> for many years to come.</p>
+  <ul>
+    <li><strong>Track your collection</strong> directly on plush cards and detail pages</li>
+    <li><strong>Export your data</strong> as JSON or CSV for backup</li>
+    <li><strong>Import data</strong> to restore or transfer your collection</li>
+    <li><strong>Stats page</strong> shows your completion progress</li>
+  </ul>
+
+  <h3 id="privacy">Privacy</h3>
+
+  <p>All collection data is stored in your browser’s localStorage. We do not collect or transmit your collection information.</p>
+</section>
 
 <hr />
 
-<h2 id="adding-new-entries">Adding New Entries</h2>
+<section id="contributing">
+  <h2 id="how-to-contribute">How to Contribute</h2>
 
-<p>To add a new plush, create a new file in <code class="language-plaintext highlighter-rouge">_plushes/</code>:</p>
+  <p>We welcome contributions from the collector community!</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
-<span class="na">archive_id</span><span class="pi">:</span> <span class="s">JIR-0036</span>
-<span class="na">company_id</span><span class="pi">:</span> <span class="s">PCJ-015</span>
-<span class="na">company</span><span class="pi">:</span> <span class="s">Pokemon Center Japan</span>
-<span class="na">year</span><span class="pi">:</span> <span class="m">2024</span>
-<span class="na">product_line</span><span class="pi">:</span> <span class="s">New Collection</span>
-<span class="na">current_name</span><span class="pi">:</span> <span class="s">New Jirachi Plush</span>
-<span class="na">official_name</span><span class="pi">:</span> 
-<span class="na">japanese_name</span><span class="pi">:</span> 
-<span class="na">region</span><span class="pi">:</span> <span class="s">Japan</span>
-<span class="na">size</span><span class="pi">:</span> 
-<span class="na">sculpt_id</span><span class="pi">:</span> 
-<span class="na">owned</span><span class="pi">:</span> <span class="kc">false</span>
-<span class="na">verification</span><span class="pi">:</span> <span class="s">Verified</span>
-<span class="na">status</span><span class="pi">:</span> <span class="s">Master</span>
-<span class="na">availability</span><span class="pi">:</span> 
-<span class="na">sources</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">catalog</span>
-    <span class="na">url</span><span class="pi">:</span> <span class="s">https://example.com</span>
-    <span class="na">notes</span><span class="pi">:</span> <span class="s">Official announcement</span>
-<span class="na">images</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">front.jpg</span>
-<span class="na">notes</span><span class="pi">:</span> <span class="s">Description here</span>
-<span class="na">search_terms</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">relevant</span>
-  <span class="pi">-</span> <span class="s">keywords</span>
-<span class="nn">---</span>
+  <h3 id="ways-to-help">Ways to Help</h3>
 
-<span class="s">Optional extended notes in markdown format.</span>
-</code></pre></div></div>
+  <ol>
+    <li><strong>Submit Evidence</strong> for existing Research items</li>
+    <li><strong>Report New Finds</strong> we haven’t documented</li>
+    <li><strong>Provide Corrections</strong> to existing entries</li>
+    <li><strong>Share Photos</strong> especially tush tags and hang tags</li>
+  </ol>
 
-<p>Save as <code class="language-plaintext highlighter-rouge">JIR-0036.md</code> and commit to the repository.</p>
+  <h3 id="what-we-need">What We Need</h3>
+
+  <p>For a new entry or promotion to Verified:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Required</th>
+        <th>Helpful</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Clear front photo</td>
+        <td>Multiple angles</td>
+      </tr>
+      <tr>
+        <td>Tush tag photo</td>
+        <td>Hang tag photo</td>
+      </tr>
+      <tr>
+        <td>Manufacturer name</td>
+        <td>Exact dimensions</td>
+      </tr>
+      <tr>
+        <td>Approximate date</td>
+        <td>Original price</td>
+      </tr>
+      <tr>
+        <td>Source citation</td>
+        <td>Context/provenance</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="submission-process">Submission Process</h3>
+
+  <ol>
+    <li>Go to the <a href="/research#submit-form">Research page</a></li>
+    <li>Fill out the contribution form</li>
+    <li>Generate a structured submission</li>
+    <li>Submit via:
+      <ul>
+        <li><strong>GitHub Issue</strong> (preferred for tracking)</li>
+        <li><strong>Discord</strong> @kardashi</li>
+      </ul>
+    </li>
+  </ol>
+
+  <h3 id="photo-guidelines">Photo Guidelines</h3>
+
+  <ul>
+    <li><strong>Lighting</strong>: Natural light preferred, avoid harsh flash</li>
+    <li><strong>Focus</strong>: Tush tag text must be legible</li>
+    <li><strong>Background</strong>: Neutral, uncluttered</li>
+    <li><strong>Size Reference</strong>: Include ruler or common object for scale</li>
+    <li><strong>Multiple Angles</strong>: Front, side, back, and tag close-ups</li>
+  </ul>
+</section>
+
+<hr />
+
+<section id="faq">
+  <h2 id="frequently-asked-questions">Frequently Asked Questions</h2>
+
+  <h3 id="is-this-an-official-pokmon-project">Is this an official Pokémon project?</h3>
+
+  <p>No. This is a fan-made documentation project. We are not affiliated with The Pokémon Company, Nintendo, or any manufacturers.</p>
+
+  <h3 id="can-i-use-these-images">Can I use these images?</h3>
+
+  <p>Images are sourced from various places with attribution. Please respect original photographers’ rights. Our own documentation photos may be used with credit.</p>
+
+  <h3 id="why-isnt-my-plush-listed">Why isn’t my plush listed?</h3>
+
+  <p>Either we haven’t documented it yet, or it may be a bootleg/custom. Check the Research page or submit it for review.</p>
+
+  <h3 id="how-do-i-know-if-my-plush-is-authentic">How do I know if my plush is authentic?</h3>
+
+  <p>Look for official tush tags with manufacturer info, proper licensing text, and consistent construction. When in doubt, compare to verified entries or reach out for help on the PokePlush subreddit/discord server.</p>
+
+  <h3 id="do-you-buyselltrade-plushes">Do you buy/sell/trade plushes?</h3>
+
+  <p>No. We are a documentation project only. We don’t facilitate transactions.</p>
+
+  <h3 id="how-can-i-contact-the-maintainers">How can I contact the maintainers?</h3>
+
+  <p>Open a GitHub issue or use the contribution form on the Research page.</p>
+</section>
+
+<style>
+.guide-toc {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  margin-bottom: var(--sp-6);
+}
+
+.guide-toc h2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  margin-bottom: var(--sp-2);
+}
+
+.guide-toc ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.guide-toc a {
+  color: var(--c-accent);
+  text-decoration: none;
+  font-size: var(--text-sm);
+}
+
+.guide-toc a:hover {
+  text-decoration: underline;
+}
+
+section {
+  margin-bottom: var(--sp-8);
+}
+
+section h2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  margin-bottom: var(--sp-4);
+}
+
+section h3 {
+  font-size: var(--text-base);
+  margin-top: var(--sp-4);
+  margin-bottom: var(--sp-2);
+}
+
+section h4 {
+  font-size: var(--text-sm);
+  margin-bottom: var(--sp-1);
+}
+
+section p, section li {
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+section ul {
+  margin-left: var(--sp-4);
+  margin-bottom: var(--sp-3);
+}
+
+section table {
+  width: 100%;
+  margin: var(--sp-3) 0;
+  border-collapse: collapse;
+}
+
+section th, section td {
+  padding: var(--sp-2) var(--sp-3);
+  text-align: left;
+  border: 1px solid var(--c-border);
+  font-size: var(--text-sm);
+}
+
+section th {
+  background: var(--c-surface);
+  font-weight: 600;
+}
+
+section code {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  background: var(--c-surface);
+  padding: 0.1em 0.3em;
+  border-radius: var(--radius-sm);
+}
+
+section pre {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-3);
+  overflow-x: auto;
+  font-size: var(--text-sm);
+}
+
+section pre code {
+  background: none;
+  padding: 0;
+}
+
+.verification-grid {
+  display: grid;
+  gap: var(--sp-4);
+}
+
+.verification-item {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+}
+
+.verification-item .badge {
+  margin-bottom: var(--sp-2);
+}
+
+.verification-item ul {
+  margin: var(--sp-2) 0 var(--sp-2) var(--sp-4);
+}
+
+.availability-guide {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.availability-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2) var(--sp-3);
+  padding: var(--sp-3);
+  background: var(--c-surface);
+  border-radius: var(--radius);
+}
+
+.availability-item strong {
+  min-width: 140px;
+}
+
+.availability-item p {
+  flex: 1;
+  min-width: 200px;
+  margin: 0;
+  color: var(--c-text-secondary);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--c-border);
+  margin: var(--sp-8) 0;
+}
+</style>
+
 
     </div>
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer" role="contentinfo">
     <div class="container">
-      <p>Jirachi Plush Archive · v1.0 · Evidence-based archive</p>
+      <p>Jirachi Plush Archive · v1.0 · Evidence-based Jirachi plush documentation</p>
+      <p class="footer-links">
+        <a href="/jir-archive/guide">How to Contribute</a> ·
+        <a href="https://github.com/YOUR_USERNAME/jirachi-archive">GitHub</a>
+      </p>
     </div>
   </footer>
+
+  <!-- Theme Toggle Script -->
+  <script>
+  (function() {
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    
+    function getPreferredTheme() {
+      const stored = localStorage.getItem('theme');
+      if (stored) return stored;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    
+    function setTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      toggle.setAttribute('aria-pressed', theme === 'dark');
+    }
+    
+    // Initialize aria-pressed
+    toggle.setAttribute('aria-pressed', getPreferredTheme() === 'dark');
+    
+    toggle.addEventListener('click', function() {
+      const current = html.getAttribute('data-theme') || getPreferredTheme();
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+    
+    // Keyboard support
+    toggle.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggle.click();
+      }
+    });
+    
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('theme')) {
+        const newTheme = e.matches ? 'dark' : 'light';
+        html.setAttribute('data-theme', newTheme);
+        toggle.setAttribute('aria-pressed', newTheme === 'dark');
+      }
+    });
+  })();
+  </script>
+  
+  <!-- Lazy Loading for Images -->
+  <script>
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          if (img.dataset.src) {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+          }
+          if (img.dataset.srcset) {
+            img.srcset = img.dataset.srcset;
+            img.removeAttribute('data-srcset');
+          }
+          img.classList.add('loaded');
+          observer.unobserve(img);
+        }
+      });
+    }, { rootMargin: '50px 0px', threshold: 0.01 });
+    
+    document.querySelectorAll('img[data-src], img[loading="lazy"]').forEach(img => {
+      imageObserver.observe(img);
+    });
+  }
+  </script>
 </body>
 </html>

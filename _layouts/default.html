@@ -4,35 +4,199 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
-  <meta name="description" content="{{ site.description }}">
+  <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+  <meta name="author" content="{{ site.author | default: 'Jirachi Plush Archive' }}">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:title" content="{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}">
+  <meta property="og:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+  <meta property="og:site_name" content="{{ site.title }}">
+  {% if page.image %}<meta property="og:image" content="{{ page.image | absolute_url }}">{% endif %}
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}">
+  <meta name="twitter:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+  {% if page.image %}<meta name="twitter:image" content="{{ page.image | absolute_url }}">{% endif %}
+  
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="{{ '/assets/images/favicon.svg' | relative_url }}">
+  <link rel="apple-touch-icon" href="{{ '/assets/images/apple-touch-icon.png' | relative_url }}">
+  
+  <!-- Fonts (preload critical) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "{{ site.title }}",
+    "description": "{{ site.description }}",
+    "url": "{{ site.url }}",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "{{ site.url }}?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  
+  {% if page.layout == 'plush' %}
+  <!-- Plush Item Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "{{ page.name }}",
+    "description": "{{ page.notes | default: page.name | strip_newlines | escape }}",
+    "brand": {
+      "@type": "Brand",
+      "name": "{{ page.company }}"
+    },
+    "category": "Plush Toy",
+    {% if page.images.primary %}"image": "{{ page.images.primary | absolute_url }}",{% endif %}
+    "sku": "{{ page.archive_id }}",
+    {% if page.year %}"releaseDate": "{{ page.year }}",{% endif %}
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/{% if page.availability <= 2 %}InStock{% elsif page.availability <= 3 %}LimitedAvailability{% else %}OutOfStock{% endif %}"
+    }
+  }
+  </script>
+  {% endif %}
+  
+  <!-- Theme Script (prevents flash) -->
+  <script>
+    (function() {
+      const stored = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = stored || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
 </head>
 <body>
-  <header class="site-header">
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <header class="site-header" role="banner">
     <div class="container">
-      <a href="{{ '/' | relative_url }}" class="site-title">{{ site.title }}</a>
-      <nav class="site-nav">
-        <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>Archive</a>
-        <a href="{{ '/research' | relative_url }}" {% if page.url == '/research/' or page.url == '/research.html' %}class="active"{% endif %}>Research</a>
-        <a href="{{ '/stats' | relative_url }}" {% if page.url == '/stats/' or page.url == '/stats.html' %}class="active"{% endif %}>Stats</a>
-        <a href="{{ '/guide' | relative_url }}" {% if page.url == '/guide/' or page.url == '/guide.html' %}class="active"{% endif %}>Guide</a>
+      <a href="{{ '/' | relative_url }}" class="site-title" aria-label="{{ site.title }} - Home">{{ site.title }}</a>
+      <nav class="site-nav" role="navigation" aria-label="Main navigation">
+        <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active" aria-current="page"{% endif %}>Archive</a>
+        <a href="{{ '/research' | relative_url }}" {% if page.url == '/research/' or page.url == '/research.html' %}class="active" aria-current="page"{% endif %}>Research</a>
+        <a href="{{ '/stats' | relative_url }}" {% if page.url == '/stats/' or page.url == '/stats.html' %}class="active" aria-current="page"{% endif %}>Stats</a>
+        <a href="{{ '/guide' | relative_url }}" {% if page.url == '/guide/' or page.url == '/guide.html' %}class="active" aria-current="page"{% endif %}>Guide</a>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
+          <span class="theme-icon-light" aria-hidden="true">☀️</span>
+          <span class="theme-icon-dark" aria-hidden="true">🌙</span>
+        </button>
       </nav>
     </div>
   </header>
 
-  <main class="site-main">
+  <main class="site-main" id="main-content" role="main" tabindex="-1">
     <div class="container">
       {{ content }}
     </div>
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer" role="contentinfo">
     <div class="container">
-      <p>{{ site.title }} · v1.0 · Evidence-based archive</p>
+      <p>{{ site.title }} · v1.0 · Evidence-based Jirachi plush documentation</p>
+      <p class="footer-links">
+        <a href="{{ '/guide' | relative_url }}">How to Contribute</a> ·
+        <a href="https://github.com/YOUR_USERNAME/jirachi-archive">GitHub</a>
+      </p>
     </div>
   </footer>
+
+  <!-- Theme Toggle Script -->
+  <script>
+  (function() {
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    
+    function getPreferredTheme() {
+      const stored = localStorage.getItem('theme');
+      if (stored) return stored;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    
+    function setTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      toggle.setAttribute('aria-pressed', theme === 'dark');
+    }
+    
+    // Initialize aria-pressed
+    toggle.setAttribute('aria-pressed', getPreferredTheme() === 'dark');
+    
+    toggle.addEventListener('click', function() {
+      const current = html.getAttribute('data-theme') || getPreferredTheme();
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+    
+    // Keyboard support
+    toggle.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggle.click();
+      }
+    });
+    
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('theme')) {
+        const newTheme = e.matches ? 'dark' : 'light';
+        html.setAttribute('data-theme', newTheme);
+        toggle.setAttribute('aria-pressed', newTheme === 'dark');
+      }
+    });
+  })();
+  </script>
+  
+  <!-- Lazy Loading for Images -->
+  <script>
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          if (img.dataset.src) {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+          }
+          if (img.dataset.srcset) {
+            img.srcset = img.dataset.srcset;
+            img.removeAttribute('data-srcset');
+          }
+          img.classList.add('loaded');
+          observer.unobserve(img);
+        }
+      });
+    }, { rootMargin: '50px 0px', threshold: 0.01 });
+    
+    document.querySelectorAll('img[data-src], img[loading="lazy"]').forEach(img => {
+      imageObserver.observe(img);
+    });
+  }
+  </script>
 </body>
 </html>

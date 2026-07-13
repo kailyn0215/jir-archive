@@ -8,90 +8,175 @@ title: Archive
 </div>
 
 <div class="toolbar">
-  <button class="btn btn-export" id="export-btn">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-      <path d="M8 2v8m0 0l-3-3m3 3l3-3M3 14h10"/>
-    </svg>
-    Export My Collection
-  </button>
+  <div class="toolbar-group">
+    <button class="btn btn-secondary" id="import-btn">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M8 10V2m0 0L5 5m3-3l3 3M3 14h10"/>
+      </svg>
+      Import
+    </button>
+    <button class="btn btn-primary" id="export-btn">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M8 2v8m0 0l-3-3m3 3l3-3M3 14h10"/>
+      </svg>
+      Export Collection
+    </button>
+  </div>
+  <input type="file" id="import-file" accept=".json,.csv" style="display: none;">
 </div>
 
-<div class="filters">
-  <div class="filter-group">
-    <label for="filter-company">Company</label>
-    <select id="filter-company">
-      <option value="">All</option>
-      {% assign companies = site.plushes | map: "company" | uniq | compact | sort %}
-      {% for company in companies %}
-      <option value="{{ company }}">{{ company }}</option>
-      {% endfor %}
-    </select>
-  </div>
-  <div class="filter-group">
-    <label for="filter-verification">Verification</label>
-    <select id="filter-verification">
-      <option value="">All</option>
-      <option value="Verified">Verified</option>
-      <option value="Strong">Strong</option>
-      <option value="Possible">Possible</option>
-    </select>
-  </div>
-  <div class="filter-group">
-    <label for="filter-owned">Collection</label>
-    <select id="filter-owned">
-      <option value="">All Plushes</option>
-      <option value="owned">My Collection</option>
-      <option value="not-owned">Not Owned</option>
-    </select>
-  </div>
-  <div class="filter-group">
-    <label for="filter-search">Search</label>
-    <input type="text" id="filter-search" placeholder="Name, company, keywords...">
+<!-- Search Bar -->
+<div class="search-bar">
+  <input type="text" id="search-input" placeholder="Search by name, company, year, tags..." autocomplete="off">
+  <span class="search-icon" aria-hidden="true">🔍</span>
+  <span class="search-results-count" id="results-count"></span>
+  <button class="search-clear hidden" id="search-clear" aria-label="Clear search">×</button>
+</div>
+
+<!-- Filter Controls -->
+<div class="filter-controls">
+  <div class="filter-row">
+    <div class="filter-group">
+      <label for="filter-company">Company</label>
+      <select id="filter-company">
+        <option value="">All Companies</option>
+        {% assign companies = site.plushes | map: "company" | uniq | compact | sort %}
+        {% for company in companies %}
+        <option value="{{ company }}">{{ company }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="filter-year">Year</label>
+      <select id="filter-year">
+        <option value="">All Years</option>
+        {% assign years = site.plushes | where_exp: "p", "p.year" | map: "year" | uniq | compact | sort_natural %}
+        {% for year in years %}
+        <option value="{{ year }}">{{ year }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="filter-verification">Status</label>
+      <select id="filter-verification">
+        <option value="">All Status</option>
+        <option value="Verified">Verified</option>
+        <option value="Strong">Strong</option>
+        <option value="Possible">Possible</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="filter-collection">Collection</label>
+      <select id="filter-collection">
+        <option value="">All Plushes</option>
+        <option value="owned">Owned</option>
+        <option value="wanted">Wanted</option>
+        <option value="trade">For Trade</option>
+        <option value="not-tracked">Not Tracked</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="sort-by">Sort</label>
+      <select id="sort-by">
+        <option value="date-asc">Release Date (Old→New)</option>
+        <option value="date-desc">Release Date (New→Old)</option>
+        <option value="id-asc">ID (A→Z)</option>
+        <option value="id-desc">ID (Z→A)</option>
+        <option value="name-asc">Name (A→Z)</option>
+        <option value="name-desc">Name (Z→A)</option>
+        <option value="availability-asc">Availability (Common→Rare)</option>
+        <option value="availability-desc">Availability (Rare→Common)</option>
+      </select>
+    </div>
   </div>
 </div>
 
-<div class="view-toggle">
-  <button class="view-btn active" data-view="grid">Grid</button>
-  <button class="view-btn" data-view="table">Table</button>
+<!-- Active Filter Chips -->
+<div class="filter-chips" id="filter-chips"></div>
+
+<!-- View Toggle & Stats -->
+<div class="view-bar">
+  <div class="view-toggle">
+    <button class="view-btn active" data-view="grid" title="Grid View">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <rect x="1" y="1" width="6" height="6" rx="1"/>
+        <rect x="9" y="1" width="6" height="6" rx="1"/>
+        <rect x="1" y="9" width="6" height="6" rx="1"/>
+        <rect x="9" y="9" width="6" height="6" rx="1"/>
+      </svg>
+    </button>
+    <button class="view-btn" data-view="table" title="Table View">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <rect x="1" y="1" width="14" height="3"/>
+        <rect x="1" y="6" width="14" height="3"/>
+        <rect x="1" y="11" width="14" height="3"/>
+      </svg>
+    </button>
+    <button class="view-btn" data-view="checklist" title="Checklist View">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <rect x="1" y="2" width="3" height="3" rx="0.5"/>
+        <rect x="6" y="2" width="9" height="3"/>
+        <rect x="1" y="7" width="3" height="3" rx="0.5"/>
+        <rect x="6" y="7" width="9" height="3"/>
+        <rect x="1" y="12" width="3" height="3" rx="0.5"/>
+        <rect x="6" y="12" width="9" height="3"/>
+      </svg>
+    </button>
+  </div>
+  <div class="filter-stats">
+    <span id="visible-count">0</span> of <span id="total-count">0</span> shown
+  </div>
 </div>
 
-<div class="plush-grid" id="plush-container">
+<!-- Grid View -->
+<div class="plush-grid" id="plush-grid">
   {% assign master_plushes = site.plushes | where: "status", "Master" | sort: "archive_id" %}
   {% for plush in master_plushes %}
   <div class="plush-item" 
        data-id="{{ plush.archive_id }}"
+       data-name="{{ plush.current_name }}"
        data-company="{{ plush.company }}" 
+       data-year="{{ plush.year }}"
+       data-release-date="{{ plush.release_date }}"
        data-verification="{{ plush.verification }}"
-       data-search="{{ plush.current_name | downcase }} {{ plush.product_line | downcase }} {{ plush.company | downcase }} {{ plush.search_terms | join: ' ' | downcase }}">
+       data-availability="{{ plush.availability | default: 3 }}"
+       data-product-line="{{ plush.product_line }}"
+       data-tags="{{ plush.tags | join: ',' }}"
+       data-search="{{ plush.current_name | downcase }} {{ plush.official_name | downcase }} {{ plush.japanese_name | downcase }} {{ plush.product_line | downcase }} {{ plush.company | downcase }} {{ plush.year }} {{ plush.tags | join: ' ' | downcase }} {{ plush.search_terms | join: ' ' | downcase }}">
     {% include plush-card.html plush=plush %}
   </div>
   {% endfor %}
 </div>
 
+<!-- Table View -->
 <table class="plush-table hidden" id="plush-table">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Company</th>
-      <th>Year</th>
-      <th>Region</th>
+      <th class="sortable" data-sort="id">ID <span class="sort-arrow"></span></th>
+      <th class="sortable" data-sort="name">Name <span class="sort-arrow"></span></th>
+      <th class="sortable" data-sort="company">Company <span class="sort-arrow"></span></th>
+      <th class="sortable" data-sort="year">Year <span class="sort-arrow"></span></th>
+      <th>Product Line</th>
       <th>Status</th>
-      <th>Owned</th>
+      <th>Status</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="table-body">
     {% for plush in master_plushes %}
     <tr class="plush-row"
         data-id="{{ plush.archive_id }}"
+        data-name="{{ plush.current_name }}"
         data-company="{{ plush.company }}" 
+        data-year="{{ plush.year }}"
+        data-release-date="{{ plush.release_date }}"
         data-verification="{{ plush.verification }}"
-        data-search="{{ plush.current_name | downcase }} {{ plush.product_line | downcase }} {{ plush.company | downcase }}">
+        data-availability="{{ plush.availability | default: 3 }}"
+        data-search="{{ plush.current_name | downcase }} {{ plush.product_line | downcase }} {{ plush.company | downcase }} {{ plush.year }}">
       <td><a href="{{ plush.url | relative_url }}">{{ plush.archive_id }}</a></td>
       <td><a href="{{ plush.url | relative_url }}">{{ plush.current_name }}</a></td>
       <td>{{ plush.company }}</td>
       <td>{% if plush.year %}{{ plush.year }}{% else %}—{% endif %}</td>
-      <td>{{ plush.region }}</td>
+      <td>{{ plush.product_line }}</td>
       <td><span class="badge badge-{{ plush.verification | downcase }}">{{ plush.verification }}</span></td>
       <td class="table-owned-cell" data-id="{{ plush.archive_id }}"></td>
     </tr>
@@ -99,9 +184,54 @@ title: Archive
   </tbody>
 </table>
 
-<!-- Plush data for export -->
+<!-- Checklist View -->
+<div class="plush-checklist hidden" id="plush-checklist">
+  {% assign by_company = master_plushes | group_by: "company" %}
+  {% for group in by_company %}
+  <div class="checklist-section" data-company="{{ group.name }}">
+    <h3 class="checklist-heading">
+      {{ group.name }}
+      <span class="checklist-progress">
+        <span class="progress-owned" data-company="{{ group.name }}">0</span> / {{ group.items.size }}
+      </span>
+    </h3>
+    <ul class="checklist-list">
+      {% assign sorted_items = group.items | sort: "archive_id" %}
+      {% for plush in sorted_items %}
+      <li class="checklist-item"
+          data-id="{{ plush.archive_id }}"
+          data-name="{{ plush.current_name }}"
+          data-company="{{ plush.company }}"
+          data-year="{{ plush.year }}"
+          data-release-date="{{ plush.release_date }}"
+          data-verification="{{ plush.verification }}"
+          data-availability="{{ plush.availability | default: 3 }}"
+          data-search="{{ plush.current_name | downcase }} {{ plush.company | downcase }} {{ plush.year }}">
+        <label class="checklist-label">
+          <input type="checkbox" class="checklist-checkbox" data-id="{{ plush.archive_id }}">
+          <span class="checklist-id">{{ plush.archive_id }}</span>
+          <a href="{{ plush.url | relative_url }}" class="checklist-name">{{ plush.current_name }}</a>
+          {% if plush.year %}<span class="checklist-year">{{ plush.year }}</span>{% endif %}
+          <span class="badge badge-{{ plush.verification | downcase }} badge-sm">{{ plush.verification }}</span>
+        </label>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- No Results Message -->
+<div class="empty-state hidden" id="no-results">
+  <div class="empty-state-icon">🔍</div>
+  <h3 class="empty-state-title">No plushes found</h3>
+  <p class="empty-state-text">Try adjusting your search or filters to find what you're looking for.</p>
+  <button class="btn" id="clear-filters">Clear All Filters</button>
+</div>
+
+<!-- Plush data for export and search -->
 <script id="plush-data" type="application/json">
-[{% assign master_plushes = site.plushes | where: "status", "Master" | sort: "archive_id" %}{% for plush in master_plushes %}{"archive_id":"{{ plush.archive_id }}","current_name":"{{ plush.current_name | escape }}","official_name":"{{ plush.official_name | escape }}","japanese_name":"{{ plush.japanese_name | escape }}","company":"{{ plush.company | escape }}","company_id":"{{ plush.company_id | escape }}","year":"{{ plush.year }}","product_line":"{{ plush.product_line | escape }}","region":"{{ plush.region | escape }}","size":"{{ plush.size | escape }}","verification":"{{ plush.verification }}","notes":"{{ plush.notes | escape }}"}{% unless forloop.last %},{% endunless %}{% endfor %}]
+[{% assign master_plushes = site.plushes | where: "status", "Master" | sort: "archive_id" %}{% for plush in master_plushes %}{"archive_id":"{{ plush.archive_id }}","current_name":"{{ plush.current_name | escape }}","official_name":"{{ plush.official_name | escape }}","japanese_name":"{{ plush.japanese_name | escape }}","company":"{{ plush.company | escape }}","company_id":"{{ plush.company_id | escape }}","year":"{{ plush.year }}","product_line":"{{ plush.product_line | escape }}","region":"{{ plush.region | escape }}","size":"{{ plush.size | escape }}","verification":"{{ plush.verification }}","availability":{{ plush.availability | default: 3 }},"tags":{{ plush.tags | default: "" | jsonify }},"notes":"{{ plush.notes | escape }}"}{% unless forloop.last %},{% endunless %}{% endfor %}]
 </script>
 
 <!-- SheetJS for XLSX export -->
@@ -109,175 +239,679 @@ title: Archive
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  const STORAGE_KEY = 'jir-owned';
+  // ======================
+  // STATE MANAGEMENT
+  // ======================
+  const STORAGE_KEY = 'jir-collection';
+  const STORAGE_KEY_LEGACY = 'jir-owned';
+  const state = {
+    search: '',
+    companies: [],
+    years: [],
+    verifications: [],
+    collection: '',
+    sort: 'date-asc',
+    view: 'grid'
+  };
   
-  // Get owned IDs from localStorage
-  function getOwned() {
+  // ======================
+  // COLLECTION TRACKING (owned/wanted/trade)
+  // ======================
+  function getCollection() {
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-    } catch {
-      return [];
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (data && typeof data === 'object' && !Array.isArray(data)) {
+        return data; // { owned: [], wanted: [], trade: [] }
+      }
+      // Migrate from legacy format
+      const legacy = JSON.parse(localStorage.getItem(STORAGE_KEY_LEGACY)) || [];
+      const migrated = { owned: legacy, wanted: [], trade: [] };
+      saveCollection(migrated);
+      return migrated;
+    } catch { return { owned: [], wanted: [], trade: [] }; }
+  }
+  
+  function saveCollection(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+  
+  function getStatus(id) {
+    const col = getCollection();
+    if (col.owned.includes(id)) return 'owned';
+    if (col.wanted.includes(id)) return 'wanted';
+    if (col.trade.includes(id)) return 'trade';
+    return null;
+  }
+  
+  function setStatus(id, status) {
+    const col = getCollection();
+    // Remove from all lists first
+    col.owned = col.owned.filter(x => x !== id);
+    col.wanted = col.wanted.filter(x => x !== id);
+    col.trade = col.trade.filter(x => x !== id);
+    // Add to appropriate list
+    if (status && col[status]) {
+      col[status].push(id);
     }
+    saveCollection(col);
   }
   
-  // Save owned IDs to localStorage
-  function saveOwned(ids) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
+  function cycleStatus(id) {
+    const current = getStatus(id);
+    const order = [null, 'owned', 'wanted', 'trade'];
+    const next = order[(order.indexOf(current) + 1) % order.length];
+    setStatus(id, next);
+    return next;
   }
   
-  // Toggle owned status
-  function toggleOwned(id) {
-    const owned = getOwned();
-    const index = owned.indexOf(id);
-    if (index === -1) {
-      owned.push(id);
-    } else {
-      owned.splice(index, 1);
+  // Legacy compatibility
+  function getOwned() {
+    return getCollection().owned;
+  }
+  
+  // ======================
+  // FUZZY SEARCH
+  // ======================
+  function fuzzyMatch(needle, haystack) {
+    needle = needle.toLowerCase();
+    haystack = haystack.toLowerCase();
+    
+    // Exact substring match
+    if (haystack.includes(needle)) return 100;
+    
+    // Fuzzy match
+    let ni = 0;
+    let score = 0;
+    for (let hi = 0; hi < haystack.length && ni < needle.length; hi++) {
+      if (haystack[hi] === needle[ni]) {
+        score += (hi === 0 || haystack[hi-1] === ' ') ? 2 : 1;
+        ni++;
+      }
     }
-    saveOwned(owned);
-    return owned.includes(id);
+    return ni === needle.length ? score : 0;
   }
   
-  // Update UI for owned status
-  function updateOwnedUI() {
+  // ======================
+  // URL STATE SYNC
+  // ======================
+  function stateToURL() {
+    const params = new URLSearchParams();
+    if (state.search) params.set('q', state.search);
+    if (state.companies.length) params.set('company', state.companies.join(','));
+    if (state.years.length) params.set('year', state.years.join(','));
+    if (state.verifications.length) params.set('status', state.verifications.join(','));
+    if (state.collection) params.set('collection', state.collection);
+    if (state.sort !== 'id-asc') params.set('sort', state.sort);
+    if (state.view !== 'grid') params.set('view', state.view);
+    
+    const newURL = params.toString() ? `${location.pathname}?${params}` : location.pathname;
+    history.replaceState(null, '', newURL);
+  }
+  
+  function urlToState() {
+    const params = new URLSearchParams(location.search);
+    state.search = params.get('q') || '';
+    state.companies = params.get('company')?.split(',').filter(Boolean) || [];
+    state.years = params.get('year')?.split(',').filter(Boolean) || [];
+    state.verifications = params.get('status')?.split(',').filter(Boolean) || [];
+    state.collection = params.get('collection') || '';
+    state.sort = params.get('sort') || 'id-asc';
+    state.view = params.get('view') || 'grid';
+  }
+  
+  // ======================
+  // FILTER CHIPS
+  // ======================
+  function renderChips() {
+    const container = document.getElementById('filter-chips');
+    const chips = [];
+    
+    if (state.search) {
+      chips.push({ type: 'search', value: state.search, label: `"${state.search}"` });
+    }
+    state.companies.forEach(c => chips.push({ type: 'company', value: c, label: c }));
+    state.years.forEach(y => chips.push({ type: 'year', value: y, label: y }));
+    state.verifications.forEach(v => chips.push({ type: 'verification', value: v, label: v }));
+    if (state.collection) {
+      chips.push({ type: 'collection', value: state.collection, label: state.collection === 'owned' ? 'My Collection' : 'Not Owned' });
+    }
+    
+    container.innerHTML = chips.map(c => `
+      <span class="filter-chip" data-type="${c.type}" data-value="${c.value}">
+        ${c.label}
+        <button class="chip-remove" aria-label="Remove filter">×</button>
+      </span>
+    `).join('') + (chips.length > 1 ? '<button class="chip-clear-all" id="chip-clear-all">Clear All</button>' : '');
+    
+    // Attach chip remove handlers
+    container.querySelectorAll('.chip-remove').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const chip = e.target.closest('.filter-chip');
+        removeFilter(chip.dataset.type, chip.dataset.value);
+      });
+    });
+    
+    const clearBtn = document.getElementById('chip-clear-all');
+    if (clearBtn) clearBtn.addEventListener('click', clearAllFilters);
+  }
+  
+  function removeFilter(type, value) {
+    switch(type) {
+      case 'search': state.search = ''; document.getElementById('search-input').value = ''; break;
+      case 'company': state.companies = state.companies.filter(c => c !== value); break;
+      case 'year': state.years = state.years.filter(y => y !== value); break;
+      case 'verification': state.verifications = state.verifications.filter(v => v !== value); break;
+      case 'collection': state.collection = ''; break;
+    }
+    syncUIFromState();
+    applyFiltersAndSort();
+  }
+  
+  function clearAllFilters() {
+    state.search = '';
+    state.companies = [];
+    state.years = [];
+    state.verifications = [];
+    state.collection = '';
+    document.getElementById('search-input').value = '';
+    syncUIFromState();
+    applyFiltersAndSort();
+  }
+  
+  // ======================
+  // SORTING
+  // ======================
+  function getDateSortKey(item) {
+    // Priority: release_date > year > null (undated at end)
+    const releaseDate = item.dataset.releaseDate;
+    const year = item.dataset.year;
+    if (releaseDate && releaseDate !== '') {
+      return releaseDate; // YYYY-MM-DD format sorts lexicographically
+    }
+    if (year && year !== '' && year !== '0') {
+      return year + '-01-01'; // Year-only gets January 1st
+    }
+    return null; // Undated
+  }
+  
+  function sortItems(items) {
+    const [field, direction] = state.sort.split('-');
+    const dir = direction === 'asc' ? 1 : -1;
+    
+    return [...items].sort((a, b) => {
+      let aVal, bVal;
+      switch(field) {
+        case 'id':
+          aVal = a.dataset.id;
+          bVal = b.dataset.id;
+          break;
+        case 'name':
+          aVal = a.dataset.name || '';
+          bVal = b.dataset.name || '';
+          break;
+        case 'year':
+          aVal = parseInt(a.dataset.year) || 0;
+          bVal = parseInt(b.dataset.year) || 0;
+          break;
+        case 'date':
+          // Chronological sort: release_date > year, undated at end
+          aVal = getDateSortKey(a);
+          bVal = getDateSortKey(b);
+          // Handle nulls (undated): always push to end regardless of direction
+          if (aVal === null && bVal === null) {
+            // Both undated: fall back to ID
+            return a.dataset.id.localeCompare(b.dataset.id);
+          }
+          if (aVal === null) return 1;  // a undated, push to end
+          if (bVal === null) return -1; // b undated, push to end
+          // Both have dates: compare
+          if (aVal < bVal) return -1 * dir;
+          if (aVal > bVal) return 1 * dir;
+          // Same date: fall back to ID
+          return a.dataset.id.localeCompare(b.dataset.id);
+        case 'availability':
+          aVal = parseInt(a.dataset.availability) || 3;
+          bVal = parseInt(b.dataset.availability) || 3;
+          break;
+        default:
+          aVal = a.dataset.id;
+          bVal = b.dataset.id;
+      }
+      if (aVal < bVal) return -1 * dir;
+      if (aVal > bVal) return 1 * dir;
+      // Tiebreaker: ID
+      return a.dataset.id.localeCompare(b.dataset.id);
+    });
+  }
+  
+  // ======================
+  // APPLY FILTERS & SORT
+  // ======================
+  function applyFiltersAndSort() {
     const owned = getOwned();
+    const allItems = document.querySelectorAll('.plush-item');
+    const allRows = document.querySelectorAll('.plush-row');
+    const allChecklist = document.querySelectorAll('.checklist-item');
+    const allElements = [...allItems, ...allRows, ...allChecklist];
+    
+    let visibleCount = 0;
+    const totalCount = allItems.length;
+    
+    // Apply filters
+    allElements.forEach(item => {
+      let show = true;
+      const id = item.dataset.id;
+      const isOwned = owned.includes(id);
+      
+      // Search filter
+      if (state.search) {
+        const searchText = item.dataset.search || '';
+        if (fuzzyMatch(state.search, searchText) === 0) show = false;
+      }
+      
+      // Company filter
+      if (state.companies.length && !state.companies.includes(item.dataset.company)) {
+        show = false;
+      }
+      
+      // Year filter
+      if (state.years.length && !state.years.includes(item.dataset.year)) {
+        show = false;
+      }
+      
+      // Verification filter
+      if (state.verifications.length && !state.verifications.includes(item.dataset.verification)) {
+        show = false;
+      }
+      
+      // Collection filter
+      const itemStatus = getStatus(id);
+      if (state.collection === 'owned' && itemStatus !== 'owned') show = false;
+      if (state.collection === 'wanted' && itemStatus !== 'wanted') show = false;
+      if (state.collection === 'trade' && itemStatus !== 'trade') show = false;
+      if (state.collection === 'not-tracked' && itemStatus !== null) show = false;
+      
+      item.style.display = show ? '' : 'none';
+      item.dataset.userOwned = isOwned ? 'true' : 'false';
+      
+      if (show && item.classList.contains('plush-item')) visibleCount++;
+    });
+    
+    // Sort grid items
+    const gridContainer = document.getElementById('plush-grid');
+    const sortedItems = sortItems([...allItems]);
+    sortedItems.forEach(item => gridContainer.appendChild(item));
+    
+    // Sort table rows
+    const tableBody = document.getElementById('table-body');
+    const sortedRows = sortItems([...allRows]);
+    sortedRows.forEach(row => tableBody.appendChild(row));
+    
+    // Update counts
+    document.getElementById('visible-count').textContent = visibleCount;
+    document.getElementById('total-count').textContent = totalCount;
+    
+    // Show/hide no results
+    const noResults = document.getElementById('no-results');
+    const hasFilters = state.search || state.companies.length || state.years.length || 
+                       state.verifications.length || state.collection;
+    noResults.classList.toggle('hidden', visibleCount > 0 || !hasFilters);
+    
+    // Update URL
+    stateToURL();
+    renderChips();
+    updateOwnedUI();
+  }
+  
+  // ======================
+  // UPDATE COLLECTION UI
+  // ======================
+  function updateCollectionUI() {
+    const col = getCollection();
+    const statusIcons = { owned: '✓', wanted: '♡', trade: '↔' };
+    const statusLabels = { owned: 'Owned', wanted: 'Wanted', trade: 'For Trade' };
     
     // Update cards
     document.querySelectorAll('.plush-card').forEach(card => {
       const id = card.dataset.id;
-      const isOwned = owned.includes(id);
-      card.classList.toggle('is-owned', isOwned);
+      const status = getStatus(id);
+      card.classList.remove('is-owned', 'is-wanted', 'is-trade');
+      if (status) card.classList.add('is-' + status);
+      
+      // Update toggle button
+      const toggle = card.querySelector('.collection-toggle');
+      if (toggle) {
+        toggle.dataset.status = status || '';
+        toggle.innerHTML = status ? statusIcons[status] : '+';
+        toggle.title = status ? statusLabels[status] : 'Add to collection';
+      }
     });
     
     // Update table cells
     document.querySelectorAll('.table-owned-cell').forEach(cell => {
       const id = cell.dataset.id;
-      cell.textContent = owned.includes(id) ? '✓' : '';
+      const status = getStatus(id);
+      cell.innerHTML = status ? `<span class="status-badge status-${status}">${statusIcons[status]}</span>` : '';
     });
     
-    // Update plush items data attribute for filtering
-    document.querySelectorAll('.plush-item').forEach(item => {
+    // Update checklist checkboxes
+    document.querySelectorAll('.checklist-checkbox').forEach(cb => {
+      const status = getStatus(cb.dataset.id);
+      cb.checked = status === 'owned';
+      cb.indeterminate = status === 'wanted' || status === 'trade';
+    });
+    
+    // Update checklist progress
+    const companies = {};
+    document.querySelectorAll('.checklist-item').forEach(item => {
+      const company = item.dataset.company;
       const id = item.dataset.id;
-      item.dataset.userOwned = owned.includes(id) ? 'true' : 'false';
+      if (!companies[company]) companies[company] = { total: 0, owned: 0 };
+      companies[company].total++;
+      if (col.owned.includes(id)) companies[company].owned++;
     });
     
-    document.querySelectorAll('.plush-row').forEach(row => {
-      const id = row.dataset.id;
-      row.dataset.userOwned = owned.includes(id) ? 'true' : 'false';
+    document.querySelectorAll('.progress-owned').forEach(el => {
+      const company = el.dataset.company;
+      if (companies[company]) el.textContent = companies[company].owned;
     });
     
-    // Update count
-    document.getElementById('owned-count').textContent = owned.length;
+    // Update total counts
+    document.getElementById('owned-count').textContent = col.owned.length;
   }
   
-  // Initialize owned toggles
-  document.querySelectorAll('.owned-toggle').forEach(btn => {
-    btn.addEventListener('click', function(e) {
+  // Legacy alias
+  function updateOwnedUI() { updateCollectionUI(); }
+  
+  // ======================
+  // SYNC UI FROM STATE
+  // ======================
+  function syncUIFromState() {
+    document.getElementById('search-input').value = state.search;
+    document.getElementById('sort-by').value = state.sort;
+    document.getElementById('filter-collection').value = state.collection;
+    
+    // Multi-select sync
+    const companySelect = document.getElementById('filter-company');
+    [...companySelect.options].forEach(opt => {
+      opt.selected = state.companies.includes(opt.value);
+    });
+    
+    const yearSelect = document.getElementById('filter-year');
+    [...yearSelect.options].forEach(opt => {
+      opt.selected = state.years.includes(opt.value);
+    });
+    
+    const verifySelect = document.getElementById('filter-verification');
+    [...verifySelect.options].forEach(opt => {
+      opt.selected = state.verifications.includes(opt.value);
+    });
+    
+    // View toggle
+    document.querySelectorAll('.view-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.view === state.view);
+    });
+    
+    // Show correct view
+    document.getElementById('plush-grid').classList.toggle('hidden', state.view !== 'grid');
+    document.getElementById('plush-table').classList.toggle('hidden', state.view !== 'table');
+    document.getElementById('plush-checklist').classList.toggle('hidden', state.view !== 'checklist');
+  }
+  
+  // ======================
+  // EVENT LISTENERS
+  // ======================
+  
+  // Search with debounce
+  let searchTimeout;
+  document.getElementById('search-input').addEventListener('input', (e) => {
+    clearTimeout(searchTimeout);
+    const clearBtn = document.getElementById('search-clear');
+    clearBtn.classList.toggle('hidden', !e.target.value);
+    
+    searchTimeout = setTimeout(() => {
+      state.search = e.target.value.trim();
+      applyFiltersAndSort();
+    }, 150);
+  });
+  
+  document.getElementById('search-clear').addEventListener('click', () => {
+    document.getElementById('search-input').value = '';
+    document.getElementById('search-clear').classList.add('hidden');
+    state.search = '';
+    applyFiltersAndSort();
+  });
+  
+  // Dropdown filters (single-select)
+  document.getElementById('filter-company').addEventListener('change', (e) => {
+    state.companies = e.target.value ? [e.target.value] : [];
+    applyFiltersAndSort();
+  });
+  
+  document.getElementById('filter-year').addEventListener('change', (e) => {
+    state.years = e.target.value ? [e.target.value] : [];
+    applyFiltersAndSort();
+  });
+  
+  document.getElementById('filter-verification').addEventListener('change', (e) => {
+    state.verifications = e.target.value ? [e.target.value] : [];
+    applyFiltersAndSort();
+  });
+  
+  document.getElementById('filter-collection').addEventListener('change', (e) => {
+    state.collection = e.target.value;
+    applyFiltersAndSort();
+  });
+  
+  document.getElementById('sort-by').addEventListener('change', (e) => {
+    state.sort = e.target.value;
+    applyFiltersAndSort();
+  });
+  
+  // View toggle
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.view = btn.dataset.view;
+      syncUIFromState();
+      stateToURL();
+    });
+  });
+  
+  // Collection toggle (cards)
+  document.querySelectorAll('.collection-toggle').forEach(btn => {
+    btn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      const id = this.dataset.id;
-      toggleOwned(id);
-      updateOwnedUI();
+      cycleStatus(btn.dataset.id);
+      applyFiltersAndSort();
     });
   });
   
-  // Initial UI update
-  updateOwnedUI();
-  
-  // Filters
-  const filterCompany = document.getElementById('filter-company');
-  const filterVerification = document.getElementById('filter-verification');
-  const filterOwned = document.getElementById('filter-owned');
-  const filterSearch = document.getElementById('filter-search');
-  const gridItems = document.querySelectorAll('.plush-item');
-  const tableRows = document.querySelectorAll('.plush-row');
-  const viewBtns = document.querySelectorAll('.view-btn');
-  const gridContainer = document.getElementById('plush-container');
-  const tableContainer = document.getElementById('plush-table');
-
-  function applyFilters() {
-    const company = filterCompany.value;
-    const verification = filterVerification.value;
-    const owned = filterOwned.value;
-    const search = filterSearch.value.toLowerCase().trim();
-
-    [...gridItems, ...tableRows].forEach(item => {
-      let show = true;
-      if (company && item.dataset.company !== company) show = false;
-      if (verification && item.dataset.verification !== verification) show = false;
-      if (owned === 'owned' && item.dataset.userOwned !== 'true') show = false;
-      if (owned === 'not-owned' && item.dataset.userOwned !== 'false') show = false;
-      if (search && !item.dataset.search.includes(search)) show = false;
-      item.style.display = show ? '' : 'none';
+  // Legacy owned toggle support
+  document.querySelectorAll('.owned-toggle').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      cycleStatus(btn.dataset.id);
+      applyFiltersAndSort();
     });
-  }
-
-  filterCompany.addEventListener('change', applyFilters);
-  filterVerification.addEventListener('change', applyFilters);
-  filterOwned.addEventListener('change', applyFilters);
-  filterSearch.addEventListener('input', applyFilters);
-
-  viewBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-      viewBtns.forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      if (this.dataset.view === 'grid') {
-        gridContainer.classList.remove('hidden');
-        tableContainer.classList.add('hidden');
+  });
+  
+  // Checklist checkboxes
+  document.querySelectorAll('.checklist-checkbox').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const status = getStatus(cb.dataset.id);
+      if (cb.checked) {
+        setStatus(cb.dataset.id, 'owned');
       } else {
-        gridContainer.classList.add('hidden');
-        tableContainer.classList.remove('hidden');
+        setStatus(cb.dataset.id, null);
       }
+      applyFiltersAndSort();
     });
   });
   
-  // Export functionality
+  // Clear filters button
+  document.getElementById('clear-filters').addEventListener('click', clearAllFilters);
+  
+  // Export functionality with format selection
   document.getElementById('export-btn').addEventListener('click', function() {
-    const owned = getOwned();
+    const col = getCollection();
     const plushData = JSON.parse(document.getElementById('plush-data').textContent);
     
-    // Build export data with user's owned status
+    // Show export dialog
+    const format = prompt('Export format:\n1. XLSX (Excel)\n2. JSON\n3. CSV\n\nEnter 1, 2, or 3:', '1');
+    
+    const getStatusStr = (id) => {
+      if (col.owned.includes(id)) return 'Owned';
+      if (col.wanted.includes(id)) return 'Wanted';
+      if (col.trade.includes(id)) return 'For Trade';
+      return '';
+    };
+    
     const exportData = plushData.map(plush => ({
       'Archive ID': plush.archive_id,
       'Current Name': plush.current_name,
       'Official Name': plush.official_name,
       'Japanese Name': plush.japanese_name,
       'Company': plush.company,
-      'Company ID': plush.company_id,
       'Year': plush.year,
       'Product Line': plush.product_line,
       'Region': plush.region,
       'Size': plush.size,
       'Verification': plush.verification,
-      'Owned': owned.includes(plush.archive_id) ? 'Yes' : 'No',
+      'Collection Status': getStatusStr(plush.archive_id),
       'Notes': plush.notes
     }));
     
-    // Create workbook
-    const ws = XLSX.utils.json_to_sheet(exportData);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'My Jirachi Collection');
-    
-    // Set column widths
-    ws['!cols'] = [
-      { wch: 10 }, // Archive ID
-      { wch: 30 }, // Current Name
-      { wch: 30 }, // Official Name
-      { wch: 20 }, // Japanese Name
-      { wch: 25 }, // Company
-      { wch: 10 }, // Company ID
-      { wch: 6 },  // Year
-      { wch: 25 }, // Product Line
-      { wch: 12 }, // Region
-      { wch: 10 }, // Size
-      { wch: 10 }, // Verification
-      { wch: 6 },  // Owned
-      { wch: 40 }  // Notes
-    ];
-    
-    // Download
     const date = new Date().toISOString().split('T')[0];
-    XLSX.writeFile(wb, `Jirachi_Collection_${date}.xlsx`);
+    
+    if (format === '2') {
+      // JSON export
+      const jsonData = {
+        exportDate: new Date().toISOString(),
+        version: '2.0',
+        collection: col,
+        plushes: exportData.filter(p => p['Collection Status'])
+      };
+      const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Jirachi_Collection_${date}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } else if (format === '3') {
+      // CSV export
+      const headers = Object.keys(exportData[0]);
+      const csv = [
+        headers.join(','),
+        ...exportData.map(row => headers.map(h => `"${(row[h] || '').toString().replace(/"/g, '""')}"`).join(','))
+      ].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Jirachi_Collection_${date}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } else {
+      // XLSX export (default)
+      const ws = XLSX.utils.json_to_sheet(exportData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'My Jirachi Collection');
+      
+      ws['!cols'] = [
+        { wch: 12 }, { wch: 30 }, { wch: 30 }, { wch: 20 },
+        { wch: 25 }, { wch: 6 }, { wch: 25 }, { wch: 12 },
+        { wch: 10 }, { wch: 10 }, { wch: 12 }, { wch: 40 }
+      ];
+      
+      XLSX.writeFile(wb, `Jirachi_Collection_${date}.xlsx`);
+    }
   });
+  
+  // Import functionality
+  document.getElementById('import-btn').addEventListener('click', function() {
+    document.getElementById('import-file').click();
+  });
+  
+  document.getElementById('import-file').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      try {
+        const content = evt.target.result;
+        
+        if (file.name.endsWith('.json')) {
+          const data = JSON.parse(content);
+          if (data.collection && typeof data.collection === 'object') {
+            // New format with owned/wanted/trade
+            const col = getCollection();
+            if (data.collection.owned) col.owned = [...new Set([...col.owned, ...data.collection.owned])];
+            if (data.collection.wanted) col.wanted = [...new Set([...col.wanted, ...data.collection.wanted])];
+            if (data.collection.trade) col.trade = [...new Set([...col.trade, ...data.collection.trade])];
+            saveCollection(col);
+            alert(`Imported: ${data.collection.owned?.length || 0} owned, ${data.collection.wanted?.length || 0} wanted, ${data.collection.trade?.length || 0} for trade`);
+          } else if (Array.isArray(data)) {
+            // Legacy array format - treat as owned
+            const col = getCollection();
+            col.owned = [...new Set([...col.owned, ...data])];
+            saveCollection(col);
+            alert(`Imported ${data.length} items as owned`);
+          }
+        } else if (file.name.endsWith('.csv')) {
+          const lines = content.split('\n');
+          const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim().toLowerCase());
+          const idIndex = headers.findIndex(h => h.includes('archive') || h.includes('id'));
+          const statusIndex = headers.findIndex(h => h.includes('status') || h.includes('collection'));
+          
+          if (idIndex === -1) {
+            alert('Could not find Archive ID column in CSV');
+            return;
+          }
+          
+          const col = getCollection();
+          let imported = 0;
+          
+          for (let i = 1; i < lines.length; i++) {
+            const cells = lines[i].match(/(".*?"|[^,]+)/g);
+            if (!cells) continue;
+            
+            const id = cells[idIndex]?.replace(/"/g, '').trim();
+            const status = statusIndex !== -1 ? cells[statusIndex]?.replace(/"/g, '').trim().toLowerCase() : 'owned';
+            
+            if (id && id.startsWith('JIR-')) {
+              if (status.includes('want')) {
+                if (!col.wanted.includes(id)) { col.wanted.push(id); imported++; }
+              } else if (status.includes('trade')) {
+                if (!col.trade.includes(id)) { col.trade.push(id); imported++; }
+              } else if (status.includes('own') || status === 'yes') {
+                if (!col.owned.includes(id)) { col.owned.push(id); imported++; }
+              }
+            }
+          }
+          
+          saveCollection(col);
+          alert(`Imported ${imported} items from CSV`);
+        }
+        
+        applyFiltersAndSort();
+      } catch (err) {
+        alert('Error importing file: ' + err.message);
+      }
+    };
+    
+    reader.readAsText(file);
+    e.target.value = ''; // Reset for next import
+  });
+  
+  // ======================
+  // INITIALIZE
+  // ======================
+  urlToState();
+  syncUIFromState();
+  applyFiltersAndSort();
 });
 </script>

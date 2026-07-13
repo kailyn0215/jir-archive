@@ -10,15 +10,16 @@ title: Stats
 {% assign all_plushes = site.plushes %}
 {% assign master_plushes = site.plushes | where: "status", "Master" %}
 {% assign research_plushes = site.plushes | where: "status", "Research" %}
-{% assign owned_plushes = site.plushes | where: "owned", true %}
+{% assign missing_plushes = site.plushes | where: "status", "Missing" %}
 {% assign verified = site.plushes | where: "verification", "Verified" %}
 {% assign strong = site.plushes | where: "verification", "Strong" %}
 {% assign possible = site.plushes | where: "verification", "Possible" %}
 
+<!-- Primary Stats -->
 <div class="stats-grid">
   <div class="stat-card stat-primary">
     <div class="stat-value">{{ all_plushes.size }}</div>
-    <div class="stat-label">Total Entries</div>
+    <div class="stat-label">Total Documented</div>
   </div>
   <div class="stat-card">
     <div class="stat-value">{{ master_plushes.size }}</div>
@@ -28,26 +29,68 @@ title: Stats
     <div class="stat-value">{{ research_plushes.size }}</div>
     <div class="stat-label">In Research</div>
   </div>
-  <div class="stat-card stat-owned">
-    <div class="stat-value">{{ owned_plushes.size }}</div>
-    <div class="stat-label">Owned</div>
-    <div class="stat-percent">{% assign pct = owned_plushes.size | times: 100.0 | divided_by: master_plushes.size %}{{ pct | round: 1 }}%</div>
+  <div class="stat-card">
+    <div class="stat-value">{{ missing_plushes.size }}</div>
+    <div class="stat-label">Missing/Wanted</div>
   </div>
 </div>
 
+<!-- Personal Collection Stats (Dynamic via JS) -->
+<div class="stats-section" id="collection-stats">
+  <h2>Your Collection</h2>
+  <div class="stats-grid" id="collection-grid">
+    <div class="stat-card stat-owned">
+      <div class="stat-value" id="stat-owned">—</div>
+      <div class="stat-label">Owned</div>
+      <div class="stat-percent" id="stat-owned-pct">—</div>
+    </div>
+    <div class="stat-card" style="border-color: var(--c-accent);">
+      <div class="stat-value" id="stat-wanted">—</div>
+      <div class="stat-label">Wanted</div>
+    </div>
+    <div class="stat-card" style="border-color: var(--c-strong);">
+      <div class="stat-value" id="stat-trade">—</div>
+      <div class="stat-label">For Trade</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="stat-missing-owned">—</div>
+      <div class="stat-label">Until Complete</div>
+      <div class="stat-percent" style="color: var(--c-text-secondary);">Master Archive</div>
+    </div>
+  </div>
+  
+  <!-- Collection Progress Bar -->
+  <div class="progress-container" style="margin-top: var(--sp-4);">
+    <div class="progress-header">
+      <span class="progress-label">Master Archive Completion</span>
+      <span class="progress-value" id="progress-pct">—</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Verification Status -->
 <div class="stats-section">
   <h2>Verification Status</h2>
   <div class="stats-bar-container">
     <div class="stats-bar">
-      <div class="bar-segment bar-verified" style="width: {% assign w = verified.size | times: 100.0 | divided_by: all_plushes.size %}{{ w }}%">
-        {{ verified.size }}
+      {% if verified.size > 0 %}
+      <div class="bar-segment bar-verified" style="width: {% assign w = verified.size | times: 100.0 | divided_by: all_plushes.size %}{{ w }}%" title="Verified: {{ verified.size }}">
+        {% if w > 5 %}{{ verified.size }}{% endif %}
       </div>
-      <div class="bar-segment bar-strong" style="width: {% assign w = strong.size | times: 100.0 | divided_by: all_plushes.size %}{{ w }}%">
-        {{ strong.size }}
+      {% endif %}
+      {% if strong.size > 0 %}
+      <div class="bar-segment bar-strong" style="width: {% assign w = strong.size | times: 100.0 | divided_by: all_plushes.size %}{{ w }}%" title="Strong: {{ strong.size }}">
+        {% if w > 5 %}{{ strong.size }}{% endif %}
       </div>
-      <div class="bar-segment bar-possible" style="width: {% assign w = possible.size | times: 100.0 | divided_by: all_plushes.size %}{{ w }}%">
-        {{ possible.size }}
+      {% endif %}
+      {% if possible.size > 0 %}
+      <div class="bar-segment bar-possible" style="width: {% assign w = possible.size | times: 100.0 | divided_by: all_plushes.size %}{{ w }}%" title="Possible: {{ possible.size }}">
+        {% if w > 5 %}{{ possible.size }}{% endif %}
       </div>
+      {% endif %}
     </div>
     <div class="stats-bar-legend">
       <span class="legend-item"><span class="legend-color bg-verified"></span> Verified ({{ verified.size }})</span>
@@ -57,6 +100,55 @@ title: Stats
   </div>
 </div>
 
+<!-- Availability Distribution -->
+<div class="stats-section">
+  <h2>Availability Distribution</h2>
+  <div class="availability-chart">
+    {% for i in (1..5) %}
+      {% assign level_items = site.plushes | where: "availability", i %}
+      {% assign level_pct = level_items.size | times: 100.0 | divided_by: all_plushes.size %}
+      <div class="availability-row">
+        <span class="availability-label">
+          <span class="rarity-meter">
+            {% for j in (1..5) %}
+            <span class="rarity-dot {% if j <= i %}filled{% endif %}"></span>
+            {% endfor %}
+          </span>
+          <span>Level {{ i }}</span>
+        </span>
+        <div class="availability-bar">
+          <div class="availability-fill" style="width: {{ level_pct }}%"></div>
+        </div>
+        <span class="availability-count">{{ level_items.size }}</span>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Progress by Product Line -->
+<div class="stats-section">
+  <h2>Progress by Product Line</h2>
+  <div class="product-line-progress">
+    {% assign lines = site.plushes | group_by: "product_line" | sort: "size" | reverse %}
+    {% for line in lines %}
+    {% if line.name and line.name != "" %}
+    <div class="progress-row" data-line="{{ line.name }}">
+      <div class="progress-info">
+        <span class="progress-label">{{ line.name }}</span>
+        <span class="progress-count" data-total="{{ line.size }}">
+          <span class="owned-count">0</span> / {{ line.size }}
+        </span>
+      </div>
+      <div class="progress-bar progress-bar-sm">
+        <div class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<!-- By Company -->
 <div class="stats-section">
   <h2>By Company</h2>
   <table class="stats-table">
@@ -65,43 +157,52 @@ title: Stats
         <th>Company</th>
         <th>Total</th>
         <th>Owned</th>
+        <th>Progress</th>
       </tr>
     </thead>
     <tbody>
       {% assign companies = site.plushes | group_by: "company" | sort: "size" | reverse %}
       {% for company in companies %}
-      {% assign company_owned = company.items | where: "owned", true %}
-      <tr>
+      <tr data-company="{{ company.name }}">
         <td>{{ company.name }}</td>
         <td>{{ company.size }}</td>
-        <td>{{ company_owned.size }}</td>
+        <td class="owned-count">—</td>
+        <td class="progress-cell">
+          <div class="progress-bar progress-bar-inline">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+        </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
 
+<!-- By Year -->
 <div class="stats-section">
   <h2>By Year</h2>
-  <table class="stats-table">
-    <thead>
-      <tr>
-        <th>Year</th>
-        <th>Count</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% assign years = site.plushes | group_by: "year" | sort: "name" | reverse %}
+  <div class="timeline-chart" id="timeline-chart">
+    {% assign years = site.plushes | group_by: "year" | sort: "name" %}
+    {% assign max_year_count = 0 %}
+    {% for year in years %}
+      {% if year.size > max_year_count %}{% assign max_year_count = year.size %}{% endif %}
+    {% endfor %}
+    <div class="timeline-bars">
       {% for year in years %}
-      <tr>
-        <td>{% if year.name == "" or year.name == nil %}Unknown{% else %}{{ year.name }}{% endif %}</td>
-        <td>{{ year.size }}</td>
-      </tr>
+      {% if year.name and year.name != "" %}
+      <div class="timeline-bar" title="{{ year.name }}: {{ year.size }} items">
+        <div class="timeline-fill" style="height: {% assign h = year.size | times: 100.0 | divided_by: max_year_count %}{{ h }}%">
+          <span class="timeline-count">{{ year.size }}</span>
+        </div>
+        <span class="timeline-label">{{ year.name | slice: 2, 2 }}</span>
+      </div>
+      {% endif %}
       {% endfor %}
-    </tbody>
-  </table>
+    </div>
+  </div>
 </div>
 
+<!-- By Region -->
 <div class="stats-section">
   <h2>By Region</h2>
   <table class="stats-table">
@@ -109,16 +210,262 @@ title: Stats
       <tr>
         <th>Region</th>
         <th>Count</th>
+        <th>%</th>
       </tr>
     </thead>
     <tbody>
       {% assign regions = site.plushes | group_by: "region" | sort: "size" | reverse %}
       {% for region in regions %}
+      {% assign region_pct = region.size | times: 100.0 | divided_by: all_plushes.size %}
       <tr>
-        <td>{{ region.name }}</td>
+        <td>{% if region.name and region.name != "" %}{{ region.name }}{% else %}Unknown{% endif %}</td>
         <td>{{ region.size }}</td>
+        <td>{{ region_pct | round: 1 }}%</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
+
+<style>
+/* Progress Components */
+.progress-container {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--sp-2);
+}
+
+.progress-label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.progress-value {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--c-accent);
+}
+
+.progress-bar {
+  height: 12px;
+  background: var(--c-bg);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.progress-bar-sm {
+  height: 8px;
+}
+
+.progress-bar-inline {
+  height: 6px;
+  width: 80px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--c-accent), var(--c-verified));
+  border-radius: var(--radius-sm);
+  transition: width 0.5s ease;
+}
+
+/* Product Line Progress */
+.product-line-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+}
+
+.progress-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-sm);
+}
+
+.progress-count {
+  font-family: var(--font-mono);
+  color: var(--c-text-secondary);
+}
+
+/* Availability Chart */
+.availability-chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+}
+
+.availability-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.availability-label {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100px;
+  font-size: var(--text-sm);
+}
+
+.availability-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--c-bg);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.availability-fill {
+  height: 100%;
+  background: var(--c-text-tertiary);
+  border-radius: var(--radius-sm);
+}
+
+.availability-count {
+  width: 40px;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--c-text-secondary);
+}
+
+/* Timeline Chart */
+.timeline-chart {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  overflow-x: auto;
+}
+
+.timeline-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-2);
+  height: 160px;
+  padding-bottom: var(--sp-6);
+}
+
+.timeline-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 32px;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.timeline-fill {
+  width: 100%;
+  background: linear-gradient(180deg, var(--c-accent), var(--c-accent-subtle));
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: var(--sp-1);
+  min-height: 20px;
+}
+
+.timeline-count {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: white;
+  font-weight: 600;
+}
+
+.timeline-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--c-text-tertiary);
+  margin-top: var(--sp-2);
+}
+
+/* Progress cell in table */
+.progress-cell {
+  width: 100px;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Load collection from localStorage
+  const collectionKey = 'jirachi-plush-collection';
+  let collection = {};
+  try {
+    collection = JSON.parse(localStorage.getItem(collectionKey)) || {};
+  } catch (e) {
+    collection = {};
+  }
+  
+  const totalMaster = {{ master_plushes.size }};
+  
+  // Count collection statuses
+  let owned = 0, wanted = 0, trade = 0;
+  Object.values(collection).forEach(status => {
+    if (status === 'owned') owned++;
+    else if (status === 'wanted') wanted++;
+    else if (status === 'trade') trade++;
+  });
+  
+  // Update stat cards
+  document.getElementById('stat-owned').textContent = owned;
+  document.getElementById('stat-wanted').textContent = wanted;
+  document.getElementById('stat-trade').textContent = trade;
+  document.getElementById('stat-missing-owned').textContent = totalMaster - owned;
+  
+  // Update percentages
+  const ownedPct = totalMaster > 0 ? ((owned / totalMaster) * 100).toFixed(1) : 0;
+  document.getElementById('stat-owned-pct').textContent = ownedPct + '%';
+  document.getElementById('progress-pct').textContent = ownedPct + '%';
+  document.getElementById('progress-fill').style.width = ownedPct + '%';
+  
+  // Update company stats
+  document.querySelectorAll('[data-company]').forEach(row => {
+    const company = row.dataset.company;
+    const total = parseInt(row.querySelector('td:nth-child(2)').textContent);
+    let companyOwned = 0;
+    
+    // Count owned for this company (we'd need plush data here)
+    Object.keys(collection).forEach(id => {
+      if (collection[id] === 'owned') {
+        // We'd need to map IDs to companies - simplified for now
+        companyOwned++;
+      }
+    });
+    
+    // For now, show placeholder
+    row.querySelector('.owned-count').textContent = '—';
+  });
+  
+  // Update product line progress
+  document.querySelectorAll('[data-line]').forEach(row => {
+    const line = row.dataset.line;
+    const total = parseInt(row.querySelector('.progress-count').dataset.total);
+    // Similar - would need full mapping
+    row.querySelector('.owned-count').textContent = '0';
+  });
+});
+</script>

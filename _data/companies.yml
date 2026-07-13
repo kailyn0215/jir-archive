@@ -1,42 +1,29 @@
-# Company/Manufacturer definitions
-# Each company has a prefix used in Company IDs
+# Company definitions
+# Each company has a prefix used in Archive IDs (JIR-{PREFIX}-{NNNN})
+# "manufacturer" field in plush frontmatter can capture sub-brands (e.g., Takara Tomy A.R.T.S)
 
-- id: PCJ
-  name: Pokemon Center Japan
-  full_name: The Pokemon Company (Japan)
+- id: JPPC
+  name: Pokémon Center Japan
+  full_name: The Pokémon Company (Japan)
   region: Japan
 
-- id: PCUS
-  name: Pokemon Center US
-  full_name: The Pokemon Company International
+- id: USPC
+  name: Pokémon Center US
+  full_name: The Pokémon Company International
   region: North America
-
-- id: PCTW
-  name: Top Insight Taiwan
-  full_name: Top Insight Co., Ltd.
-  region: Taiwan
 
 - id: TOMY
   name: TOMY
   full_name: TOMY Company, Ltd.
   region: Japan
-
-- id: TTA
-  name: Takara Tomy Arts
-  full_name: Takara Tomy Arts Co., Ltd.
-  region: Japan
+  notes: Includes Takara Tomy and Takara Tomy A.R.T.S releases
 
 - id: BAN
   name: Banpresto
   full_name: Banpresto Co., Ltd.
   region: Japan
 
-- id: BANDAI
-  name: Bandai
-  full_name: Bandai Co., Ltd.
+- id: BNS
+  name: Bandai Spirits
+  full_name: Bandai Spirits Co., Ltd.
   region: Japan
-
-- id: OTH
-  name: Unknown
-  full_name: Unknown Manufacturer
-  region: Unknown
