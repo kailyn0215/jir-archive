@@ -188,26 +188,82 @@ layout: default
       </section>
       {% endif %}
 
-      {% comment %} Related Items {% endcomment %}
+      {% comment %} Related Plushes (Combined Variants + Same Line) {% endcomment %}
+      {% assign same_line = nil %}
       {% if page.product_line_id %}
-      {% assign same_line = site.plushes | where: "product_line_id", page.product_line_id | where_exp: "item", "item.archive_id != page.archive_id" %}
-      {% if same_line.size > 0 %}
-      <section class="plush-related">
-        <h2>Related Items in {{ page.product_line }}</h2>
-        <div class="related-grid">
-          {% for related in same_line limit: 8 %}
-          <a href="{{ related.url | relative_url }}" class="related-item">
-            <span class="related-name">{{ related.current_name }}</span>
-            <span class="related-id">{{ related.archive_id }}</span>
-            {% if related.year %}<span class="related-meta">{{ related.year }}</span>{% endif %}
-          </a>
-          {% endfor %}
-          {% if same_line.size > 8 %}
-          <a href="{{ '/' | relative_url }}?product_line={{ page.product_line_id }}" class="related-item related-more">+{{ same_line.size | minus: 8 }} more</a>
-          {% endif %}
-        </div>
-      </section>
+        {% assign same_line = site.plushes | where: "product_line_id", page.product_line_id | where_exp: "item", "item.archive_id != page.archive_id" %}
       {% endif %}
+      {% if has_variants or same_line.size > 0 %}
+      <section class="plush-related-combined">
+        <h2>Related Plushes</h2>
+        
+        {% comment %} Variants Subsection {% endcomment %}
+        {% if has_variants %}
+        <div class="related-subsection">
+          <h4 class="related-subsection-heading">Variants</h4>
+          <div class="variants-list">
+            {% for variant in all_variants %}
+            {% if variant.archive_id == page.archive_id %}{% assign is_current = true %}{% else %}{% assign is_current = false %}{% endif %}
+            {% assign v_img = nil %}
+            {% if variant.images and variant.images.size > 0 %}{% assign v_img = variant.images.first.src %}
+            {% else %}
+              {% assign v_folder = "/assets/images/plushes/" | append: variant.archive_id | append: "/" %}
+              {% for file in site.static_files %}{% if file.path contains v_folder %}{% assign v_img = file.path %}{% break %}{% endif %}{% endfor %}
+            {% endif %}
+            <a href="{{ variant.url | relative_url }}" class="variant-item {% if is_current %}is-current{% endif %}" {% if is_current %}aria-current="page"{% endif %}>
+              <div class="variant-thumb">
+                {% if v_img %}<img src="{{ v_img | relative_url }}" alt="" loading="lazy">{% else %}<span class="variant-thumb-empty">?</span>{% endif %}
+              </div>
+              <div class="variant-info">
+                <span class="variant-id">{{ variant.archive_id }}</span>
+                {% if variant.variant_type %}<span class="variant-type">{{ variant.variant_type }}</span>
+                {% elsif variant.archive_id == page.variant_of %}<span class="variant-type">Original</span>{% endif %}
+              </div>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+        {% if same_line.size > 0 %}<hr class="related-divider">{% endif %}
+        {% endif %}
+        
+        {% comment %} Same Line Subsection (excluding items already in variants) {% endcomment %}
+        {% assign variant_ids = "" %}
+        {% for v in all_variants %}{% assign variant_ids = variant_ids | append: v.archive_id | append: "," %}{% endfor %}
+        {% assign same_line_filtered = "" | split: "" %}
+        {% for related in same_line %}
+          {% unless variant_ids contains related.archive_id %}
+            {% assign same_line_filtered = same_line_filtered | push: related %}
+          {% endunless %}
+        {% endfor %}
+        {% if same_line_filtered.size > 0 %}
+        <div class="related-subsection">
+          <h4 class="related-subsection-heading">Same Line ({{ page.product_line }})</h4>
+          <div class="same-line-grid">
+            {% for related in same_line_filtered limit: 12 %}
+            {% assign r_img = nil %}
+            {% if related.images and related.images.size > 0 %}{% assign r_img = related.images.first.src %}
+            {% else %}
+              {% assign r_folder = "/assets/images/plushes/" | append: related.archive_id | append: "/" %}
+              {% for file in site.static_files %}{% if file.path contains r_folder %}{% assign r_img = file.path %}{% break %}{% endif %}{% endfor %}
+            {% endif %}
+            <a href="{{ related.url | relative_url }}" class="same-line-item">
+              <div class="same-line-thumb">
+                {% if r_img %}<img src="{{ r_img | relative_url }}" alt="" loading="lazy">{% else %}<span class="thumb-empty">?</span>{% endif %}
+              </div>
+              <span class="same-line-name">{{ related.current_name }}</span>
+              <span class="same-line-id">{{ related.archive_id }}</span>
+            </a>
+            {% endfor %}
+            {% if same_line_filtered.size > 12 %}
+            <a href="{{ '/' | relative_url }}?product_line={{ page.product_line_id }}" class="same-line-item same-line-more">
+              <div class="same-line-thumb"><span class="thumb-empty">+{{ same_line_filtered.size | minus: 12 }}</span></div>
+              <span class="same-line-name">View all</span>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+      </section>
       {% endif %}
 
       {% if content != "" and content != blank %}
@@ -250,6 +306,7 @@ layout: default
           {% if page.company %}<div class="detail-row"><dt>Company</dt><dd>{{ page.company }}</dd></div>{% endif %}
           {% if page.manufacturer and page.manufacturer != page.company %}<div class="detail-row"><dt>Manufacturer</dt><dd>{{ page.manufacturer }}</dd></div>{% endif %}
           {% if page.product_line %}<div class="detail-row"><dt>Product Line</dt><dd>{{ page.product_line }}</dd></div>{% endif %}
+          {% if page.sculpt_id %}<div class="detail-row"><dt>Sculpt</dt><dd>{{ page.sculpt_id }}</dd></div>{% endif %}
           <div class="detail-row"><dt>Year</dt><dd>{% if page.year %}{{ page.year }}{% else %}<span class="text-muted">Unknown</span>{% endif %}</dd></div>
           {% if page.release_date %}<div class="detail-row"><dt>Release Date</dt><dd>{{ page.release_date }}</dd></div>{% endif %}
           <div class="detail-row"><dt>Region</dt><dd>{{ page.region | default: "Unknown" }}</dd></div>
@@ -257,41 +314,13 @@ layout: default
           {% elsif page.price %}<div class="detail-row"><dt>Original Price</dt><dd>{{ page.price }}</dd></div>{% endif %}
           {% if page.acquisition_type %}<div class="detail-row"><dt>Acquisition</dt><dd>{{ page.acquisition_type }}</dd></div>{% endif %}
           {% if page.size %}<div class="detail-row"><dt>Size</dt><dd>{{ page.size }}</dd></div>{% endif %}
-          {% if page.dimensions %}<div class="detail-row"><dt>Dimensions</dt><dd>{% if page.dimensions.height %}{{ page.dimensions.height }}{% endif %}{% if page.dimensions.width %} × {{ page.dimensions.width }}{% endif %}{% if page.dimensions.depth %} × {{ page.dimensions.depth }}{% endif %}{% if page.dimensions.unit %} {{ page.dimensions.unit }}{% endif %}</dd></div>{% endif %}
+          {% if page.dimensions.height or page.dimensions.width or page.dimensions.depth %}<div class="detail-row"><dt>Dimensions</dt><dd>{% if page.dimensions.height %}{{ page.dimensions.height }}{% endif %}{% if page.dimensions.width %} × {{ page.dimensions.width }}{% endif %}{% if page.dimensions.depth %} × {{ page.dimensions.depth }}{% endif %}{% if page.dimensions.unit %} {{ page.dimensions.unit }}{% endif %}</dd></div>{% endif %}
           {% if page.materials and page.materials.size > 0 %}<div class="detail-row"><dt>Materials</dt><dd>{{ page.materials | join: ", " }}</dd></div>{% endif %}
           {% if page.availability %}<div class="detail-row"><dt>Availability</dt><dd><span class="rarity-meter rarity-meter-sidebar">{% for i in (1..5) %}<span class="rarity-dot {% if i <= page.availability %}filled{% endif %}"></span>{% endfor %}</span></dd></div>{% endif %}
           {% if page.variant_type %}<div class="detail-row"><dt>Edition</dt><dd>{{ page.variant_type }}</dd></div>{% endif %}
           {% if page.tags and page.tags.size > 0 %}<div class="detail-row detail-row-tags"><dt>Tags</dt><dd><div class="tag-list">{% for tag in page.tags %}<span class="tag">{{ tag }}</span>{% endfor %}</div></dd></div>{% endif %}
         </dl>
       </div>
-
-      {% comment %} Variants Card {% endcomment %}
-      {% if has_variants %}
-      <div class="sidebar-card variants-card">
-        <h3>Variants</h3>
-        <div class="variants-list">
-          {% for variant in all_variants %}
-          {% if variant.archive_id == page.archive_id %}{% assign is_current = true %}{% else %}{% assign is_current = false %}{% endif %}
-          {% assign v_img = nil %}
-          {% if variant.images and variant.images.size > 0 %}{% assign v_img = variant.images.first.src %}
-          {% else %}
-            {% assign v_folder = "/assets/images/plushes/" | append: variant.archive_id | append: "/" %}
-            {% for file in site.static_files %}{% if file.path contains v_folder %}{% assign v_img = file.path %}{% break %}{% endif %}{% endfor %}
-          {% endif %}
-          <a href="{{ variant.url | relative_url }}" class="variant-item {% if is_current %}is-current{% endif %}" {% if is_current %}aria-current="page"{% endif %}>
-            <div class="variant-thumb">
-              {% if v_img %}<img src="{{ v_img | relative_url }}" alt="" loading="lazy">{% else %}<span class="variant-thumb-empty">?</span>{% endif %}
-            </div>
-            <div class="variant-info">
-              <span class="variant-id">{{ variant.archive_id }}</span>
-              {% if variant.variant_type %}<span class="variant-type">{{ variant.variant_type }}</span>
-              {% elsif variant.archive_id == page.variant_of %}<span class="variant-type">Original</span>{% endif %}
-            </div>
-          </a>
-          {% endfor %}
-        </div>
-      </div>
-      {% endif %}
 
     </aside>
   </div>

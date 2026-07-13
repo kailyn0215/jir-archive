@@ -1,6 +1,6 @@
 # Jirachi Plush Archive
 
-A comprehensive, evidence-based catalog documenting every Jirachi Pokémon plush ever manufactured.
+A comprehensive catalog documenting every Jirachi Pokémon plush ever manufactured.
 
 🌐 **Live Site**: [Coming Soon]
 

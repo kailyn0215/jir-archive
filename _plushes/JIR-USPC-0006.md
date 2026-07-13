@@ -11,8 +11,8 @@ japanese_name:
 romaji_name: 
 
 # === CLASSIFICATION ===
-product_line: poke-doll
-product_line_id: Poké Doll
+product_line: Poké Doll
+product_line_id: poke-doll
 manufacturer: 
 
 # === RELEASE INFO ===
