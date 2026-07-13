@@ -6,6 +6,13 @@ title: Research
 {% assign strong_confidence = research_plushes | where: "confidence", "Strong" %}
 {% assign possible_confidence = research_plushes | where: "confidence", "Possible" %}
 {% assign missing_plushes = site.plushes | where: "status", "Missing" | sort: "archive_id" %}
+{% comment %} Items with status Research but no confidence level assigned {% endcomment %}
+{% assign unclassified_research = "" | split: "" %}
+{% for p in research_plushes %}
+  {% unless p.confidence == "Strong" or p.confidence == "Possible" %}
+    {% assign unclassified_research = unclassified_research | push: p %}
+  {% endunless %}
+{% endfor %}
 
 <div class="page-header">
   <h1>Research Queue</h1>
@@ -53,6 +60,7 @@ title: Research
   <button class="tab-btn active" data-filter="all">All Research ({{ research_plushes.size }})</button>
   <button class="tab-btn" data-filter="strong">Strong ({{ strong_confidence.size }})</button>
   <button class="tab-btn" data-filter="possible">Possible ({{ possible_confidence.size }})</button>
+  {% if unclassified_research.size > 0 %}<button class="tab-btn" data-filter="unclassified">Unclassified ({{ unclassified_research.size }})</button>{% endif %}
   <button class="tab-btn" data-filter="missing">Missing ({{ missing_plushes.size }})</button>
 </div>
 
@@ -76,6 +84,19 @@ title: Research
   <p class="section-desc">May exist but requires additional evidence.</p>
   <div class="plush-grid">
     {% for plush in possible_confidence %}
+    {% include plush-card.html plush=plush %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- Unclassified Research Items (no confidence level set) -->
+{% if unclassified_research.size > 0 %}
+<section class="research-section" data-section="unclassified">
+  <h2>Awaiting Classification</h2>
+  <p class="section-desc">Research items that need confidence level assigned.</p>
+  <div class="plush-grid">
+    {% for plush in unclassified_research %}
     {% include plush-card.html plush=plush %}
     {% endfor %}
   </div>

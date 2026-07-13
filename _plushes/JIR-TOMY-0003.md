@@ -45,12 +45,13 @@ variant_type:
 
 # === STATUS & VERIFICATION ===
 status: Research
-verification: Possible
+confidence: Possible
+verification:
 availability: 
 
 # === PROVENANCE ===
 sources:
-  - type: catalog
+  - type: MFC
     tier: A
     url: https://myfigurecollection.net/item/976647
     accessed: 

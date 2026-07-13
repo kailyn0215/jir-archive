@@ -35,7 +35,7 @@ price:
 price_display: Prize
 
 # === TAXONOMY ===
-tags: ["size:medium"]
+tags: [size:life-size, type:prize]
 search_terms: ["banpresto", "super dx", 2003]
 
 # === VARIANTS & RELATIONSHIPS ===
@@ -45,12 +45,13 @@ variant_type:
 
 # === STATUS & VERIFICATION ===
 status: Master
+confidence:
 verification: Verified
 availability: 
 
 # === PROVENANCE ===
 sources:
-  - type: catalog
+  - type: MFC
     tier: A
     url: https://myfigurecollection.net/item/955053
     accessed: 

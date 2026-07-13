@@ -149,6 +149,15 @@ price_display:                    # Optional. Freeform display string (e.g., "¥
 tags: []                          # Optional. Array of controlled vocabulary tags (category:value)
 search_terms: []                  # Optional. Freeform search keywords
 
+
+# Category	  What it classifies	    Examples
+# size:	      Physical size	            size:mini, size:small, size:medium, size:large, size:jumbo, size:life-size
+# type:	      Distribution/product type	type:standard, type:prize, type:lottery, type:keychain, type:cushion, type:pokedoll
+# material:	  Fabric/material	        material:minky, material:velboa, material:polyester
+# event:	  Release context	        event:promo, event:movie, event:anniversary, event:holiday, event:regional
+# special:	  Pose or unique features	special:sleeping, special:sitting, special:standing, special:shiny
+# variant:	  Variant relationship	    variant:rerelease, variant:color, variant:size, variant:regional
+
 # === VARIANTS & RELATIONSHIPS ===
 sculpt_id:                        # Optional. Shared sculpt identifier (e.g., "SC-002")
 variant_of:                       # Optional. Archive ID of parent item (e.g., "JIR-JPPC-0001")

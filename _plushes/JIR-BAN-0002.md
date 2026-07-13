@@ -35,7 +35,7 @@ price:
 price_display: Prize
 
 # === TAXONOMY ===
-tags: []
+tags: [event:holiday, size:medium]
 search_terms: ["banpresto", "super dx", 2003]
 
 # === VARIANTS & RELATIONSHIPS ===
@@ -44,13 +44,14 @@ variant_of:
 variant_type: 
 
 # === STATUS & VERIFICATION ===
-status: Master
-verification: Verified
+status: Research
+confidence: Strong
+verification:
 availability: 
 
 # === PROVENANCE ===
 sources:
-  - type: catalog
+  - type: MFC
     tier: A
     url: https://myfigurecollection.net/item/952409
     accessed: 

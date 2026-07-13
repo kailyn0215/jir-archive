@@ -35,7 +35,7 @@ price:
 price_display: Prize
 
 # === TAXONOMY ===
-tags: ["type:lottery"]
+tags: [type:lottery, event:movie, size:medium]
 search_terms: ["banpresto", "nanayo no negaiboshi lottery", 2004]
 
 # === VARIANTS & RELATIONSHIPS ===
@@ -45,12 +45,13 @@ variant_type:
 
 # === STATUS & VERIFICATION ===
 status: Master
+confidence:
 verification: Verified
 availability: 
 
 # === PROVENANCE ===
 sources:
-  - type: catalog
+  - type: MFC
     tier: A
     url: https://myfigurecollection.net/item/955054
     accessed: 

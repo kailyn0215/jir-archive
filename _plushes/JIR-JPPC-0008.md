@@ -45,12 +45,13 @@ variant_type:
 
 # === STATUS & VERIFICATION ===
 status: Master
+confidence:
 verification: Verified
 availability: 
 
 # === PROVENANCE ===
 sources:
-  - type: catalog
+  - type: MFC
     tier: A
     url: https://myfigurecollection.net/item/586840
     accessed: 

@@ -35,7 +35,7 @@ price:
 price_display: Prize
 
 # === TAXONOMY ===
-tags: []
+tags: [size:large]
 search_terms: ["banpresto", "pokémon focus", 2018]
 
 # === VARIANTS & RELATIONSHIPS ===
@@ -45,12 +45,13 @@ variant_type:
 
 # === STATUS & VERIFICATION ===
 status: Master
+confidence:
 verification: Verified
 availability: 
 
 # === PROVENANCE ===
 sources:
-  - type: catalog
+  - type: MFC
     tier: A
     url: https://myfigurecollection.net/item/874241
     accessed: 

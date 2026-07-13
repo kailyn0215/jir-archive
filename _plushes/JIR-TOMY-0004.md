@@ -44,13 +44,14 @@ variant_of:
 variant_type: 
 
 # === STATUS & VERIFICATION ===
-status: Master
-verification: Verified
+status: Research
+confidence: Possible
+verification: 
 availability: 
 
 # === PROVENANCE ===
 sources:
-  - type: catalog
+  - type: MFC
     tier: A
     url: https://myfigurecollection.net/item/967126
     accessed: 

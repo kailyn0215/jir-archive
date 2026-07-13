@@ -45,6 +45,7 @@ variant_type: Regional
 
 # === STATUS & VERIFICATION ===
 status: Master
+confidence:
 verification: Verified
 availability: 
 
