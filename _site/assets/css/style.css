@@ -28,8 +28,15 @@
   --c-possible: #6b6b6b;
   --c-possible-bg: rgba(107, 107, 107, 0.08);
   
-  /* Semantic — Status */
+  /* Semantic — Status (collection tracking) */
   --c-owned: #3a6f6f;
+  --c-owned-bg: rgba(58, 111, 111, 0.12);
+  --c-wanted: #c06080;
+  --c-wanted-bg: rgba(192, 96, 128, 0.12);
+  --c-trade: #a67c3d;
+  --c-trade-bg: rgba(166, 124, 61, 0.12);
+  
+  /* Semantic — Archive status */
   --c-master: #3a6f6f;
   --c-research: #a67c3d;
   
@@ -92,6 +99,12 @@
     --c-possible-bg: rgba(138, 138, 138, 0.12);
     
     --c-owned: #5a9a9a;
+    --c-owned-bg: rgba(90, 154, 154, 0.18);
+    --c-wanted: #d080a0;
+    --c-wanted-bg: rgba(208, 128, 160, 0.18);
+    --c-trade: #c69c5d;
+    --c-trade-bg: rgba(198, 156, 93, 0.18);
+    
     --c-master: #5a9a9a;
     --c-research: #c69c5d;
   }
@@ -502,39 +515,39 @@ input, select {
 .plush-card.is-owned .collection-toggle,
 .collection-toggle[data-status="owned"] {
   opacity: 1;
-  border-color: var(--c-verified);
-  background: var(--c-verified);
+  border-color: var(--c-owned);
+  background: var(--c-owned);
   color: white;
 }
 
 .plush-card.is-owned {
-  box-shadow: 0 0 0 2px var(--c-verified);
+  box-shadow: 0 0 0 2px var(--c-owned);
 }
 
 /* Wanted state */
 .plush-card.is-wanted .collection-toggle,
 .collection-toggle[data-status="wanted"] {
   opacity: 1;
-  border-color: var(--c-accent);
-  background: var(--c-accent);
+  border-color: var(--c-wanted);
+  background: var(--c-wanted);
   color: white;
 }
 
 .plush-card.is-wanted {
-  box-shadow: 0 0 0 2px var(--c-accent);
+  box-shadow: 0 0 0 2px var(--c-wanted);
 }
 
 /* For Trade state */
 .plush-card.is-trade .collection-toggle,
 .collection-toggle[data-status="trade"] {
   opacity: 1;
-  border-color: var(--c-strong);
-  background: var(--c-strong);
+  border-color: var(--c-trade);
+  background: var(--c-trade);
   color: white;
 }
 
 .plush-card.is-trade {
-  box-shadow: 0 0 0 2px var(--c-strong);
+  box-shadow: 0 0 0 2px var(--c-trade);
 }
 
 /* Status badges in table */
@@ -549,17 +562,17 @@ input, select {
 }
 
 .status-badge.status-owned {
-  background: var(--c-verified);
+  background: var(--c-owned);
   color: white;
 }
 
 .status-badge.status-wanted {
-  background: var(--c-accent);
+  background: var(--c-wanted);
   color: white;
 }
 
 .status-badge.status-trade {
-  background: var(--c-strong);
+  background: var(--c-trade);
   color: white;
 }
 
@@ -904,30 +917,30 @@ input, select {
 }
 
 .collection-btn[data-status="owned"].is-active {
-  background: rgba(74, 124, 89, 0.1);
-  border-color: var(--c-verified);
+  background: var(--c-owned-bg);
+  border-color: var(--c-owned);
 }
 .collection-btn[data-status="owned"].is-active .btn-icon,
 .collection-btn[data-status="owned"].is-active .btn-label {
-  color: var(--c-verified);
+  color: var(--c-owned);
 }
 
 .collection-btn[data-status="wanted"].is-active {
-  background: rgba(166, 124, 61, 0.1);
-  border-color: var(--c-strong);
+  background: var(--c-wanted-bg);
+  border-color: var(--c-wanted);
 }
 .collection-btn[data-status="wanted"].is-active .btn-icon,
 .collection-btn[data-status="wanted"].is-active .btn-label {
-  color: var(--c-strong);
+  color: var(--c-wanted);
 }
 
 .collection-btn[data-status="trade"].is-active {
-  background: var(--c-accent-subtle);
-  border-color: var(--c-accent);
+  background: var(--c-trade-bg);
+  border-color: var(--c-trade);
 }
 .collection-btn[data-status="trade"].is-active .btn-icon,
 .collection-btn[data-status="trade"].is-active .btn-label {
-  color: var(--c-accent);
+  color: var(--c-trade);
 }
 
 /* Quick Facts Card */
@@ -2113,6 +2126,28 @@ input, select {
 .card-action-btn.is-active {
   background: var(--c-accent);
   border-color: var(--c-accent);
+  color: white;
+}
+
+/* Status-specific card action button overrides */
+.card-action-btn[data-status="owned"],
+.card-action-btn.is-owned {
+  background: var(--c-owned);
+  border-color: var(--c-owned);
+  color: white;
+}
+
+.card-action-btn[data-status="wanted"],
+.card-action-btn.is-wanted {
+  background: var(--c-wanted);
+  border-color: var(--c-wanted);
+  color: white;
+}
+
+.card-action-btn[data-status="trade"],
+.card-action-btn.is-trade {
+  background: var(--c-trade);
+  border-color: var(--c-trade);
   color: white;
 }
 

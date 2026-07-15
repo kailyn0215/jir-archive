@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // ======================
   // STATE MANAGEMENT
   // ======================
-  const STORAGE_KEY = 'jir-collection';
+  const STORAGE_KEY = 'jirachi-collection';  // Must match collection.js
   const STORAGE_KEY_LEGACY = 'jir-owned';
   const state = {
     search: '',
@@ -298,7 +298,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   function cycleStatus(id) {
     const current = getStatus(id);
-    const order = [null, 'owned', 'wanted', 'trade'];
+    const order = [null, 'owned', 'wanted', 'trade'];  // + → ✓ → ♡ → ↔
     const next = order[(order.indexOf(current) + 1) % order.length];
     setStatus(id, next);
     return next;
@@ -723,17 +723,12 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
       e.stopPropagation();
       cycleStatus(btn.dataset.id);
-      applyFiltersAndSort();
-    });
-  });
-  
-  // Legacy owned toggle support
-  document.querySelectorAll('.owned-toggle').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      cycleStatus(btn.dataset.id);
-      applyFiltersAndSort();
+      // Only re-filter if collection filter is active (otherwise just update UI)
+      if (state.collection) {
+        applyFiltersAndSort();
+      } else {
+        updateCollectionUI();
+      }
     });
   });
   
