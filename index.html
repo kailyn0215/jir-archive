@@ -27,69 +27,150 @@ title: Archive
 
 <!-- Search Bar -->
 <div class="search-bar">
-  <input type="text" id="search-input" placeholder="Search by name, company, year, tags..." autocomplete="off">
+  <input type="text" id="search-input" placeholder="Search names, tags, companies, product lines..." autocomplete="off">
   <span class="search-icon" aria-hidden="true">🔍</span>
   <span class="search-results-count" id="results-count"></span>
   <button class="search-clear hidden" id="search-clear" aria-label="Clear search">×</button>
 </div>
 
-<!-- Filter Controls -->
-<div class="filter-controls">
-  <div class="filter-row">
-    <div class="filter-group">
-      <label for="filter-company">Company</label>
-      <select id="filter-company">
-        <option value="">All Companies</option>
-        {% assign companies = site.plushes | map: "company" | uniq | compact | sort %}
-        {% for company in companies %}
-        <option value="{{ company }}">{{ company }}</option>
-        {% endfor %}
-      </select>
+<!-- Filter Panel -->
+<details class="filter-panel" id="filter-panel" aria-label="Search filters">
+  <summary class="filter-panel-summary">
+    <div class="filter-panel-summary-copy">
+      <p class="filter-panel-kicker">Filters</p>
+      <h2>Refine the archive</h2>
+      <p class="filter-panel-note">Combine as many filters as you want. Search still matches names, tags, product lines, and related terms.</p>
     </div>
-    <div class="filter-group">
-      <label for="filter-year">Year</label>
-      <select id="filter-year">
-        <option value="">All Years</option>
-        {% assign years = site.plushes | where_exp: "p", "p.year" | map: "year" | uniq | compact | sort_natural %}
-        {% for year in years %}
-        <option value="{{ year }}">{{ year }}</option>
-        {% endfor %}
-      </select>
+    <span class="filter-panel-summary-state" aria-hidden="true">
+      <span class="filter-panel-summary-text">Open filters</span>
+      <span class="filter-panel-summary-arrow">▾</span>
+    </span>
+  </summary>
+
+  <div class="filter-panel-body">
+    <div class="filter-groups">
+      <details class="filter-group filter-group-year">
+        <summary>
+          <div class="filter-group-heading">
+            <span>Year range</span>
+            <span class="filter-group-summary" id="year-range-summary">All years</span>
+          </div>
+          <span class="filter-group-arrow" aria-hidden="true">▾</span>
+        </summary>
+        <div class="year-range" aria-label="Year range filter">
+          <div class="year-range-timeline" id="year-range-timeline">
+            <div class="year-range-track"></div>
+            <div class="year-range-fill" id="year-range-fill"></div>
+            <button type="button" class="year-range-handle year-range-handle-min" id="year-range-min-handle" role="slider" tabindex="0" aria-label="Minimum year"></button>
+            <button type="button" class="year-range-handle year-range-handle-max" id="year-range-max-handle" role="slider" tabindex="0" aria-label="Maximum year"></button>
+          </div>
+          <div class="year-range-scale" id="year-range-scale" aria-hidden="true"></div>
+        </div>
+      </details>
+
+      <details class="filter-group">
+        <summary>
+          <div class="filter-group-heading">
+            <span>Company</span>
+            <span class="filter-group-summary" id="company-summary">All companies</span>
+          </div>
+          <span class="filter-group-arrow" aria-hidden="true">▾</span>
+        </summary>
+        <div class="filter-option-list" id="filter-company-list"></div>
+      </details>
+
+      <details class="filter-group">
+        <summary>
+          <div class="filter-group-heading">
+            <span>Plush line</span>
+            <span class="filter-group-summary" id="line-summary">All lines</span>
+          </div>
+          <span class="filter-group-arrow" aria-hidden="true">▾</span>
+        </summary>
+        <div class="filter-option-list" id="filter-line-list"></div>
+      </details>
+
+      <details class="filter-group">
+        <summary>
+          <div class="filter-group-heading">
+            <span>Tags</span>
+            <span class="filter-group-summary" id="tag-summary">All tags</span>
+          </div>
+          <span class="filter-group-arrow" aria-hidden="true">▾</span>
+        </summary>
+        <div class="filter-option-list filter-option-list-tags" id="filter-tag-list"></div>
+      </details>
+
+      <details class="filter-group">
+        <summary>
+          <div class="filter-group-heading">
+            <span>Region</span>
+            <span class="filter-group-summary" id="region-summary">All regions</span>
+          </div>
+          <span class="filter-group-arrow" aria-hidden="true">▾</span>
+        </summary>
+        <div class="filter-option-list" id="filter-region-list"></div>
+      </details>
+
+      <details class="filter-group">
+        <summary>
+          <div class="filter-group-heading">
+            <span>Collection</span>
+            <span class="filter-group-summary" id="collection-summary">All plushes</span>
+          </div>
+          <span class="filter-group-arrow" aria-hidden="true">▾</span>
+        </summary>
+        <div class="filter-option-list filter-option-list-radio" id="filter-collection-list">
+          <label class="filter-option">
+            <input type="radio" name="collection-filter" value="">
+            <span class="filter-option-label">All plushes</span>
+          </label>
+          <label class="filter-option">
+            <input type="radio" name="collection-filter" value="owned">
+            <span class="filter-option-label">Owned</span>
+          </label>
+          <label class="filter-option">
+            <input type="radio" name="collection-filter" value="wanted">
+            <span class="filter-option-label">Wanted</span>
+          </label>
+          <label class="filter-option">
+            <input type="radio" name="collection-filter" value="trade">
+            <span class="filter-option-label">For Trade</span>
+          </label>
+          <label class="filter-option">
+            <input type="radio" name="collection-filter" value="not-tracked">
+            <span class="filter-option-label">Not Tracked</span>
+          </label>
+        </div>
+      </details>
+
+      <details class="filter-group">
+        <summary>
+          <div class="filter-group-heading">
+            <span>Sort</span>
+            <span class="filter-group-summary" id="sort-summary">Release date</span>
+          </div>
+          <span class="filter-group-arrow" aria-hidden="true">▾</span>
+        </summary>
+        <div class="filter-option-list filter-option-list-radio">
+          <label class="filter-option"><input type="radio" name="sort-by" value="date-asc" checked><span class="filter-option-label">Release Date (Old→New)</span></label>
+          <label class="filter-option"><input type="radio" name="sort-by" value="date-desc"><span class="filter-option-label">Release Date (New→Old)</span></label>
+          <label class="filter-option"><input type="radio" name="sort-by" value="id-asc"><span class="filter-option-label">ID (A→Z)</span></label>
+          <label class="filter-option"><input type="radio" name="sort-by" value="id-desc"><span class="filter-option-label">ID (Z→A)</span></label>
+          <label class="filter-option"><input type="radio" name="sort-by" value="name-asc"><span class="filter-option-label">Name (A→Z)</span></label>
+          <label class="filter-option"><input type="radio" name="sort-by" value="name-desc"><span class="filter-option-label">Name (Z→A)</span></label>
+          <label class="filter-option"><input type="radio" name="sort-by" value="availability-asc"><span class="filter-option-label">Availability (Common→Rare)</span></label>
+          <label class="filter-option"><input type="radio" name="sort-by" value="availability-desc"><span class="filter-option-label">Availability (Rare→Common)</span></label>
+        </div>
+      </details>
     </div>
-    <div class="filter-group">
-      <label for="filter-verification">Status</label>
-      <select id="filter-verification">
-        <option value="">All Status</option>
-        <option value="Verified">Verified</option>
-        <option value="Strong">Strong</option>
-        <option value="Possible">Possible</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label for="filter-collection">Collection</label>
-      <select id="filter-collection">
-        <option value="">All Plushes</option>
-        <option value="owned">Owned</option>
-        <option value="wanted">Wanted</option>
-        <option value="trade">For Trade</option>
-        <option value="not-tracked">Not Tracked</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label for="sort-by">Sort</label>
-      <select id="sort-by">
-        <option value="date-asc">Release Date (Old→New)</option>
-        <option value="date-desc">Release Date (New→Old)</option>
-        <option value="id-asc">ID (A→Z)</option>
-        <option value="id-desc">ID (Z→A)</option>
-        <option value="name-asc">Name (A→Z)</option>
-        <option value="name-desc">Name (Z→A)</option>
-        <option value="availability-asc">Availability (Common→Rare)</option>
-        <option value="availability-desc">Availability (Rare→Common)</option>
-      </select>
+
+    <div class="filter-panel-footer">
+      <button class="btn btn-secondary" id="clear-filters" type="button">Clear All</button>
+      <button class="btn btn-secondary" id="close-filters" type="button">Close Filters</button>
     </div>
   </div>
-</div>
+</details>
 
 <!-- Active Filter Chips -->
 <div class="filter-chips" id="filter-chips"></div>
@@ -138,10 +219,11 @@ title: Archive
        data-company="{{ plush.company }}" 
        data-year="{{ plush.year }}"
        data-release-date="{{ plush.release_date }}"
-       data-verification="{{ plush.verification }}"
        data-availability="{{ plush.availability | default: 3 }}"
        data-product-line="{{ plush.product_line }}"
        data-tags="{{ plush.tags | join: ',' }}"
+       data-region="{{ plush.region }}"
+       data-size="{{ plush.size }}"
        data-search="{{ plush.current_name | downcase }} {{ plush.official_name | downcase }} {{ plush.japanese_name | downcase }} {{ plush.product_line | downcase }} {{ plush.company | downcase }} {{ plush.year }} {{ plush.tags | join: ' ' | downcase }} {{ plush.search_terms | join: ' ' | downcase }}">
     {% include plush-card.html plush=plush %}
   </div>
@@ -169,9 +251,12 @@ title: Archive
         data-company="{{ plush.company }}" 
         data-year="{{ plush.year }}"
         data-release-date="{{ plush.release_date }}"
-        data-verification="{{ plush.verification }}"
         data-availability="{{ plush.availability | default: 3 }}"
-        data-search="{{ plush.current_name | downcase }} {{ plush.product_line | downcase }} {{ plush.company | downcase }} {{ plush.year }}">
+        data-product-line="{{ plush.product_line }}"
+        data-tags="{{ plush.tags | join: ',' }}"
+        data-region="{{ plush.region }}"
+        data-size="{{ plush.size }}"
+        data-search="{{ plush.current_name | downcase }} {{ plush.official_name | downcase }} {{ plush.japanese_name | downcase }} {{ plush.product_line | downcase }} {{ plush.company | downcase }} {{ plush.year }} {{ plush.tags | join: ' ' | downcase }} {{ plush.search_terms | join: ' ' | downcase }}">
       <td><a href="{{ plush.url | relative_url }}">{{ plush.archive_id }}</a></td>
       <td><a href="{{ plush.url | relative_url }}">{{ plush.current_name }}</a></td>
       <td>{{ plush.company }}</td>
@@ -204,9 +289,12 @@ title: Archive
           data-company="{{ plush.company }}"
           data-year="{{ plush.year }}"
           data-release-date="{{ plush.release_date }}"
-          data-verification="{{ plush.verification }}"
           data-availability="{{ plush.availability | default: 3 }}"
-          data-search="{{ plush.current_name | downcase }} {{ plush.company | downcase }} {{ plush.year }}">
+          data-product-line="{{ plush.product_line }}"
+          data-tags="{{ plush.tags | join: ',' }}"
+          data-region="{{ plush.region }}"
+          data-size="{{ plush.size }}"
+          data-search="{{ plush.current_name | downcase }} {{ plush.official_name | downcase }} {{ plush.japanese_name | downcase }} {{ plush.product_line | downcase }} {{ plush.company | downcase }} {{ plush.year }} {{ plush.tags | join: ' ' | downcase }} {{ plush.search_terms | join: ' ' | downcase }}">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="{{ plush.archive_id }}">
           <span class="checklist-id">{{ plush.archive_id }}</span>
@@ -226,7 +314,7 @@ title: Archive
   <div class="empty-state-icon">🔍</div>
   <h3 class="empty-state-title">No plushes found</h3>
   <p class="empty-state-text">Try adjusting your search or filters to find what you're looking for.</p>
-  <button class="btn" id="clear-filters">Clear All Filters</button>
+  <button class="btn" id="clear-filters-empty" type="button">Clear All Filters</button>
 </div>
 
 <!-- Plush data for export and search -->
@@ -243,16 +331,82 @@ document.addEventListener('DOMContentLoaded', function() {
   // STATE MANAGEMENT
   // ======================
   const STORAGE_KEY = 'jirachi-collection';  // Must match collection.js
-  const STORAGE_KEY_LEGACY = 'jir-owned';
+  const STORAGE_KEY_LEGACY = 'jirachi-plush-collection';
+  const STORAGE_KEY_OLDER = 'jir-owned';
+  const plushData = JSON.parse(document.getElementById('plush-data').textContent);
+  const dataLists = buildFilterLists(plushData);
+  const yearBounds = dataLists.yearValues.length
+    ? { min: dataLists.yearValues[0], max: dataLists.yearValues[dataLists.yearValues.length - 1] }
+    : { min: 0, max: 0 };
   const state = {
     search: '',
     companies: [],
-    years: [],
-    verifications: [],
+    lines: [],
+    tags: [],
+    regions: [],
+    yearMin: yearBounds.min,
+    yearMax: yearBounds.max,
     collection: '',
     sort: 'date-asc',
     view: 'grid'
   };
+
+  function buildFilterLists(data) {
+    const buckets = {
+      companies: new Map(),
+      lines: new Map(),
+      tags: new Map(),
+      regions: new Map(),
+      yearValues: []
+    };
+
+    const bump = (map, value) => {
+      if (!value) return;
+      const key = String(value).trim();
+      if (!key) return;
+      map.set(key, (map.get(key) || 0) + 1);
+    };
+
+    const normalizeArray = (value) => {
+      if (Array.isArray(value)) return value;
+      if (typeof value === 'string' && value.trim()) {
+        return value.split(',').map(v => v.trim()).filter(Boolean);
+      }
+      return [];
+    };
+
+    data.forEach(item => {
+      bump(buckets.companies, item.company);
+      bump(buckets.lines, item.product_line);
+      bump(buckets.regions, item.region);
+
+      const tags = normalizeArray(item.tags);
+      tags.forEach(tag => bump(buckets.tags, tag));
+
+      const year = parseInt(item.year, 10);
+      if (Number.isFinite(year)) buckets.yearValues.push(year);
+    });
+
+    const sortEntries = (map) => [...map.entries()]
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .map(([label, count]) => ({ label, count }));
+
+    buckets.companies = sortEntries(buckets.companies);
+    buckets.lines = sortEntries(buckets.lines);
+    buckets.tags = sortEntries(buckets.tags);
+    buckets.regions = sortEntries(buckets.regions);
+    buckets.yearValues = [...new Set(buckets.yearValues)].sort((a, b) => a - b);
+    return buckets;
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
   
   // ======================
   // COLLECTION TRACKING (owned/wanted/trade)
@@ -264,7 +418,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return data; // { owned: [], wanted: [], trade: [] }
       }
       // Migrate from legacy format
-      const legacy = JSON.parse(localStorage.getItem(STORAGE_KEY_LEGACY)) || [];
+      const legacy = JSON.parse(localStorage.getItem(STORAGE_KEY_LEGACY)) || JSON.parse(localStorage.getItem(STORAGE_KEY_OLDER)) || [];
       const migrated = { owned: legacy, wanted: [], trade: [] };
       saveCollection(migrated);
       return migrated;
@@ -338,10 +492,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const params = new URLSearchParams();
     if (state.search) params.set('q', state.search);
     if (state.companies.length) params.set('company', state.companies.join(','));
-    if (state.years.length) params.set('year', state.years.join(','));
-    if (state.verifications.length) params.set('status', state.verifications.join(','));
+    if (state.lines.length) params.set('line', state.lines.join(','));
+    if (state.tags.length) params.set('tag', state.tags.join(','));
+    if (state.regions.length) params.set('region', state.regions.join(','));
+    if (state.yearMin !== yearBounds.min) params.set('yearMin', String(state.yearMin));
+    if (state.yearMax !== yearBounds.max) params.set('yearMax', String(state.yearMax));
     if (state.collection) params.set('collection', state.collection);
-    if (state.sort !== 'id-asc') params.set('sort', state.sort);
+    if (state.sort !== 'date-asc') params.set('sort', state.sort);
     if (state.view !== 'grid') params.set('view', state.view);
     
     const newURL = params.toString() ? `${location.pathname}?${params}` : location.pathname;
@@ -352,10 +509,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const params = new URLSearchParams(location.search);
     state.search = params.get('q') || '';
     state.companies = params.get('company')?.split(',').filter(Boolean) || [];
-    state.years = params.get('year')?.split(',').filter(Boolean) || [];
-    state.verifications = params.get('status')?.split(',').filter(Boolean) || [];
+    state.lines = params.get('line')?.split(',').filter(Boolean) || [];
+    state.tags = params.get('tag')?.split(',').filter(Boolean) || [];
+    state.regions = params.get('region')?.split(',').filter(Boolean) || [];
+    const legacyYears = params.get('year')?.split(',').filter(Boolean).map(v => parseInt(v, 10)).filter(Number.isFinite) || [];
+    state.yearMin = parseInt(params.get('yearMin'), 10);
+    state.yearMax = parseInt(params.get('yearMax'), 10);
+    if (!Number.isFinite(state.yearMin)) {
+      state.yearMin = legacyYears.length ? Math.min(...legacyYears) : yearBounds.min;
+    }
+    if (!Number.isFinite(state.yearMax)) {
+      state.yearMax = legacyYears.length ? Math.max(...legacyYears) : yearBounds.max;
+    }
     state.collection = params.get('collection') || '';
-    state.sort = params.get('sort') || 'id-asc';
+    state.sort = params.get('sort') || 'date-asc';
     state.view = params.get('view') || 'grid';
   }
   
@@ -370,15 +537,25 @@ document.addEventListener('DOMContentLoaded', function() {
       chips.push({ type: 'search', value: state.search, label: `"${state.search}"` });
     }
     state.companies.forEach(c => chips.push({ type: 'company', value: c, label: c }));
-    state.years.forEach(y => chips.push({ type: 'year', value: y, label: y }));
-    state.verifications.forEach(v => chips.push({ type: 'verification', value: v, label: v }));
+    state.lines.forEach(v => chips.push({ type: 'line', value: v, label: v }));
+    state.tags.forEach(v => chips.push({ type: 'tag', value: v, label: v }));
+    state.regions.forEach(v => chips.push({ type: 'region', value: v, label: v }));
+    if (state.yearMin !== yearBounds.min || state.yearMax !== yearBounds.max) {
+      chips.push({ type: 'year-range', value: `${state.yearMin}-${state.yearMax}`, label: `${state.yearMin}–${state.yearMax}` });
+    }
     if (state.collection) {
-      chips.push({ type: 'collection', value: state.collection, label: state.collection === 'owned' ? 'My Collection' : 'Not Owned' });
+      const collectionLabels = {
+        owned: 'Owned',
+        wanted: 'Wanted',
+        trade: 'For Trade',
+        'not-tracked': 'Not Tracked'
+      };
+      chips.push({ type: 'collection', value: state.collection, label: collectionLabels[state.collection] || state.collection });
     }
     
     container.innerHTML = chips.map(c => `
-      <span class="filter-chip" data-type="${c.type}" data-value="${c.value}">
-        ${c.label}
+      <span class="filter-chip" data-type="${escapeHtml(c.type)}" data-value="${escapeHtml(c.value)}">
+        ${escapeHtml(c.label)}
         <button class="chip-remove" aria-label="Remove filter">×</button>
       </span>
     `).join('') + (chips.length > 1 ? '<button class="chip-clear-all" id="chip-clear-all">Clear All</button>' : '');
@@ -399,8 +576,13 @@ document.addEventListener('DOMContentLoaded', function() {
     switch(type) {
       case 'search': state.search = ''; document.getElementById('search-input').value = ''; break;
       case 'company': state.companies = state.companies.filter(c => c !== value); break;
-      case 'year': state.years = state.years.filter(y => y !== value); break;
-      case 'verification': state.verifications = state.verifications.filter(v => v !== value); break;
+      case 'line': state.lines = state.lines.filter(v => v !== value); break;
+      case 'tag': state.tags = state.tags.filter(v => v !== value); break;
+      case 'region': state.regions = state.regions.filter(v => v !== value); break;
+      case 'year-range':
+        state.yearMin = yearBounds.min;
+        state.yearMax = yearBounds.max;
+        break;
       case 'collection': state.collection = ''; break;
     }
     syncUIFromState();
@@ -410,10 +592,14 @@ document.addEventListener('DOMContentLoaded', function() {
   function clearAllFilters() {
     state.search = '';
     state.companies = [];
-    state.years = [];
-    state.verifications = [];
+    state.lines = [];
+    state.tags = [];
+    state.regions = [];
+    state.yearMin = yearBounds.min;
+    state.yearMax = yearBounds.max;
     state.collection = '';
     document.getElementById('search-input').value = '';
+    document.getElementById('search-clear').classList.add('hidden');
     syncUIFromState();
     applyFiltersAndSort();
   }
@@ -496,6 +682,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let visibleCount = 0;
     const totalCount = allItems.length;
+    const yearRangeChanged = state.yearMin !== yearBounds.min || state.yearMax !== yearBounds.max;
     
     // Apply filters
     allElements.forEach(item => {
@@ -514,14 +701,29 @@ document.addEventListener('DOMContentLoaded', function() {
         show = false;
       }
       
-      // Year filter
-      if (state.years.length && !state.years.includes(item.dataset.year)) {
+      // Product line filter
+      if (state.lines.length && !state.lines.includes(item.dataset.productLine)) {
         show = false;
       }
-      
-      // Verification filter
-      if (state.verifications.length && !state.verifications.includes(item.dataset.verification)) {
+
+      // Tag filter
+      if (state.tags.length) {
+        const itemTags = (item.dataset.tags || '').split(',').map(v => v.trim()).filter(Boolean);
+        if (!state.tags.some(tag => itemTags.includes(tag))) show = false;
+      }
+
+      // Region filter
+      if (state.regions.length && !state.regions.includes(item.dataset.region)) {
         show = false;
+      }
+
+      // Year range filter
+      const itemYear = parseInt(item.dataset.year, 10);
+      const hasYear = Number.isFinite(itemYear);
+      if (yearRangeChanged) {
+        if (!hasYear || itemYear < state.yearMin || itemYear > state.yearMax) {
+          show = false;
+        }
       }
       
       // Collection filter
@@ -553,8 +755,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Show/hide no results
     const noResults = document.getElementById('no-results');
-    const hasFilters = state.search || state.companies.length || state.years.length || 
-                       state.verifications.length || state.collection;
+    const hasFilters = state.search || state.companies.length || state.lines.length ||
+                       state.tags.length || state.regions.length ||
+                       state.collection || state.yearMin !== yearBounds.min || state.yearMax !== yearBounds.max;
     noResults.classList.toggle('hidden', visibleCount > 0 || !hasFilters);
     
     // Update URL
@@ -624,27 +827,306 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateOwnedUI() { updateCollectionUI(); }
   
   // ======================
+  // FILTER PANEL RENDERING
+  // ======================
+  function renderFilterOptionList(containerId, items, type) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    container.innerHTML = items.map(item => `
+      <label class="filter-option">
+        <input type="checkbox" data-filter-type="${escapeHtml(type)}" value="${escapeHtml(item.label)}">
+        <span class="filter-option-label">${escapeHtml(item.label)}</span>
+        <span class="filter-option-count">${escapeHtml(item.count)}</span>
+      </label>
+    `).join('');
+  }
+
+  function renderTagFilterList() {
+    const container = document.getElementById('filter-tag-list');
+    if (!container) return;
+
+    const categories = {
+      size: [],
+      type: [],
+      event: [],
+      special: [],
+      variant: [],
+      other: []
+    };
+
+    dataLists.tags.forEach(item => {
+      const raw = String(item.label || '');
+      const [prefix, ...rest] = raw.split(':');
+      const value = rest.length ? rest.join(':') : raw;
+      const key = categories[prefix] ? prefix : 'other';
+      categories[key].push({ raw, value, count: item.count });
+    });
+
+    const sizeOrder = ['mini', 'small', 'medium', 'large', 'life-size'];
+    categories.size.sort((a, b) => {
+      const aIndex = sizeOrder.indexOf(a.value);
+      const bIndex = sizeOrder.indexOf(b.value);
+      if (aIndex !== -1 || bIndex !== -1) {
+        if (aIndex === -1) return 1;
+        if (bIndex === -1) return -1;
+        return aIndex - bIndex;
+      }
+      return a.value.localeCompare(b.value);
+    });
+    ['type', 'event', 'special', 'variant', 'other'].forEach(key => {
+      categories[key].sort((a, b) => a.value.localeCompare(b.value));
+    });
+
+    const ordered = [
+      ['size', 'Size'],
+      ['type', 'Type'],
+      ['event', 'Event'],
+      ['special', 'Special'],
+      ['variant', 'Variant'],
+      ['other', 'Other']
+    ];
+
+    const sections = ordered
+      .map(([key, title]) => {
+        const items = categories[key];
+        if (!items.length) return '';
+
+        const options = items.map(item => `
+          <label class="filter-option">
+            <input type="checkbox" data-filter-type="tag" value="${escapeHtml(item.raw)}">
+            <span class="filter-option-label">${escapeHtml(item.value)}</span>
+            <span class="filter-option-count">${escapeHtml(item.count)}</span>
+          </label>
+        `).join('');
+
+        return `
+          <details class="filter-tag-category" open>
+            <summary class="filter-tag-category-summary">
+              <span class="filter-tag-category-title">${escapeHtml(title)}</span>
+              <span class="filter-tag-category-arrow" aria-hidden="true">▾</span>
+            </summary>
+            <div class="filter-option-list filter-option-list-tags filter-tag-category-list">
+              ${options}
+            </div>
+          </details>
+        `;
+      })
+      .join('');
+
+    container.innerHTML = sections;
+  }
+
+  function renderFilterLists() {
+    renderFilterOptionList('filter-company-list', dataLists.companies, 'company');
+    renderFilterOptionList('filter-line-list', dataLists.lines, 'line');
+    renderTagFilterList();
+    renderFilterOptionList('filter-region-list', dataLists.regions, 'region');
+  }
+
+  function renderYearScale() {
+    const scale = document.getElementById('year-range-scale');
+    if (!scale) return;
+
+    const min = yearBounds.min;
+    const max = yearBounds.max;
+    if (!Number.isFinite(min) || !Number.isFinite(max) || max < min) {
+      scale.innerHTML = '';
+      return;
+    }
+
+    const span = Math.max(1, max - min);
+    let step = 1;
+    let majorStep = 1;
+
+    if (span > 120) {
+      step = 10;
+      majorStep = 20;
+    } else if (span > 60) {
+      step = 5;
+      majorStep = 10;
+    } else if (span > 30) {
+      step = 2;
+      majorStep = 5;
+    } else {
+      step = 1;
+      majorStep = 2;
+    }
+
+    const values = [];
+    for (let year = min; year <= max; year += step) {
+      values.push(year);
+    }
+    if (values[values.length - 1] !== max) values.push(max);
+
+    scale.innerHTML = [...new Set(values)].map(year => {
+      const pct = span === 0 ? 0 : ((year - min) / span) * 100;
+      const isMajor = year === min || year === max || ((year - min) % majorStep === 0);
+      return `
+        <span class="year-range-scale-item ${isMajor ? 'is-major' : ''}" style="left:${pct}%">
+          ${isMajor ? escapeHtml(year) : ''}
+        </span>
+      `;
+    }).join('');
+  }
+
+  function updateYearRangeUI() {
+    const timeline = document.getElementById('year-range-timeline');
+    const minHandle = document.getElementById('year-range-min-handle');
+    const maxHandle = document.getElementById('year-range-max-handle');
+    const fill = document.getElementById('year-range-fill');
+
+    if (state.yearMin > state.yearMax) {
+      [state.yearMin, state.yearMax] = [state.yearMax, state.yearMin];
+    }
+
+    const span = yearBounds.max - yearBounds.min;
+    const minPct = span > 0 ? ((state.yearMin - yearBounds.min) / span) * 100 : 0;
+    const maxPct = span > 0 ? ((state.yearMax - yearBounds.min) / span) * 100 : 100;
+
+    if (fill && yearBounds.max > yearBounds.min) {
+      fill.style.left = `${Math.max(0, Math.min(100, minPct))}%`;
+      fill.style.width = `${Math.max(0, Math.min(100, maxPct - minPct))}%`;
+    } else if (fill) {
+      fill.style.left = '0%';
+      fill.style.width = '100%';
+    }
+
+    if (minHandle) {
+      minHandle.style.left = `${Math.max(0, Math.min(100, minPct))}%`;
+      minHandle.setAttribute('aria-valuemin', String(yearBounds.min));
+      minHandle.setAttribute('aria-valuemax', String(state.yearMax));
+      minHandle.setAttribute('aria-valuenow', String(state.yearMin));
+      minHandle.setAttribute('aria-valuetext', String(state.yearMin));
+    }
+
+    if (maxHandle) {
+      maxHandle.style.left = `${Math.max(0, Math.min(100, maxPct))}%`;
+      maxHandle.setAttribute('aria-valuemin', String(state.yearMin));
+      maxHandle.setAttribute('aria-valuemax', String(yearBounds.max));
+      maxHandle.setAttribute('aria-valuenow', String(state.yearMax));
+      maxHandle.setAttribute('aria-valuetext', String(state.yearMax));
+    }
+
+    renderYearScale();
+  }
+
+  function setYearRange(nextMin, nextMax) {
+    const min = Math.max(yearBounds.min, Math.min(yearBounds.max, nextMin));
+    const max = Math.max(yearBounds.min, Math.min(yearBounds.max, nextMax));
+    state.yearMin = Math.min(min, max);
+    state.yearMax = Math.max(min, max);
+    updateYearRangeUI();
+    updateFilterSummaries();
+    applyFiltersAndSort();
+  }
+
+  function yearFromClientX(clientX) {
+    const timeline = document.getElementById('year-range-timeline');
+    if (!timeline) return yearBounds.min;
+
+    const rect = timeline.getBoundingClientRect();
+    if (!rect.width) return yearBounds.min;
+
+    const styles = getComputedStyle(timeline);
+    const leftInset = parseFloat(styles.paddingLeft) || 0;
+    const rightInset = parseFloat(styles.paddingRight) || 0;
+    const left = rect.left + leftInset;
+    const width = Math.max(1, rect.width - leftInset - rightInset);
+    const raw = (clientX - left) / width;
+    const pct = Math.max(0, Math.min(1, raw));
+    return Math.round(yearBounds.min + pct * (yearBounds.max - yearBounds.min));
+  }
+
+  function stepYearHandle(handle, delta) {
+    if (handle === 'min') {
+      setYearRange(Math.min(state.yearMin + delta, state.yearMax), state.yearMax);
+    } else if (handle === 'max') {
+      setYearRange(state.yearMin, Math.max(state.yearMax + delta, state.yearMin));
+    }
+  }
+
+  function handleYearHandleKeydown(e, handle) {
+    const step = e.shiftKey ? 5 : 1;
+    switch (e.key) {
+      case 'ArrowLeft':
+      case 'ArrowDown':
+        e.preventDefault();
+        stepYearHandle(handle, -step);
+        break;
+      case 'ArrowRight':
+      case 'ArrowUp':
+        e.preventDefault();
+        stepYearHandle(handle, step);
+        break;
+      case 'Home':
+        e.preventDefault();
+        if (handle === 'min') setYearRange(yearBounds.min, state.yearMax);
+        else setYearRange(state.yearMin, state.yearMin);
+        break;
+      case 'End':
+        e.preventDefault();
+        if (handle === 'min') setYearRange(state.yearMax, state.yearMax);
+        else setYearRange(state.yearMin, yearBounds.max);
+        break;
+    }
+  }
+
+  function updateFilterSummaries() {
+    const setSummary = (id, label, count) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = count ? `${count} selected` : label;
+    };
+
+    setSummary('company-summary', 'All companies', state.companies.length);
+    setSummary('line-summary', 'All lines', state.lines.length);
+    setSummary('tag-summary', 'All tags', state.tags.length);
+    setSummary('region-summary', 'All regions', state.regions.length);
+    setSummary('collection-summary', 'All plushes', state.collection ? 1 : 0);
+
+    const sortLabels = {
+      'date-asc': 'Release date',
+      'date-desc': 'Release date',
+      'id-asc': 'ID',
+      'id-desc': 'ID',
+      'name-asc': 'Name',
+      'name-desc': 'Name',
+      'availability-asc': 'Availability',
+      'availability-desc': 'Availability'
+    };
+    const sortSummary = document.getElementById('sort-summary');
+    if (sortSummary) sortSummary.textContent = sortLabels[state.sort] || 'Release date';
+  }
+
+  // ======================
   // SYNC UI FROM STATE
   // ======================
   function syncUIFromState() {
     document.getElementById('search-input').value = state.search;
-    document.getElementById('sort-by').value = state.sort;
-    document.getElementById('filter-collection').value = state.collection;
-    
-    // Multi-select sync
-    const companySelect = document.getElementById('filter-company');
-    [...companySelect.options].forEach(opt => {
-      opt.selected = state.companies.includes(opt.value);
+    document.getElementById('search-clear').classList.toggle('hidden', !state.search);
+    renderFilterLists();
+    updateYearRangeUI();
+    updateFilterSummaries();
+
+    document.querySelectorAll('input[name="sort-by"]').forEach(input => {
+      input.checked = input.value === state.sort;
     });
-    
-    const yearSelect = document.getElementById('filter-year');
-    [...yearSelect.options].forEach(opt => {
-      opt.selected = state.years.includes(opt.value);
+
+    document.querySelectorAll('input[name="collection-filter"]').forEach(input => {
+      input.checked = input.value === state.collection;
     });
-    
-    const verifySelect = document.getElementById('filter-verification');
-    [...verifySelect.options].forEach(opt => {
-      opt.selected = state.verifications.includes(opt.value);
+
+    const map = {
+      company: state.companies,
+      line: state.lines,
+      tag: state.tags,
+      region: state.regions
+    };
+    document.querySelectorAll('[data-filter-type]').forEach(input => {
+      const type = input.dataset.filterType;
+      if (map[type]) {
+        input.checked = map[type].includes(input.value);
+      }
     });
     
     // View toggle
@@ -682,31 +1164,123 @@ document.addEventListener('DOMContentLoaded', function() {
     applyFiltersAndSort();
   });
   
-  // Dropdown filters (single-select)
-  document.getElementById('filter-company').addEventListener('change', (e) => {
-    state.companies = e.target.value ? [e.target.value] : [];
-    applyFiltersAndSort();
-  });
-  
-  document.getElementById('filter-year').addEventListener('change', (e) => {
-    state.years = e.target.value ? [e.target.value] : [];
-    applyFiltersAndSort();
-  });
-  
-  document.getElementById('filter-verification').addEventListener('change', (e) => {
-    state.verifications = e.target.value ? [e.target.value] : [];
-    applyFiltersAndSort();
-  });
-  
-  document.getElementById('filter-collection').addEventListener('change', (e) => {
-    state.collection = e.target.value;
-    applyFiltersAndSort();
-  });
-  
-  document.getElementById('sort-by').addEventListener('change', (e) => {
-    state.sort = e.target.value;
-    applyFiltersAndSort();
-  });
+  // Filter panel interactions
+  const filterPanel = document.getElementById('filter-panel');
+  if (filterPanel) {
+    const updatePanelState = () => {
+      const stateText = filterPanel.querySelector('.filter-panel-summary-text');
+      if (stateText) stateText.textContent = filterPanel.open ? 'Close filters' : 'Open filters';
+    };
+
+    updatePanelState();
+    filterPanel.addEventListener('toggle', updatePanelState);
+
+    filterPanel.addEventListener('change', (e) => {
+      const target = e.target;
+
+      if (target.matches('input[type="checkbox"][data-filter-type]')) {
+        const type = target.dataset.filterType;
+        const value = target.value;
+        const map = {
+          company: state.companies,
+          line: state.lines,
+          tag: state.tags,
+          region: state.regions
+        };
+        const list = map[type];
+        if (list) {
+          if (target.checked) {
+            if (!list.includes(value)) list.push(value);
+          } else {
+            map[type] = list.filter(v => v !== value);
+            if (type === 'company') state.companies = map[type];
+            if (type === 'line') state.lines = map[type];
+            if (type === 'tag') state.tags = map[type];
+            if (type === 'region') state.regions = map[type];
+          }
+        }
+        updateFilterSummaries();
+        applyFiltersAndSort();
+        return;
+      }
+
+      if (target.matches('input[name="collection-filter"]')) {
+        state.collection = target.value;
+        updateFilterSummaries();
+        applyFiltersAndSort();
+        return;
+      }
+
+      if (target.matches('input[name="sort-by"]')) {
+        state.sort = target.value;
+        updateFilterSummaries();
+        applyFiltersAndSort();
+        return;
+      }
+    });
+
+    const yearTimeline = document.getElementById('year-range-timeline');
+    const yearMinHandle = document.getElementById('year-range-min-handle');
+    const yearMaxHandle = document.getElementById('year-range-max-handle');
+    let activeYearHandle = null;
+
+    const dragYearHandle = (handle, clientX) => {
+      const year = yearFromClientX(clientX);
+      if (handle === 'min') {
+        setYearRange(Math.min(year, state.yearMax), state.yearMax);
+      } else if (handle === 'max') {
+        setYearRange(state.yearMin, Math.max(year, state.yearMin));
+      }
+    };
+
+    if (yearTimeline && yearMinHandle && yearMaxHandle) {
+      yearTimeline.addEventListener('pointerdown', (e) => {
+        const targetHandle = e.target.closest('.year-range-handle');
+        const clickedYear = yearFromClientX(e.clientX);
+        const handle = targetHandle === yearMinHandle
+          ? 'min'
+          : targetHandle === yearMaxHandle
+            ? 'max'
+            : (Math.abs(clickedYear - state.yearMin) <= Math.abs(clickedYear - state.yearMax) ? 'min' : 'max');
+
+        activeYearHandle = handle;
+        dragYearHandle(handle, e.clientX);
+
+        if (yearTimeline.setPointerCapture) {
+          try {
+            yearTimeline.setPointerCapture(e.pointerId);
+          } catch (err) {
+            // ignore
+          }
+        }
+
+        e.preventDefault();
+      });
+
+      window.addEventListener('pointermove', (e) => {
+        if (!activeYearHandle) return;
+        dragYearHandle(activeYearHandle, e.clientX);
+      });
+
+      window.addEventListener('pointerup', () => {
+        activeYearHandle = null;
+      });
+
+      window.addEventListener('pointercancel', () => {
+        activeYearHandle = null;
+      });
+
+      yearMinHandle.addEventListener('keydown', (e) => handleYearHandleKeydown(e, 'min'));
+      yearMaxHandle.addEventListener('keydown', (e) => handleYearHandleKeydown(e, 'max'));
+    }
+
+    const closeFilters = document.getElementById('close-filters');
+    if (closeFilters) {
+      closeFilters.addEventListener('click', () => {
+        filterPanel.open = false;
+      });
+    }
+  }
   
   // View toggle
   document.querySelectorAll('.view-btn').forEach(btn => {
@@ -747,6 +1321,8 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Clear filters button
   document.getElementById('clear-filters').addEventListener('click', clearAllFilters);
+  const clearFiltersEmpty = document.getElementById('clear-filters-empty');
+  if (clearFiltersEmpty) clearFiltersEmpty.addEventListener('click', clearAllFilters);
   
   // Export functionality with format selection
   document.getElementById('export-btn').addEventListener('click', function() {

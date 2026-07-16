@@ -9,11 +9,11 @@
   <meta name="robots" content="index, follow">
   
   <!-- Canonical URL -->
-  <link rel="canonical" href="http://localhost:4000/jir-archive/stats.html">
+  <link rel="canonical" href="https://kailyn0215.github.io/jir-archive/stats.html">
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://localhost:4000/jir-archive/stats.html">
+  <meta property="og:url" content="https://kailyn0215.github.io/jir-archive/stats.html">
   <meta property="og:title" content="Stats | Jirachi Plush Archive">
   <meta property="og:description" content="A comprehensive database of every officially licensed Jirachi plush">
   <meta property="og:site_name" content="Jirachi Plush Archive">
@@ -26,8 +26,7 @@
   
   
   <!-- Theme Color -->
-  <meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" id="theme-color-meta" content="#faf9f7">
   
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/jir-archive/assets/images/favicon.svg">
@@ -40,6 +39,7 @@
   
   <!-- Styles -->
   <link rel="stylesheet" href="/jir-archive/assets/css/style.css">
+  <script src="/jir-archive/assets/js/collection.js"></script>
   
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -48,10 +48,10 @@
     "@type": "WebSite",
     "name": "Jirachi Plush Archive",
     "description": "A comprehensive database of every officially licensed Jirachi plush",
-    "url": "http://localhost:4000",
+    "url": "https://kailyn0215.github.io",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "http://localhost:4000?q={search_term_string}",
+      "target": "https://kailyn0215.github.io?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   }
@@ -81,9 +81,9 @@
         <a href="/jir-archive/research" >Research</a>
         <a href="/jir-archive/stats" class="active" aria-current="page">Stats</a>
         <a href="/jir-archive/guide" >Guide</a>
-        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
-          <span class="theme-icon-light" aria-hidden="true">☀️</span>
-          <span class="theme-icon-dark" aria-hidden="true">🌙</span>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+          <span class="theme-toggle-icon" aria-hidden="true">☀️</span>
+          <span class="theme-toggle-label">Light</span>
         </button>
       </nav>
     </div>
@@ -133,7 +133,7 @@
       <div class="stat-label">Owned</div>
       <div class="stat-percent" id="stat-owned-pct">—</div>
     </div>
-    <div class="stat-card" style="border-color: var(--c-accent);">
+    <div class="stat-card" style="border-color: var(--c-wanted);">
       <div class="stat-value" id="stat-wanted">—</div>
       <div class="stat-label">Wanted</div>
     </div>
@@ -1224,66 +1224,215 @@
 }
 </style>
 
+<script id="stats-plush-data" type="application/json">
+[
+
+  {"id": "JIR-BAN-0001", "company": "Banpresto", "line": "Super DX"},
+
+  {"id": "JIR-BAN-0002", "company": "Banpresto", "line": "Super DX"},
+
+  {"id": "JIR-BAN-0003", "company": "Banpresto", "line": "Ichiban Kuji"},
+
+  {"id": "JIR-BAN-0004", "company": "Banpresto", "line": "Super DX"},
+
+  {"id": "JIR-BAN-0005", "company": "Banpresto", "line": "Nanayo no Negaiboshi Lottery"},
+
+  {"id": "JIR-BAN-0006", "company": "Banpresto", "line": "Korotto Manmaru"},
+
+  {"id": "JIR-BAN-0007", "company": "Banpresto", "line": "Ichiban Kuji"},
+
+  {"id": "JIR-BAN-0008", "company": "Banpresto", "line": "Pokémon Focus"},
+
+  {"id": "JIR-BAN-0009", "company": "Banpresto", "line": "Yawaraka Pokémon Nuigurumi 4"},
+
+  {"id": "JIR-BNS-0001", "company": "Bandai Spirits", "line": "Mecha Mofugutto"},
+
+  {"id": "JIR-JPPC-0001", "company": "Pokémon Center Japan", "line": "Poké Doll"},
+
+  {"id": "JIR-JPPC-0002", "company": "Pokémon Center Japan / PokéPark", "line": "Poké Doll"},
+
+  {"id": "JIR-JPPC-0003", "company": "Pokémon Center Japan", "line": "Poké Doll"},
+
+  {"id": "JIR-JPPC-0004", "company": "Pokémon Center Japan", "line": "Poké Doll"},
+
+  {"id": "JIR-JPPC-0005", "company": "Pokémon Center Japan", "line": "Poké Doll"},
+
+  {"id": "JIR-JPPC-0006", "company": "Pokémon Center Japan", "line": "Kuttari Nuigurumi"},
+
+  {"id": "JIR-JPPC-0007", "company": "Pokémon Center Japan", "line": "Kuttari Nuigurumi"},
+
+  {"id": "JIR-JPPC-0008", "company": "Pokémon Center Japan", "line": "Tohoku Renewal"},
+
+  {"id": "JIR-JPPC-0009", "company": "Pokémon Center Japan", "line": "Tohoku Renewal"},
+
+  {"id": "JIR-JPPC-0010", "company": "Pokémon Center Japan", "line": "Henshin! Metamon"},
+
+  {"id": "JIR-JPPC-0011", "company": "Pokémon Center Japan", "line": "Henshin! Metamon"},
+
+  {"id": "JIR-JPPC-0012", "company": "Pokémon Center Japan", "line": "Pokémon Fit"},
+
+  {"id": "JIR-JPPC-0013", "company": "Pokémon Center Japan", "line": "Speed Star"},
+
+  {"id": "JIR-JPPC-0014", "company": "Pokémon Center Japan", "line": "Saiko Soda"},
+
+  {"id": "JIR-JPPC-0015", "company": "Pokémon Center Japan", "line": "Hoshi Tsunagi"},
+
+  {"id": "JIR-JPPC-0016", "company": "Pokémon Center Japan", "line": "I Choose You!"},
+
+  {"id": "JIR-JPPC-0017", "company": "Morishita / JPPC", "line": "Mochi Mochi Diecut Makura"},
+
+  {"id": "JIR-JPPC-0018", "company": "Pokémon Center Japan", "line": "Hoshi Tsunagi"},
+
+  {"id": "JIR-TOMY-0001", "company": "TOMY", "line": "Fluffy TOMY Plush"},
+
+  {"id": "JIR-TOMY-0002", "company": "TOMY", "line": "Fluffy TOMY Plush"},
+
+  {"id": "JIR-TOMY-0003", "company": "TOMY", "line": "Fluffy TOMY Plush"},
+
+  {"id": "JIR-TOMY-0004", "company": "TOMY", "line": null},
+
+  {"id": "JIR-TOMY-0005", "company": "TOMY", "line": "Swing Nuiguru"},
+
+  {"id": "JIR-TOMY-0006", "company": "TOMY", "line": "Kururin Mascot Jumbo Part 3"},
+
+  {"id": "JIR-TOMY-0007", "company": "Takara Tomy", "line": "Movie 10th Anniversary"},
+
+  {"id": "JIR-TOMY-0008", "company": "Takara Tomy A.R.T.S", "line": "All Star Collection"},
+
+  {"id": "JIR-TOMY-0009", "company": "Takara Tomy A.R.T.S", "line": "PokéPeace"},
+
+  {"id": "JIR-TOMY-0010", "company": "TOMY", "line": "Fluffy TOMY Plush"},
+
+  {"id": "JIR-TOMY-0011", "company": "TOMY", "line": "Keychain Plush"},
+
+  {"id": "JIR-USPC-0001", "company": "Pokémon Center US", "line": "Saiko Soda"},
+
+  {"id": "JIR-USPC-0002", "company": "Pokémon Center US", "line": "Sitting Cuties"},
+
+  {"id": "JIR-USPC-0003", "company": "Pokémon Center US", "line": "Mythical Lights"},
+
+  {"id": "JIR-USPC-0004", "company": "Pokémon Center US", "line": "Mythical Lights"},
+
+  {"id": "JIR-USPC-0005", "company": "Pokémon Center US", "line": "Comfy Cuddlers"},
+
+  {"id": "JIR-USPC-0006", "company": "Pokémon Center US", "line": "Poké Doll"},
+
+  {"id": "JIR-USPC-0007", "company": "Pokémon Center US", "line": "Poké Plush"}
+
+]
+</script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Load collection from localStorage
-  const collectionKey = 'jirachi-plush-collection';
-  let collection = {};
-  try {
-    collection = JSON.parse(localStorage.getItem(collectionKey)) || {};
-  } catch (e) {
-    collection = {};
-  }
-  
   const totalMaster = 37;
-  
-  // Count collection statuses
-  let owned = 0, wanted = 0, trade = 0;
-  Object.values(collection).forEach(status => {
-    if (status === 'owned') owned++;
-    else if (status === 'wanted') wanted++;
-    else if (status === 'trade') trade++;
-  });
-  
-  // Update stat cards
-  document.getElementById('stat-owned').textContent = owned;
-  document.getElementById('stat-wanted').textContent = wanted;
-  document.getElementById('stat-trade').textContent = trade;
-  document.getElementById('stat-missing-owned').textContent = totalMaster - owned;
-  
-  // Update percentages
-  const ownedPct = totalMaster > 0 ? ((owned / totalMaster) * 100).toFixed(1) : 0;
-  document.getElementById('stat-owned-pct').textContent = ownedPct + '%';
-  document.getElementById('progress-pct').textContent = ownedPct + '%';
-  document.getElementById('progress-fill').style.width = ownedPct + '%';
-  
-  // Update company stats
-  document.querySelectorAll('[data-company]').forEach(row => {
-    const company = row.dataset.company;
-    const total = parseInt(row.querySelector('td:nth-child(2)').textContent);
-    let companyOwned = 0;
-    
-    // Count owned for this company (we'd need plush data here)
-    Object.keys(collection).forEach(id => {
-      if (collection[id] === 'owned') {
-        // We'd need to map IDs to companies - simplified for now
-        companyOwned++;
+  const plushData = JSON.parse(document.getElementById('stats-plush-data').textContent);
+
+  function readCollection() {
+    if (window.JirachiCollection && typeof window.JirachiCollection.getCollection === 'function') {
+      return window.JirachiCollection.getCollection();
+    }
+
+    const raw = localStorage.getItem('jirachi-collection') || localStorage.getItem('jirachi-plush-collection');
+    if (!raw) return { owned: [], wanted: [], trade: [] };
+
+    try {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed.owned) || Array.isArray(parsed.wanted) || Array.isArray(parsed.trade)) {
+        return {
+          owned: Array.isArray(parsed.owned) ? parsed.owned : [],
+          wanted: Array.isArray(parsed.wanted) ? parsed.wanted : [],
+          trade: Array.isArray(parsed.trade) ? parsed.trade : []
+        };
+      }
+
+      const normalized = { owned: [], wanted: [], trade: [] };
+      Object.keys(parsed || {}).forEach(id => {
+        const status = parsed[id];
+        if (normalized[status]) normalized[status].push(id);
+      });
+      return normalized;
+    } catch (e) {
+      return { owned: [], wanted: [], trade: [] };
+    }
+  }
+
+  function renderCollectionStats() {
+    const collection = readCollection();
+    const ownedIds = new Set(collection.owned || []);
+    const wantedIds = new Set(collection.wanted || []);
+    const tradeIds = new Set(collection.trade || []);
+
+    const owned = ownedIds.size;
+    const wanted = wantedIds.size;
+    const trade = tradeIds.size;
+
+    document.getElementById('stat-owned').textContent = owned;
+    document.getElementById('stat-wanted').textContent = wanted;
+    document.getElementById('stat-trade').textContent = trade;
+    document.getElementById('stat-missing-owned').textContent = Math.max(totalMaster - owned, 0);
+
+    const ownedPct = totalMaster > 0 ? ((owned / totalMaster) * 100).toFixed(1) : '0.0';
+    document.getElementById('stat-owned-pct').textContent = ownedPct + '%';
+    document.getElementById('progress-pct').textContent = ownedPct + '%';
+    document.getElementById('progress-fill').style.width = ownedPct + '%';
+
+    const byCompany = {};
+    const byLine = {};
+
+    plushData.forEach(item => {
+      if (!item || !item.id) return;
+
+      if (item.company) {
+        if (!byCompany[item.company]) byCompany[item.company] = { total: 0, owned: 0 };
+        byCompany[item.company].total += 1;
+        if (ownedIds.has(item.id)) byCompany[item.company].owned += 1;
+      }
+
+      if (item.line) {
+        if (!byLine[item.line]) byLine[item.line] = { total: 0, owned: 0 };
+        byLine[item.line].total += 1;
+        if (ownedIds.has(item.id)) byLine[item.line].owned += 1;
       }
     });
-    
-    // For now, show placeholder
-    row.querySelector('.owned-count').textContent = '—';
-  });
-  
-  // Update product line progress
-  document.querySelectorAll('[data-line]').forEach(row => {
-    const line = row.dataset.line;
-    const total = parseInt(row.querySelector('.progress-count').dataset.total);
-    // Similar - would need full mapping
-    row.querySelector('.owned-count').textContent = '0';
+
+    document.querySelectorAll('[data-company]').forEach(row => {
+      const company = row.dataset.company;
+      const stats = byCompany[company] || { total: 0, owned: 0 };
+      const ownedCell = row.querySelector('.owned-count');
+      const progressFill = row.querySelector('.progress-fill');
+
+      if (ownedCell) ownedCell.textContent = stats.owned;
+      if (progressFill) {
+        const pct = stats.total > 0 ? ((stats.owned / stats.total) * 100).toFixed(1) : '0';
+        progressFill.style.width = pct + '%';
+      }
+    });
+
+    document.querySelectorAll('[data-line]').forEach(row => {
+      const line = row.dataset.line;
+      const stats = byLine[line] || { total: 0, owned: 0 };
+      const ownedCell = row.querySelector('.owned-count');
+      const progressFill = row.querySelector('.progress-fill');
+      const total = parseInt(row.querySelector('.progress-count').dataset.total, 10) || stats.total;
+
+      if (ownedCell) ownedCell.textContent = stats.owned;
+      if (progressFill) {
+        const pct = total > 0 ? ((stats.owned / total) * 100).toFixed(1) : '0';
+        progressFill.style.width = pct + '%';
+      }
+    });
+  }
+
+  renderCollectionStats();
+  document.addEventListener('collection:changed', renderCollectionStats);
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'jirachi-collection' || e.key === 'jirachi-plush-collection') {
+      renderCollectionStats();
+    }
   });
 });
 </script>
+
     </div>
   </main>
 
@@ -1291,7 +1440,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="container">
       <p>Jirachi Plush Archive · v1.0 · Official Jirachi plush documentation</p>
       <p class="footer-links">
-        <a href="/jir-archive/guide">How to Contribute</a> ·
+        <a href="/jir-archive/research#contribute-to-the-archive">How to Contribute</a> ·
         <a href="https://github.com/YOUR_USERNAME/jirachi-archive">GitHub</a>
       </p>
     </div>
@@ -1302,41 +1451,70 @@ document.addEventListener('DOMContentLoaded', function() {
   (function() {
     const toggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
+    const themeColorMeta = document.getElementById('theme-color-meta');
+    const themes = ['light', 'dark', 'stardust'];
+    const themeConfig = {
+      light: {
+        icon: '☀️',
+        label: 'Light',
+        next: 'Dark',
+        themeColor: '#faf9f7'
+      },
+      dark: {
+        icon: '🌙',
+        label: 'Dark',
+        next: 'Stardust',
+        themeColor: '#141413'
+      },
+      stardust: {
+        icon: '✨',
+        label: 'Stardust',
+        next: 'Light',
+        themeColor: '#f3de97'
+      }
+    };
     
     function getPreferredTheme() {
       const stored = localStorage.getItem('theme');
-      if (stored) return stored;
+      if (themes.includes(stored)) return stored;
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
     
-    function setTheme(theme) {
+    function updateThemeUI(theme) {
+      const config = themeConfig[theme] || themeConfig.light;
+      const icon = toggle.querySelector('.theme-toggle-icon');
+      const label = toggle.querySelector('.theme-toggle-label');
+
+      if (icon) icon.textContent = config.icon;
+      if (label) label.textContent = config.label;
+      toggle.setAttribute('aria-label', `Theme: ${config.label}. Click to switch to ${config.next}.`);
+      toggle.title = `Theme: ${config.label}. Click to switch to ${config.next}.`;
+
+      if (themeColorMeta) {
+        themeColorMeta.setAttribute('content', config.themeColor);
+      }
+    }
+
+    function setTheme(theme, persist = true) {
       html.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-      toggle.setAttribute('aria-pressed', theme === 'dark');
+      if (persist) localStorage.setItem('theme', theme);
+      updateThemeUI(theme);
     }
     
-    // Initialize aria-pressed
-    toggle.setAttribute('aria-pressed', getPreferredTheme() === 'dark');
+    const initialTheme = getPreferredTheme();
+    setTheme(initialTheme, false);
     
     toggle.addEventListener('click', function() {
       const current = html.getAttribute('data-theme') || getPreferredTheme();
-      setTheme(current === 'dark' ? 'light' : 'dark');
-    });
-    
-    // Keyboard support
-    toggle.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggle.click();
-      }
+      const nextTheme = themes[(themes.indexOf(current) + 1) % themes.length];
+      setTheme(nextTheme);
     });
     
     // Listen for system theme changes
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
       if (!localStorage.getItem('theme')) {
         const newTheme = e.matches ? 'dark' : 'light';
-        html.setAttribute('data-theme', newTheme);
-        toggle.setAttribute('aria-pressed', newTheme === 'dark');
+        setTheme(newTheme, false);
       }
     });
   })();

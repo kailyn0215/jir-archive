@@ -214,7 +214,7 @@ JIR-[COMPANY]-[NUMBER]
 
 ## Contributing
 
-We welcome contributions! See the [Guide](/guide#contributing) for details.
+We welcome contributions! See the [Research page](/research#contribute-to-the-archive) for details.
 
 ### Quick Contribution Steps
 

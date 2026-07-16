@@ -9,11 +9,11 @@
   <meta name="robots" content="index, follow">
   
   <!-- Canonical URL -->
-  <link rel="canonical" href="http://localhost:4000/jir-archive/plush/jir-uspc-0005/">
+  <link rel="canonical" href="https://kailyn0215.github.io/jir-archive/plush/jir-uspc-0005/">
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://localhost:4000/jir-archive/plush/jir-uspc-0005/">
+  <meta property="og:url" content="https://kailyn0215.github.io/jir-archive/plush/jir-uspc-0005/">
   <meta property="og:title" content="Jir Uspc 0005 | Jirachi Plush Archive">
   <meta property="og:description" content="A comprehensive database of every officially licensed Jirachi plush">
   <meta property="og:site_name" content="Jirachi Plush Archive">
@@ -26,8 +26,7 @@
   
   
   <!-- Theme Color -->
-  <meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" id="theme-color-meta" content="#faf9f7">
   
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/jir-archive/assets/images/favicon.svg">
@@ -40,6 +39,7 @@
   
   <!-- Styles -->
   <link rel="stylesheet" href="/jir-archive/assets/css/style.css">
+  <script src="/jir-archive/assets/js/collection.js"></script>
   
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -48,10 +48,10 @@
     "@type": "WebSite",
     "name": "Jirachi Plush Archive",
     "description": "A comprehensive database of every officially licensed Jirachi plush",
-    "url": "http://localhost:4000",
+    "url": "https://kailyn0215.github.io",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "http://localhost:4000?q={search_term_string}",
+      "target": "https://kailyn0215.github.io?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   }
@@ -103,9 +103,9 @@
         <a href="/jir-archive/research" >Research</a>
         <a href="/jir-archive/stats" >Stats</a>
         <a href="/jir-archive/guide" >Guide</a>
-        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
-          <span class="theme-icon-light" aria-hidden="true">☀️</span>
-          <span class="theme-icon-dark" aria-hidden="true">🌙</span>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+          <span class="theme-toggle-icon" aria-hidden="true">☀️</span>
+          <span class="theme-toggle-label">Light</span>
         </button>
       </nav>
     </div>
@@ -335,7 +335,6 @@
 </div>
 
 
-<script src="/jir-archive/assets/js/collection.js"></script>
 <script>
 (function() {
   'use strict';
@@ -476,7 +475,7 @@
     <div class="container">
       <p>Jirachi Plush Archive · v1.0 · Official Jirachi plush documentation</p>
       <p class="footer-links">
-        <a href="/jir-archive/guide">How to Contribute</a> ·
+        <a href="/jir-archive/research#contribute-to-the-archive">How to Contribute</a> ·
         <a href="https://github.com/YOUR_USERNAME/jirachi-archive">GitHub</a>
       </p>
     </div>
@@ -487,41 +486,70 @@
   (function() {
     const toggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
+    const themeColorMeta = document.getElementById('theme-color-meta');
+    const themes = ['light', 'dark', 'stardust'];
+    const themeConfig = {
+      light: {
+        icon: '☀️',
+        label: 'Light',
+        next: 'Dark',
+        themeColor: '#faf9f7'
+      },
+      dark: {
+        icon: '🌙',
+        label: 'Dark',
+        next: 'Stardust',
+        themeColor: '#141413'
+      },
+      stardust: {
+        icon: '✨',
+        label: 'Stardust',
+        next: 'Light',
+        themeColor: '#f3de97'
+      }
+    };
     
     function getPreferredTheme() {
       const stored = localStorage.getItem('theme');
-      if (stored) return stored;
+      if (themes.includes(stored)) return stored;
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
     
-    function setTheme(theme) {
+    function updateThemeUI(theme) {
+      const config = themeConfig[theme] || themeConfig.light;
+      const icon = toggle.querySelector('.theme-toggle-icon');
+      const label = toggle.querySelector('.theme-toggle-label');
+
+      if (icon) icon.textContent = config.icon;
+      if (label) label.textContent = config.label;
+      toggle.setAttribute('aria-label', `Theme: ${config.label}. Click to switch to ${config.next}.`);
+      toggle.title = `Theme: ${config.label}. Click to switch to ${config.next}.`;
+
+      if (themeColorMeta) {
+        themeColorMeta.setAttribute('content', config.themeColor);
+      }
+    }
+
+    function setTheme(theme, persist = true) {
       html.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-      toggle.setAttribute('aria-pressed', theme === 'dark');
+      if (persist) localStorage.setItem('theme', theme);
+      updateThemeUI(theme);
     }
     
-    // Initialize aria-pressed
-    toggle.setAttribute('aria-pressed', getPreferredTheme() === 'dark');
+    const initialTheme = getPreferredTheme();
+    setTheme(initialTheme, false);
     
     toggle.addEventListener('click', function() {
       const current = html.getAttribute('data-theme') || getPreferredTheme();
-      setTheme(current === 'dark' ? 'light' : 'dark');
-    });
-    
-    // Keyboard support
-    toggle.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggle.click();
-      }
+      const nextTheme = themes[(themes.indexOf(current) + 1) % themes.length];
+      setTheme(nextTheme);
     });
     
     // Listen for system theme changes
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
       if (!localStorage.getItem('theme')) {
         const newTheme = e.matches ? 'dark' : 'light';
-        html.setAttribute('data-theme', newTheme);
-        toggle.setAttribute('aria-pressed', newTheme === 'dark');
+        setTheme(newTheme, false);
       }
     });
   })();

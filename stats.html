@@ -44,7 +44,7 @@ title: Stats
       <div class="stat-label">Owned</div>
       <div class="stat-percent" id="stat-owned-pct">—</div>
     </div>
-    <div class="stat-card" style="border-color: var(--c-accent);">
+    <div class="stat-card" style="border-color: var(--c-wanted);">
       <div class="stat-value" id="stat-wanted">—</div>
       <div class="stat-label">Wanted</div>
     </div>
@@ -409,63 +409,121 @@ title: Stats
 }
 </style>
 
+<script id="stats-plush-data" type="application/json">
+[
+{% for plush in site.plushes %}
+  {"id": {{ plush.archive_id | jsonify }}, "company": {{ plush.company | jsonify }}, "line": {{ plush.product_line | jsonify }}}{% unless forloop.last %},{% endunless %}
+{% endfor %}
+]
+</script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Load collection from localStorage
-  const collectionKey = 'jirachi-plush-collection';
-  let collection = {};
-  try {
-    collection = JSON.parse(localStorage.getItem(collectionKey)) || {};
-  } catch (e) {
-    collection = {};
-  }
-  
   const totalMaster = {{ master_plushes.size }};
-  
-  // Count collection statuses
-  let owned = 0, wanted = 0, trade = 0;
-  Object.values(collection).forEach(status => {
-    if (status === 'owned') owned++;
-    else if (status === 'wanted') wanted++;
-    else if (status === 'trade') trade++;
-  });
-  
-  // Update stat cards
-  document.getElementById('stat-owned').textContent = owned;
-  document.getElementById('stat-wanted').textContent = wanted;
-  document.getElementById('stat-trade').textContent = trade;
-  document.getElementById('stat-missing-owned').textContent = totalMaster - owned;
-  
-  // Update percentages
-  const ownedPct = totalMaster > 0 ? ((owned / totalMaster) * 100).toFixed(1) : 0;
-  document.getElementById('stat-owned-pct').textContent = ownedPct + '%';
-  document.getElementById('progress-pct').textContent = ownedPct + '%';
-  document.getElementById('progress-fill').style.width = ownedPct + '%';
-  
-  // Update company stats
-  document.querySelectorAll('[data-company]').forEach(row => {
-    const company = row.dataset.company;
-    const total = parseInt(row.querySelector('td:nth-child(2)').textContent);
-    let companyOwned = 0;
-    
-    // Count owned for this company (we'd need plush data here)
-    Object.keys(collection).forEach(id => {
-      if (collection[id] === 'owned') {
-        // We'd need to map IDs to companies - simplified for now
-        companyOwned++;
+  const plushData = JSON.parse(document.getElementById('stats-plush-data').textContent);
+
+  function readCollection() {
+    if (window.JirachiCollection && typeof window.JirachiCollection.getCollection === 'function') {
+      return window.JirachiCollection.getCollection();
+    }
+
+    const raw = localStorage.getItem('jirachi-collection') || localStorage.getItem('jirachi-plush-collection');
+    if (!raw) return { owned: [], wanted: [], trade: [] };
+
+    try {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed.owned) || Array.isArray(parsed.wanted) || Array.isArray(parsed.trade)) {
+        return {
+          owned: Array.isArray(parsed.owned) ? parsed.owned : [],
+          wanted: Array.isArray(parsed.wanted) ? parsed.wanted : [],
+          trade: Array.isArray(parsed.trade) ? parsed.trade : []
+        };
+      }
+
+      const normalized = { owned: [], wanted: [], trade: [] };
+      Object.keys(parsed || {}).forEach(id => {
+        const status = parsed[id];
+        if (normalized[status]) normalized[status].push(id);
+      });
+      return normalized;
+    } catch (e) {
+      return { owned: [], wanted: [], trade: [] };
+    }
+  }
+
+  function renderCollectionStats() {
+    const collection = readCollection();
+    const ownedIds = new Set(collection.owned || []);
+    const wantedIds = new Set(collection.wanted || []);
+    const tradeIds = new Set(collection.trade || []);
+
+    const owned = ownedIds.size;
+    const wanted = wantedIds.size;
+    const trade = tradeIds.size;
+
+    document.getElementById('stat-owned').textContent = owned;
+    document.getElementById('stat-wanted').textContent = wanted;
+    document.getElementById('stat-trade').textContent = trade;
+    document.getElementById('stat-missing-owned').textContent = Math.max(totalMaster - owned, 0);
+
+    const ownedPct = totalMaster > 0 ? ((owned / totalMaster) * 100).toFixed(1) : '0.0';
+    document.getElementById('stat-owned-pct').textContent = ownedPct + '%';
+    document.getElementById('progress-pct').textContent = ownedPct + '%';
+    document.getElementById('progress-fill').style.width = ownedPct + '%';
+
+    const byCompany = {};
+    const byLine = {};
+
+    plushData.forEach(item => {
+      if (!item || !item.id) return;
+
+      if (item.company) {
+        if (!byCompany[item.company]) byCompany[item.company] = { total: 0, owned: 0 };
+        byCompany[item.company].total += 1;
+        if (ownedIds.has(item.id)) byCompany[item.company].owned += 1;
+      }
+
+      if (item.line) {
+        if (!byLine[item.line]) byLine[item.line] = { total: 0, owned: 0 };
+        byLine[item.line].total += 1;
+        if (ownedIds.has(item.id)) byLine[item.line].owned += 1;
       }
     });
-    
-    // For now, show placeholder
-    row.querySelector('.owned-count').textContent = '—';
-  });
-  
-  // Update product line progress
-  document.querySelectorAll('[data-line]').forEach(row => {
-    const line = row.dataset.line;
-    const total = parseInt(row.querySelector('.progress-count').dataset.total);
-    // Similar - would need full mapping
-    row.querySelector('.owned-count').textContent = '0';
+
+    document.querySelectorAll('[data-company]').forEach(row => {
+      const company = row.dataset.company;
+      const stats = byCompany[company] || { total: 0, owned: 0 };
+      const ownedCell = row.querySelector('.owned-count');
+      const progressFill = row.querySelector('.progress-fill');
+
+      if (ownedCell) ownedCell.textContent = stats.owned;
+      if (progressFill) {
+        const pct = stats.total > 0 ? ((stats.owned / stats.total) * 100).toFixed(1) : '0';
+        progressFill.style.width = pct + '%';
+      }
+    });
+
+    document.querySelectorAll('[data-line]').forEach(row => {
+      const line = row.dataset.line;
+      const stats = byLine[line] || { total: 0, owned: 0 };
+      const ownedCell = row.querySelector('.owned-count');
+      const progressFill = row.querySelector('.progress-fill');
+      const total = parseInt(row.querySelector('.progress-count').dataset.total, 10) || stats.total;
+
+      if (ownedCell) ownedCell.textContent = stats.owned;
+      if (progressFill) {
+        const pct = total > 0 ? ((stats.owned / total) * 100).toFixed(1) : '0';
+        progressFill.style.width = pct + '%';
+      }
+    });
+  }
+
+  renderCollectionStats();
+  document.addEventListener('collection:changed', renderCollectionStats);
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'jirachi-collection' || e.key === 'jirachi-plush-collection') {
+      renderCollectionStats();
+    }
   });
 });
 </script>

@@ -18,7 +18,7 @@ description: How to use the Jirachi Plush Archive, understand verification level
     <li><a href="#availability">Availability Scale</a></li>
     <li><a href="#sources">Source Tiers</a></li>
     <li><a href="#collection">Personal Collection</a></li>
-    <li><a href="#contributing">How to Contribute</a></li>
+    <li><a href="/research#contribute-to-the-archive">How to Contribute</a></li>
     <li><a href="#faq">FAQ</a></li>
   </ul>
 </nav>
@@ -284,7 +284,7 @@ For a new entry or promotion to Verified:
 
 ### Submission Process
 
-1. Go to the [Research page](/research#submit-form)
+1. Go to the [Research page](/research#contribute-to-the-archive)
 2. Fill out the contribution form
 3. Generate a structured submission
 4. Submit via:

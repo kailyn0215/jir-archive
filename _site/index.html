@@ -9,11 +9,11 @@
   <meta name="robots" content="index, follow">
   
   <!-- Canonical URL -->
-  <link rel="canonical" href="http://localhost:4000/jir-archive/">
+  <link rel="canonical" href="https://kailyn0215.github.io/jir-archive/">
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://localhost:4000/jir-archive/">
+  <meta property="og:url" content="https://kailyn0215.github.io/jir-archive/">
   <meta property="og:title" content="Archive | Jirachi Plush Archive">
   <meta property="og:description" content="A comprehensive database of every officially licensed Jirachi plush">
   <meta property="og:site_name" content="Jirachi Plush Archive">
@@ -26,8 +26,7 @@
   
   
   <!-- Theme Color -->
-  <meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" id="theme-color-meta" content="#faf9f7">
   
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/jir-archive/assets/images/favicon.svg">
@@ -40,6 +39,7 @@
   
   <!-- Styles -->
   <link rel="stylesheet" href="/jir-archive/assets/css/style.css">
+  <script src="/jir-archive/assets/js/collection.js"></script>
   
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -48,10 +48,10 @@
     "@type": "WebSite",
     "name": "Jirachi Plush Archive",
     "description": "A comprehensive database of every officially licensed Jirachi plush",
-    "url": "http://localhost:4000",
+    "url": "https://kailyn0215.github.io",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "http://localhost:4000?q={search_term_string}",
+      "target": "https://kailyn0215.github.io?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   }
@@ -81,9 +81,9 @@
         <a href="/jir-archive/research" >Research</a>
         <a href="/jir-archive/stats" >Stats</a>
         <a href="/jir-archive/guide" >Guide</a>
-        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
-          <span class="theme-icon-light" aria-hidden="true">☀️</span>
-          <span class="theme-icon-dark" aria-hidden="true">🌙</span>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+          <span class="theme-toggle-icon" aria-hidden="true">☀️</span>
+          <span class="theme-toggle-label">Light</span>
         </button>
       </nav>
     </div>
@@ -116,117 +116,150 @@
 
 <!-- Search Bar -->
 <div class="search-bar">
-  <input type="text" id="search-input" placeholder="Search by name, company, year, tags..." autocomplete="off">
+  <input type="text" id="search-input" placeholder="Search names, tags, companies, product lines..." autocomplete="off">
   <span class="search-icon" aria-hidden="true">🔍</span>
   <span class="search-results-count" id="results-count"></span>
   <button class="search-clear hidden" id="search-clear" aria-label="Clear search">×</button>
 </div>
 
-<!-- Filter Controls -->
-<div class="filter-controls">
-  <div class="filter-row">
-    <div class="filter-group">
-      <label for="filter-company">Company</label>
-      <select id="filter-company">
-        <option value="">All Companies</option>
-        
-        
-        <option value="Bandai Spirits">Bandai Spirits</option>
-        
-        <option value="Banpresto">Banpresto</option>
-        
-        <option value="Morishita / JPPC">Morishita / JPPC</option>
-        
-        <option value="Pokémon Center Japan">Pokémon Center Japan</option>
-        
-        <option value="Pokémon Center Japan / PokéPark">Pokémon Center Japan / PokéPark</option>
-        
-        <option value="Pokémon Center US">Pokémon Center US</option>
-        
-        <option value="TOMY">TOMY</option>
-        
-        <option value="Takara Tomy">Takara Tomy</option>
-        
-        <option value="Takara Tomy A.R.T.S">Takara Tomy A.R.T.S</option>
-        
-      </select>
+<!-- Filter Panel -->
+<details class="filter-panel" id="filter-panel" aria-label="Search filters">
+  <summary class="filter-panel-summary">
+    <div class="filter-panel-summary-copy">
+      <p class="filter-panel-kicker">Filters</p>
+      <h2>Refine the archive</h2>
+      <p class="filter-panel-note">Combine as many filters as you want. Search still matches names, tags, product lines, and related terms.</p>
     </div>
-    <div class="filter-group">
-      <label for="filter-year">Year</label>
-      <select id="filter-year">
-        <option value="">All Years</option>
-        
-        
-        <option value="2003">2003</option>
-        
-        <option value="2004">2004</option>
-        
-        <option value="2005">2005</option>
-        
-        <option value="2007">2007</option>
-        
-        <option value="2009">2009</option>
-        
-        <option value="2013">2013</option>
-        
-        <option value="2014">2014</option>
-        
-        <option value="2016">2016</option>
-        
-        <option value="2017">2017</option>
-        
-        <option value="2018">2018</option>
-        
-        <option value="2019">2019</option>
-        
-        <option value="2021">2021</option>
-        
-        <option value="2022">2022</option>
-        
-        <option value="2023">2023</option>
-        
-        <option value="2024">2024</option>
-        
-        <option value="2025">2025</option>
-        
-        <option value="Unknown">Unknown</option>
-        
-      </select>
+    <span class="filter-panel-summary-state" aria-hidden="true">
+      <span class="filter-panel-summary-text">Open filters</span>
+      <span class="filter-panel-summary-arrow">▾</span>
+    </span>
+  </summary>
+
+  <div class="filter-panel-body">
+    <div class="filter-groups">
+      <details class="filter-group filter-group-year">
+        <summary>
+          <div class="filter-group-heading">
+            <span>Year range</span>
+            <span class="filter-group-summary" id="year-range-summary">All years</span>
+          </div>
+          <span class="filter-group-arrow" aria-hidden="true">▾</span>
+        </summary>
+        <div class="year-range" aria-label="Year range filter">
+          <div class="year-range-timeline" id="year-range-timeline">
+            <div class="year-range-track"></div>
+            <div class="year-range-fill" id="year-range-fill"></div>
+            <button type="button" class="year-range-handle year-range-handle-min" id="year-range-min-handle" role="slider" tabindex="0" aria-label="Minimum year"></button>
+            <button type="button" class="year-range-handle year-range-handle-max" id="year-range-max-handle" role="slider" tabindex="0" aria-label="Maximum year"></button>
+          </div>
+          <div class="year-range-scale" id="year-range-scale" aria-hidden="true"></div>
+        </div>
+      </details>
+
+      <details class="filter-group">
+        <summary>
+          <div class="filter-group-heading">
+            <span>Company</span>
+            <span class="filter-group-summary" id="company-summary">All companies</span>
+          </div>
+          <span class="filter-group-arrow" aria-hidden="true">▾</span>
+        </summary>
+        <div class="filter-option-list" id="filter-company-list"></div>
+      </details>
+
+      <details class="filter-group">
+        <summary>
+          <div class="filter-group-heading">
+            <span>Plush line</span>
+            <span class="filter-group-summary" id="line-summary">All lines</span>
+          </div>
+          <span class="filter-group-arrow" aria-hidden="true">▾</span>
+        </summary>
+        <div class="filter-option-list" id="filter-line-list"></div>
+      </details>
+
+      <details class="filter-group">
+        <summary>
+          <div class="filter-group-heading">
+            <span>Tags</span>
+            <span class="filter-group-summary" id="tag-summary">All tags</span>
+          </div>
+          <span class="filter-group-arrow" aria-hidden="true">▾</span>
+        </summary>
+        <div class="filter-option-list filter-option-list-tags" id="filter-tag-list"></div>
+      </details>
+
+      <details class="filter-group">
+        <summary>
+          <div class="filter-group-heading">
+            <span>Region</span>
+            <span class="filter-group-summary" id="region-summary">All regions</span>
+          </div>
+          <span class="filter-group-arrow" aria-hidden="true">▾</span>
+        </summary>
+        <div class="filter-option-list" id="filter-region-list"></div>
+      </details>
+
+      <details class="filter-group">
+        <summary>
+          <div class="filter-group-heading">
+            <span>Collection</span>
+            <span class="filter-group-summary" id="collection-summary">All plushes</span>
+          </div>
+          <span class="filter-group-arrow" aria-hidden="true">▾</span>
+        </summary>
+        <div class="filter-option-list filter-option-list-radio" id="filter-collection-list">
+          <label class="filter-option">
+            <input type="radio" name="collection-filter" value="">
+            <span class="filter-option-label">All plushes</span>
+          </label>
+          <label class="filter-option">
+            <input type="radio" name="collection-filter" value="owned">
+            <span class="filter-option-label">Owned</span>
+          </label>
+          <label class="filter-option">
+            <input type="radio" name="collection-filter" value="wanted">
+            <span class="filter-option-label">Wanted</span>
+          </label>
+          <label class="filter-option">
+            <input type="radio" name="collection-filter" value="trade">
+            <span class="filter-option-label">For Trade</span>
+          </label>
+          <label class="filter-option">
+            <input type="radio" name="collection-filter" value="not-tracked">
+            <span class="filter-option-label">Not Tracked</span>
+          </label>
+        </div>
+      </details>
+
+      <details class="filter-group">
+        <summary>
+          <div class="filter-group-heading">
+            <span>Sort</span>
+            <span class="filter-group-summary" id="sort-summary">Release date</span>
+          </div>
+          <span class="filter-group-arrow" aria-hidden="true">▾</span>
+        </summary>
+        <div class="filter-option-list filter-option-list-radio">
+          <label class="filter-option"><input type="radio" name="sort-by" value="date-asc" checked><span class="filter-option-label">Release Date (Old→New)</span></label>
+          <label class="filter-option"><input type="radio" name="sort-by" value="date-desc"><span class="filter-option-label">Release Date (New→Old)</span></label>
+          <label class="filter-option"><input type="radio" name="sort-by" value="id-asc"><span class="filter-option-label">ID (A→Z)</span></label>
+          <label class="filter-option"><input type="radio" name="sort-by" value="id-desc"><span class="filter-option-label">ID (Z→A)</span></label>
+          <label class="filter-option"><input type="radio" name="sort-by" value="name-asc"><span class="filter-option-label">Name (A→Z)</span></label>
+          <label class="filter-option"><input type="radio" name="sort-by" value="name-desc"><span class="filter-option-label">Name (Z→A)</span></label>
+          <label class="filter-option"><input type="radio" name="sort-by" value="availability-asc"><span class="filter-option-label">Availability (Common→Rare)</span></label>
+          <label class="filter-option"><input type="radio" name="sort-by" value="availability-desc"><span class="filter-option-label">Availability (Rare→Common)</span></label>
+        </div>
+      </details>
     </div>
-    <div class="filter-group">
-      <label for="filter-verification">Status</label>
-      <select id="filter-verification">
-        <option value="">All Status</option>
-        <option value="Verified">Verified</option>
-        <option value="Strong">Strong</option>
-        <option value="Possible">Possible</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label for="filter-collection">Collection</label>
-      <select id="filter-collection">
-        <option value="">All Plushes</option>
-        <option value="owned">Owned</option>
-        <option value="wanted">Wanted</option>
-        <option value="trade">For Trade</option>
-        <option value="not-tracked">Not Tracked</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label for="sort-by">Sort</label>
-      <select id="sort-by">
-        <option value="date-asc">Release Date (Old→New)</option>
-        <option value="date-desc">Release Date (New→Old)</option>
-        <option value="id-asc">ID (A→Z)</option>
-        <option value="id-desc">ID (Z→A)</option>
-        <option value="name-asc">Name (A→Z)</option>
-        <option value="name-desc">Name (Z→A)</option>
-        <option value="availability-asc">Availability (Common→Rare)</option>
-        <option value="availability-desc">Availability (Rare→Common)</option>
-      </select>
+
+    <div class="filter-panel-footer">
+      <button class="btn btn-secondary" id="clear-filters" type="button">Clear All</button>
+      <button class="btn btn-secondary" id="close-filters" type="button">Close Filters</button>
     </div>
   </div>
-</div>
+</details>
 
 <!-- Active Filter Chips -->
 <div class="filter-chips" id="filter-chips"></div>
@@ -275,10 +308,11 @@
        data-company="Banpresto" 
        data-year="2003"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Super DX"
        data-tags="size:life-size,type:prize"
+       data-region="Japan"
+       data-size="13""
        data-search="13" super dx nanayo no negaiboshi super dx  super dx banpresto 2003 size:life-size type:prize banpresto super dx 2003">
     
 
@@ -357,10 +391,11 @@
        data-company="Banpresto" 
        data-year="2004"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Nanayo no Negaiboshi Lottery"
        data-tags="type:lottery,event:movie,size:medium"
+       data-region="Japan"
+       data-size=""
        data-search="lottery movie promo nanayo no negaiboshi lottery movie promo  nanayo no negaiboshi lottery banpresto 2004 type:lottery event:movie size:medium banpresto nanayo no negaiboshi lottery 2004">
     
 
@@ -441,10 +476,11 @@
        data-company="Banpresto" 
        data-year="2004"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Korotto Manmaru"
        data-tags="size:small"
+       data-region="Japan"
+       data-size="6.5""
        data-search="korotto manmaru plush korotto manmaru nuigurumi  korotto manmaru banpresto 2004 size:small banpresto korotto manmaru 2004">
     
 
@@ -520,10 +556,11 @@
        data-company="Banpresto" 
        data-year="2005"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Ichiban Kuji"
        data-tags="size:medium,type:lottery"
+       data-region="Japan"
+       data-size="8.5""
        data-search="puppet plush ichiban kuji pocket monsters ag puppet  ichiban kuji banpresto 2005 size:medium type:lottery banpresto ichiban kuji 2005">
     
 
@@ -602,10 +639,11 @@
        data-company="Banpresto" 
        data-year="2018"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Pokémon Focus"
        data-tags="size:large"
+       data-region="Japan"
+       data-size=""
        data-search="pokémon focus plush pokémon focus  pokémon focus banpresto 2018 size:large banpresto pokémon focus 2018">
     
 
@@ -681,10 +719,11 @@
        data-company="Banpresto" 
        data-year="2019"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Yawaraka Pokémon Nuigurumi 4"
        data-tags=""
+       data-region="Japan"
+       data-size=""
        data-search="yawaraka jirachi plush   yawaraka pokémon nuigurumi 4 banpresto 2019  banpresto yawaraka pokémon nuigurumi 4 2019">
     
 
@@ -752,10 +791,11 @@
        data-company="Bandai Spirits" 
        data-year="2024"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Mecha Mofugutto"
        data-tags=""
+       data-region="Japan"
+       data-size=""
        data-search="mecha mofugutto yellow ver.   mecha mofugutto bandai spirits 2024  bandai spirits mecha mofugutto 2024">
     
 
@@ -823,10 +863,11 @@
        data-company="Pokémon Center Japan" 
        data-year="2003"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Poké Doll"
        data-tags="type:pokedoll"
+       data-region="Japan"
+       data-size=""
        data-search="poké doll (velboa)   poké doll pokémon center japan 2003 type:pokedoll pokémon center japan poké doll 2003">
     
 
@@ -902,10 +943,11 @@
        data-company="Pokémon Center Japan / PokéPark" 
        data-year="2005"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Poké Doll"
        data-tags="size:medium,type:pokedoll"
+       data-region="Japan"
+       data-size="13""
        data-search="dx poké doll   poké doll pokémon center japan / poképark 2005 size:medium type:pokedoll pokémon center japan / poképark dx poké doll 2005">
     
 
@@ -984,10 +1026,11 @@
        data-company="Pokémon Center Japan" 
        data-year="2009"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Poké Doll"
        data-tags="size:small,type:pokedoll"
+       data-region="Japan"
+       data-size="5.5""
        data-search="poké doll (minky)   poké doll pokémon center japan 2009 size:small type:pokedoll pokémon center japan poké doll 2009">
     
 
@@ -1066,10 +1109,11 @@
        data-company="Pokémon Center Japan" 
        data-year="2013"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Poké Doll"
        data-tags="type:pokedoll"
+       data-region="Japan"
+       data-size=""
        data-search="mini poké doll can   poké doll pokémon center japan 2013 type:pokedoll pokémon center japan mini poké doll can 2013">
     
 
@@ -1145,10 +1189,11 @@
        data-company="Pokémon Center Japan" 
        data-year="2014"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Poké Doll"
        data-tags="type:pokedoll"
+       data-region="Japan"
+       data-size=""
        data-search="poké doll jirachi   poké doll pokémon center japan 2014 type:pokedoll pokémon center japan poké doll 2014">
     
 
@@ -1224,10 +1269,11 @@
        data-company="Pokémon Center Japan" 
        data-year="2016"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Kuttari Nuigurumi"
        data-tags="special:sleeping"
+       data-region="Japan"
+       data-size=""
        data-search="kuttari sleeping kuttari nuigurumi sleeping  kuttari nuigurumi pokémon center japan 2016 special:sleeping pokémon center japan kuttari nuigurumi 2016">
     
 
@@ -1303,10 +1349,11 @@
        data-company="Pokémon Center Japan" 
        data-year="2016"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Kuttari Nuigurumi"
        data-tags="special:sleeping"
+       data-region="Japan"
+       data-size=""
        data-search="kuttari awake kuttari nuigurumi awake  kuttari nuigurumi pokémon center japan 2016 special:sleeping pokémon center japan kuttari nuigurumi 2016">
     
 
@@ -1382,10 +1429,11 @@
        data-company="Pokémon Center Japan" 
        data-year="2017"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Tohoku Renewal"
        data-tags=""
+       data-region="Japan"
+       data-size=""
        data-search="kokeshi jirachi pokémon center tohoku renewal kokeshi  tohoku renewal pokémon center japan 2017  pokémon center japan tohoku renewal 2017">
     
 
@@ -1453,10 +1501,11 @@
        data-company="Pokémon Center Japan" 
        data-year="2017"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Tohoku Renewal"
        data-tags=""
+       data-region="Japan"
+       data-size=""
        data-search="poncho pikachu (jirachi ver.) poncho o kita pikachu - jirachi ver.  tohoku renewal pokémon center japan 2017  pokémon center japan tohoku renewal 2017">
     
 
@@ -1524,10 +1573,11 @@
        data-company="Pokémon Center Japan" 
        data-year="2019"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Henshin! Metamon"
        data-tags="size:small,special:ditto"
+       data-region="Japan"
+       data-size="5.5""
        data-search="ditto transform! jirachi plush henshin! metamon  henshin! metamon pokémon center japan 2019 size:small special:ditto pokémon center japan henshin! metamon 2019">
     
 
@@ -1606,10 +1656,11 @@
        data-company="Pokémon Center Japan" 
        data-year="2019"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Henshin! Metamon"
        data-tags="size:mini,special:ditto"
+       data-region="Japan"
+       data-size="3""
        data-search="ditto transform! jirachi mascot keychain henshin! metamon keychain  henshin! metamon pokémon center japan 2019 size:mini special:ditto pokémon center japan henshin! metamon 2019">
     
 
@@ -1688,10 +1739,11 @@
        data-company="Pokémon Center Japan" 
        data-year="2021"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Pokémon Fit"
        data-tags="special:sitting,size:small"
+       data-region="Japan"
+       data-size=""
        data-search="pokémon fit jirachi pokémon fit  pokémon fit pokémon center japan 2021 special:sitting size:small pokémon center japan pokémon fit 2021">
     
 
@@ -1770,10 +1822,11 @@
        data-company="Pokémon Center Japan" 
        data-year="2021"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Speed Star"
        data-tags=""
+       data-region="Japan"
+       data-size=""
        data-search="speed star jirachi speed star  speed star pokémon center japan 2021  pokémon center japan speed star 2021">
     
 
@@ -1841,10 +1894,11 @@
        data-company="Pokémon Center Japan" 
        data-year="2022"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Saiko Soda"
        data-tags=""
+       data-region="Japan"
+       data-size=""
        data-search="saiko soda jirachi   saiko soda pokémon center japan 2022  pokémon center japan saiko soda 2022">
     
 
@@ -1912,10 +1966,11 @@
        data-company="Pokémon Center Japan" 
        data-year="2023"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Hoshi Tsunagi"
        data-tags=""
+       data-region="Japan"
+       data-size=""
        data-search="hoshi tsunagi mascot keychain hoshi tsunagi mascot  hoshi tsunagi pokémon center japan 2023  ">
     
 
@@ -1983,10 +2038,11 @@
        data-company="Pokémon Center Japan" 
        data-year="2023"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="I Choose You!"
        data-tags=""
+       data-region="Japan"
+       data-size=""
        data-search="i choose you! jirachi unknown  i choose you! pokémon center japan 2023  pokémon center japan i choose you!">
     
 
@@ -2054,10 +2110,11 @@
        data-company="Morishita / JPPC" 
        data-year="2025"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Mochi Mochi Diecut Makura"
        data-tags=""
+       data-region="Japan"
+       data-size=""
        data-search="mochi mochi diecut pillow   mochi mochi diecut makura morishita / jppc 2025  morishita / jppc mochi mochi diecut makura 2025">
     
 
@@ -2125,10 +2182,11 @@
        data-company="Pokémon Center Japan" 
        data-year="2023"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Hoshi Tsunagi"
        data-tags="size:life-size,special:sleeping"
+       data-region="Japan"
+       data-size=""
        data-search="   hoshi tsunagi pokémon center japan 2023 size:life-size special:sleeping ">
     
 
@@ -2207,10 +2265,11 @@
        data-company="TOMY" 
        data-year="2003"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Fluffy TOMY Plush"
        data-tags="size:medium"
+       data-region="Japan"
+       data-size="9""
        data-search="medium plush   fluffy tomy plush tomy 2003 size:medium tomy medium plush 2003">
     
 
@@ -2286,10 +2345,11 @@
        data-company="TOMY" 
        data-year="2003"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Fluffy TOMY Plush"
        data-tags="size:medium"
+       data-region="Japan"
+       data-size="13""
        data-search="lifesize jirachi   fluffy tomy plush tomy 2003 size:medium tomy lifesize plush 2003">
     
 
@@ -2365,10 +2425,11 @@
        data-company="TOMY" 
        data-year="2004"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Kururin Mascot Jumbo Part 3"
        data-tags="type:keychain"
+       data-region="Japan"
+       data-size=""
        data-search="reversible poké ball jirachi くるりんマスコット ジャンボ part 3  kururin mascot jumbo part 3 tomy 2004 type:keychain tomy kururin mascot jumbo part 3 2004">
     
 
@@ -2444,10 +2505,11 @@
        data-company="Takara Tomy A.R.T.S" 
        data-year="2017"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="All Star Collection"
        data-tags=""
+       data-region="Japan"
+       data-size=""
        data-search="all star collection jirachi all star collection  all star collection takara tomy a.r.t.s 2017  takara tomy a.r.t.s all star collection 2017">
     
 
@@ -2515,10 +2577,11 @@
        data-company="Takara Tomy A.R.T.S" 
        data-year="2025"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="PokéPeace"
        data-tags=""
+       data-region="Japan"
+       data-size=""
        data-search="poképeace jirachi plush   poképeace takara tomy a.r.t.s 2025  takara tomy a.r.t.s poképeace 2025">
     
 
@@ -2586,10 +2649,11 @@
        data-company="Pokémon Center US" 
        data-year="2024"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Saiko Soda"
        data-tags=""
+       data-region="North America"
+       data-size=""
        data-search="saiko soda pop jirachi   saiko soda pokémon center us 2024  pokémon center us saiko soda pop 2024">
     
 
@@ -2657,10 +2721,11 @@
        data-company="Pokémon Center US" 
        data-year=""
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Sitting Cuties"
        data-tags="special:sitting,variant:regional,size:small"
+       data-region="North America"
+       data-size=""
        data-search="sitting cuties jirachi   sitting cuties pokémon center us  special:sitting variant:regional size:small ">
     
 
@@ -2741,10 +2806,11 @@
        data-company="Pokémon Center US" 
        data-year="2023"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Mythical Lights"
        data-tags=""
+       data-region="North America"
+       data-size=""
        data-search="glow-in-the-dark lifesize sleeping jirachi plush sleeping jirachi mythical lights glow-in-the-dark plush  mythical lights pokémon center us 2023  ">
     
 
@@ -2812,10 +2878,11 @@
        data-company="Pokémon Center US" 
        data-year="2023"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Mythical Lights"
        data-tags=""
+       data-region="North America"
+       data-size=""
        data-search="glow-in-the-dark jirachi plush keychain sleeping jirachi mythical lights glow-in-the-dark plush keychain  mythical lights pokémon center us 2023  ">
     
 
@@ -2883,10 +2950,11 @@
        data-company="Pokémon Center US" 
        data-year=""
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Comfy Cuddlers"
        data-tags=""
+       data-region="North America"
+       data-size=""
        data-search="comfy cuddlers jirachi jirachi pokemon comfy cuddlers plush  comfy cuddlers pokémon center us   ">
     
 
@@ -2954,10 +3022,11 @@
        data-company="Pokémon Center US" 
        data-year="2014"
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Poké Doll"
        data-tags=""
+       data-region="North America"
+       data-size=""
        data-search="poké doll jirachi jirachi pokémon dolls plush  poké doll pokémon center us 2014  ">
     
 
@@ -3025,10 +3094,11 @@
        data-company="Pokémon Center US" 
        data-year=""
        data-release-date=""
-       data-verification="Verified"
        data-availability="3"
        data-product-line="Poké Plush"
        data-tags=""
+       data-region="North America"
+       data-size=""
        data-search="poké plush jirachi poké plush jirachi  poké plush pokémon center us   ">
     
 
@@ -3113,9 +3183,12 @@
         data-company="Banpresto" 
         data-year="2003"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="13" super dx super dx banpresto 2003">
+        data-product-line="Super DX"
+        data-tags="size:life-size,type:prize"
+        data-region="Japan"
+        data-size="13""
+        data-search="13" super dx nanayo no negaiboshi super dx  super dx banpresto 2003 size:life-size type:prize banpresto super dx 2003">
       <td><a href="/jir-archive/plush/jir-ban-0001/">JIR-BAN-0001</a></td>
       <td><a href="/jir-archive/plush/jir-ban-0001/">13" Super DX</a></td>
       <td>Banpresto</td>
@@ -3131,9 +3204,12 @@
         data-company="Banpresto" 
         data-year="2004"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="lottery movie promo nanayo no negaiboshi lottery banpresto 2004">
+        data-product-line="Nanayo no Negaiboshi Lottery"
+        data-tags="type:lottery,event:movie,size:medium"
+        data-region="Japan"
+        data-size=""
+        data-search="lottery movie promo nanayo no negaiboshi lottery movie promo  nanayo no negaiboshi lottery banpresto 2004 type:lottery event:movie size:medium banpresto nanayo no negaiboshi lottery 2004">
       <td><a href="/jir-archive/plush/jir-ban-0005/">JIR-BAN-0005</a></td>
       <td><a href="/jir-archive/plush/jir-ban-0005/">Lottery Movie Promo</a></td>
       <td>Banpresto</td>
@@ -3149,9 +3225,12 @@
         data-company="Banpresto" 
         data-year="2004"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="korotto manmaru plush korotto manmaru banpresto 2004">
+        data-product-line="Korotto Manmaru"
+        data-tags="size:small"
+        data-region="Japan"
+        data-size="6.5""
+        data-search="korotto manmaru plush korotto manmaru nuigurumi  korotto manmaru banpresto 2004 size:small banpresto korotto manmaru 2004">
       <td><a href="/jir-archive/plush/jir-ban-0006/">JIR-BAN-0006</a></td>
       <td><a href="/jir-archive/plush/jir-ban-0006/">Korotto Manmaru Plush</a></td>
       <td>Banpresto</td>
@@ -3167,9 +3246,12 @@
         data-company="Banpresto" 
         data-year="2005"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="puppet plush ichiban kuji banpresto 2005">
+        data-product-line="Ichiban Kuji"
+        data-tags="size:medium,type:lottery"
+        data-region="Japan"
+        data-size="8.5""
+        data-search="puppet plush ichiban kuji pocket monsters ag puppet  ichiban kuji banpresto 2005 size:medium type:lottery banpresto ichiban kuji 2005">
       <td><a href="/jir-archive/plush/jir-ban-0007/">JIR-BAN-0007</a></td>
       <td><a href="/jir-archive/plush/jir-ban-0007/">Puppet Plush</a></td>
       <td>Banpresto</td>
@@ -3185,9 +3267,12 @@
         data-company="Banpresto" 
         data-year="2018"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="pokémon focus plush pokémon focus banpresto 2018">
+        data-product-line="Pokémon Focus"
+        data-tags="size:large"
+        data-region="Japan"
+        data-size=""
+        data-search="pokémon focus plush pokémon focus  pokémon focus banpresto 2018 size:large banpresto pokémon focus 2018">
       <td><a href="/jir-archive/plush/jir-ban-0008/">JIR-BAN-0008</a></td>
       <td><a href="/jir-archive/plush/jir-ban-0008/">Pokémon Focus Plush</a></td>
       <td>Banpresto</td>
@@ -3203,9 +3288,12 @@
         data-company="Banpresto" 
         data-year="2019"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="yawaraka jirachi plush yawaraka pokémon nuigurumi 4 banpresto 2019">
+        data-product-line="Yawaraka Pokémon Nuigurumi 4"
+        data-tags=""
+        data-region="Japan"
+        data-size=""
+        data-search="yawaraka jirachi plush   yawaraka pokémon nuigurumi 4 banpresto 2019  banpresto yawaraka pokémon nuigurumi 4 2019">
       <td><a href="/jir-archive/plush/jir-ban-0009/">JIR-BAN-0009</a></td>
       <td><a href="/jir-archive/plush/jir-ban-0009/">Yawaraka Jirachi Plush</a></td>
       <td>Banpresto</td>
@@ -3221,9 +3309,12 @@
         data-company="Bandai Spirits" 
         data-year="2024"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="mecha mofugutto yellow ver. mecha mofugutto bandai spirits 2024">
+        data-product-line="Mecha Mofugutto"
+        data-tags=""
+        data-region="Japan"
+        data-size=""
+        data-search="mecha mofugutto yellow ver.   mecha mofugutto bandai spirits 2024  bandai spirits mecha mofugutto 2024">
       <td><a href="/jir-archive/plush/jir-bns-0001/">JIR-BNS-0001</a></td>
       <td><a href="/jir-archive/plush/jir-bns-0001/">Mecha Mofugutto Yellow Ver.</a></td>
       <td>Bandai Spirits</td>
@@ -3239,9 +3330,12 @@
         data-company="Pokémon Center Japan" 
         data-year="2003"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="poké doll (velboa) poké doll pokémon center japan 2003">
+        data-product-line="Poké Doll"
+        data-tags="type:pokedoll"
+        data-region="Japan"
+        data-size=""
+        data-search="poké doll (velboa)   poké doll pokémon center japan 2003 type:pokedoll pokémon center japan poké doll 2003">
       <td><a href="/jir-archive/plush/jir-jppc-0001/">JIR-JPPC-0001</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0001/">Poké Doll (Velboa)</a></td>
       <td>Pokémon Center Japan</td>
@@ -3257,9 +3351,12 @@
         data-company="Pokémon Center Japan / PokéPark" 
         data-year="2005"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="dx poké doll poké doll pokémon center japan / poképark 2005">
+        data-product-line="Poké Doll"
+        data-tags="size:medium,type:pokedoll"
+        data-region="Japan"
+        data-size="13""
+        data-search="dx poké doll   poké doll pokémon center japan / poképark 2005 size:medium type:pokedoll pokémon center japan / poképark dx poké doll 2005">
       <td><a href="/jir-archive/plush/jir-jppc-0002/">JIR-JPPC-0002</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0002/">DX Poké Doll</a></td>
       <td>Pokémon Center Japan / PokéPark</td>
@@ -3275,9 +3372,12 @@
         data-company="Pokémon Center Japan" 
         data-year="2009"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="poké doll (minky) poké doll pokémon center japan 2009">
+        data-product-line="Poké Doll"
+        data-tags="size:small,type:pokedoll"
+        data-region="Japan"
+        data-size="5.5""
+        data-search="poké doll (minky)   poké doll pokémon center japan 2009 size:small type:pokedoll pokémon center japan poké doll 2009">
       <td><a href="/jir-archive/plush/jir-jppc-0003/">JIR-JPPC-0003</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0003/">Poké Doll (Minky)</a></td>
       <td>Pokémon Center Japan</td>
@@ -3293,9 +3393,12 @@
         data-company="Pokémon Center Japan" 
         data-year="2013"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="mini poké doll can poké doll pokémon center japan 2013">
+        data-product-line="Poké Doll"
+        data-tags="type:pokedoll"
+        data-region="Japan"
+        data-size=""
+        data-search="mini poké doll can   poké doll pokémon center japan 2013 type:pokedoll pokémon center japan mini poké doll can 2013">
       <td><a href="/jir-archive/plush/jir-jppc-0004/">JIR-JPPC-0004</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0004/">Mini Poké Doll Can</a></td>
       <td>Pokémon Center Japan</td>
@@ -3311,9 +3414,12 @@
         data-company="Pokémon Center Japan" 
         data-year="2014"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="poké doll jirachi poké doll pokémon center japan 2014">
+        data-product-line="Poké Doll"
+        data-tags="type:pokedoll"
+        data-region="Japan"
+        data-size=""
+        data-search="poké doll jirachi   poké doll pokémon center japan 2014 type:pokedoll pokémon center japan poké doll 2014">
       <td><a href="/jir-archive/plush/jir-jppc-0005/">JIR-JPPC-0005</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0005/">Poké Doll Jirachi</a></td>
       <td>Pokémon Center Japan</td>
@@ -3329,9 +3435,12 @@
         data-company="Pokémon Center Japan" 
         data-year="2016"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="kuttari sleeping kuttari nuigurumi pokémon center japan 2016">
+        data-product-line="Kuttari Nuigurumi"
+        data-tags="special:sleeping"
+        data-region="Japan"
+        data-size=""
+        data-search="kuttari sleeping kuttari nuigurumi sleeping  kuttari nuigurumi pokémon center japan 2016 special:sleeping pokémon center japan kuttari nuigurumi 2016">
       <td><a href="/jir-archive/plush/jir-jppc-0006/">JIR-JPPC-0006</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0006/">Kuttari Sleeping</a></td>
       <td>Pokémon Center Japan</td>
@@ -3347,9 +3456,12 @@
         data-company="Pokémon Center Japan" 
         data-year="2016"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="kuttari awake kuttari nuigurumi pokémon center japan 2016">
+        data-product-line="Kuttari Nuigurumi"
+        data-tags="special:sleeping"
+        data-region="Japan"
+        data-size=""
+        data-search="kuttari awake kuttari nuigurumi awake  kuttari nuigurumi pokémon center japan 2016 special:sleeping pokémon center japan kuttari nuigurumi 2016">
       <td><a href="/jir-archive/plush/jir-jppc-0007/">JIR-JPPC-0007</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0007/">Kuttari Awake</a></td>
       <td>Pokémon Center Japan</td>
@@ -3365,9 +3477,12 @@
         data-company="Pokémon Center Japan" 
         data-year="2017"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="kokeshi jirachi tohoku renewal pokémon center japan 2017">
+        data-product-line="Tohoku Renewal"
+        data-tags=""
+        data-region="Japan"
+        data-size=""
+        data-search="kokeshi jirachi pokémon center tohoku renewal kokeshi  tohoku renewal pokémon center japan 2017  pokémon center japan tohoku renewal 2017">
       <td><a href="/jir-archive/plush/jir-jppc-0008/">JIR-JPPC-0008</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0008/">Kokeshi Jirachi</a></td>
       <td>Pokémon Center Japan</td>
@@ -3383,9 +3498,12 @@
         data-company="Pokémon Center Japan" 
         data-year="2017"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="poncho pikachu (jirachi ver.) tohoku renewal pokémon center japan 2017">
+        data-product-line="Tohoku Renewal"
+        data-tags=""
+        data-region="Japan"
+        data-size=""
+        data-search="poncho pikachu (jirachi ver.) poncho o kita pikachu - jirachi ver.  tohoku renewal pokémon center japan 2017  pokémon center japan tohoku renewal 2017">
       <td><a href="/jir-archive/plush/jir-jppc-0009/">JIR-JPPC-0009</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0009/">Poncho Pikachu (Jirachi Ver.)</a></td>
       <td>Pokémon Center Japan</td>
@@ -3401,9 +3519,12 @@
         data-company="Pokémon Center Japan" 
         data-year="2019"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="ditto transform! jirachi plush henshin! metamon pokémon center japan 2019">
+        data-product-line="Henshin! Metamon"
+        data-tags="size:small,special:ditto"
+        data-region="Japan"
+        data-size="5.5""
+        data-search="ditto transform! jirachi plush henshin! metamon  henshin! metamon pokémon center japan 2019 size:small special:ditto pokémon center japan henshin! metamon 2019">
       <td><a href="/jir-archive/plush/jir-jppc-0010/">JIR-JPPC-0010</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0010/">Ditto Transform! Jirachi Plush</a></td>
       <td>Pokémon Center Japan</td>
@@ -3419,9 +3540,12 @@
         data-company="Pokémon Center Japan" 
         data-year="2019"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="ditto transform! jirachi mascot keychain henshin! metamon pokémon center japan 2019">
+        data-product-line="Henshin! Metamon"
+        data-tags="size:mini,special:ditto"
+        data-region="Japan"
+        data-size="3""
+        data-search="ditto transform! jirachi mascot keychain henshin! metamon keychain  henshin! metamon pokémon center japan 2019 size:mini special:ditto pokémon center japan henshin! metamon 2019">
       <td><a href="/jir-archive/plush/jir-jppc-0011/">JIR-JPPC-0011</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0011/">Ditto Transform! Jirachi Mascot Keychain</a></td>
       <td>Pokémon Center Japan</td>
@@ -3437,9 +3561,12 @@
         data-company="Pokémon Center Japan" 
         data-year="2021"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="pokémon fit jirachi pokémon fit pokémon center japan 2021">
+        data-product-line="Pokémon Fit"
+        data-tags="special:sitting,size:small"
+        data-region="Japan"
+        data-size=""
+        data-search="pokémon fit jirachi pokémon fit  pokémon fit pokémon center japan 2021 special:sitting size:small pokémon center japan pokémon fit 2021">
       <td><a href="/jir-archive/plush/jir-jppc-0012/">JIR-JPPC-0012</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0012/">Pokémon Fit Jirachi</a></td>
       <td>Pokémon Center Japan</td>
@@ -3455,9 +3582,12 @@
         data-company="Pokémon Center Japan" 
         data-year="2021"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="speed star jirachi speed star pokémon center japan 2021">
+        data-product-line="Speed Star"
+        data-tags=""
+        data-region="Japan"
+        data-size=""
+        data-search="speed star jirachi speed star  speed star pokémon center japan 2021  pokémon center japan speed star 2021">
       <td><a href="/jir-archive/plush/jir-jppc-0013/">JIR-JPPC-0013</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0013/">Speed Star Jirachi</a></td>
       <td>Pokémon Center Japan</td>
@@ -3473,9 +3603,12 @@
         data-company="Pokémon Center Japan" 
         data-year="2022"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="saiko soda jirachi saiko soda pokémon center japan 2022">
+        data-product-line="Saiko Soda"
+        data-tags=""
+        data-region="Japan"
+        data-size=""
+        data-search="saiko soda jirachi   saiko soda pokémon center japan 2022  pokémon center japan saiko soda 2022">
       <td><a href="/jir-archive/plush/jir-jppc-0014/">JIR-JPPC-0014</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0014/">Saiko Soda Jirachi</a></td>
       <td>Pokémon Center Japan</td>
@@ -3491,9 +3624,12 @@
         data-company="Pokémon Center Japan" 
         data-year="2023"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="hoshi tsunagi mascot keychain hoshi tsunagi pokémon center japan 2023">
+        data-product-line="Hoshi Tsunagi"
+        data-tags=""
+        data-region="Japan"
+        data-size=""
+        data-search="hoshi tsunagi mascot keychain hoshi tsunagi mascot  hoshi tsunagi pokémon center japan 2023  ">
       <td><a href="/jir-archive/plush/jir-jppc-0015/">JIR-JPPC-0015</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0015/">Hoshi Tsunagi Mascot Keychain</a></td>
       <td>Pokémon Center Japan</td>
@@ -3509,9 +3645,12 @@
         data-company="Pokémon Center Japan" 
         data-year="2023"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="i choose you! jirachi i choose you! pokémon center japan 2023">
+        data-product-line="I Choose You!"
+        data-tags=""
+        data-region="Japan"
+        data-size=""
+        data-search="i choose you! jirachi unknown  i choose you! pokémon center japan 2023  pokémon center japan i choose you!">
       <td><a href="/jir-archive/plush/jir-jppc-0016/">JIR-JPPC-0016</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0016/">I Choose You! Jirachi</a></td>
       <td>Pokémon Center Japan</td>
@@ -3527,9 +3666,12 @@
         data-company="Morishita / JPPC" 
         data-year="2025"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="mochi mochi diecut pillow mochi mochi diecut makura morishita / jppc 2025">
+        data-product-line="Mochi Mochi Diecut Makura"
+        data-tags=""
+        data-region="Japan"
+        data-size=""
+        data-search="mochi mochi diecut pillow   mochi mochi diecut makura morishita / jppc 2025  morishita / jppc mochi mochi diecut makura 2025">
       <td><a href="/jir-archive/plush/jir-jppc-0017/">JIR-JPPC-0017</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0017/">Mochi Mochi Diecut Pillow</a></td>
       <td>Morishita / JPPC</td>
@@ -3545,9 +3687,12 @@
         data-company="Pokémon Center Japan" 
         data-year="2023"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search=" hoshi tsunagi pokémon center japan 2023">
+        data-product-line="Hoshi Tsunagi"
+        data-tags="size:life-size,special:sleeping"
+        data-region="Japan"
+        data-size=""
+        data-search="   hoshi tsunagi pokémon center japan 2023 size:life-size special:sleeping ">
       <td><a href="/jir-archive/plush/jir-jppc-0018/">JIR-JPPC-0018</a></td>
       <td><a href="/jir-archive/plush/jir-jppc-0018/"></a></td>
       <td>Pokémon Center Japan</td>
@@ -3563,9 +3708,12 @@
         data-company="TOMY" 
         data-year="2003"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="medium plush fluffy tomy plush tomy 2003">
+        data-product-line="Fluffy TOMY Plush"
+        data-tags="size:medium"
+        data-region="Japan"
+        data-size="9""
+        data-search="medium plush   fluffy tomy plush tomy 2003 size:medium tomy medium plush 2003">
       <td><a href="/jir-archive/plush/jir-tomy-0001/">JIR-TOMY-0001</a></td>
       <td><a href="/jir-archive/plush/jir-tomy-0001/">Medium Plush</a></td>
       <td>TOMY</td>
@@ -3581,9 +3729,12 @@
         data-company="TOMY" 
         data-year="2003"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="lifesize jirachi fluffy tomy plush tomy 2003">
+        data-product-line="Fluffy TOMY Plush"
+        data-tags="size:medium"
+        data-region="Japan"
+        data-size="13""
+        data-search="lifesize jirachi   fluffy tomy plush tomy 2003 size:medium tomy lifesize plush 2003">
       <td><a href="/jir-archive/plush/jir-tomy-0002/">JIR-TOMY-0002</a></td>
       <td><a href="/jir-archive/plush/jir-tomy-0002/">Lifesize Jirachi</a></td>
       <td>TOMY</td>
@@ -3599,9 +3750,12 @@
         data-company="TOMY" 
         data-year="2004"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="reversible poké ball jirachi kururin mascot jumbo part 3 tomy 2004">
+        data-product-line="Kururin Mascot Jumbo Part 3"
+        data-tags="type:keychain"
+        data-region="Japan"
+        data-size=""
+        data-search="reversible poké ball jirachi くるりんマスコット ジャンボ part 3  kururin mascot jumbo part 3 tomy 2004 type:keychain tomy kururin mascot jumbo part 3 2004">
       <td><a href="/jir-archive/plush/jir-tomy-0006/">JIR-TOMY-0006</a></td>
       <td><a href="/jir-archive/plush/jir-tomy-0006/">Reversible Poké Ball Jirachi</a></td>
       <td>TOMY</td>
@@ -3617,9 +3771,12 @@
         data-company="Takara Tomy A.R.T.S" 
         data-year="2017"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="all star collection jirachi all star collection takara tomy a.r.t.s 2017">
+        data-product-line="All Star Collection"
+        data-tags=""
+        data-region="Japan"
+        data-size=""
+        data-search="all star collection jirachi all star collection  all star collection takara tomy a.r.t.s 2017  takara tomy a.r.t.s all star collection 2017">
       <td><a href="/jir-archive/plush/jir-tomy-0008/">JIR-TOMY-0008</a></td>
       <td><a href="/jir-archive/plush/jir-tomy-0008/">All Star Collection Jirachi</a></td>
       <td>Takara Tomy A.R.T.S</td>
@@ -3635,9 +3792,12 @@
         data-company="Takara Tomy A.R.T.S" 
         data-year="2025"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="poképeace jirachi plush poképeace takara tomy a.r.t.s 2025">
+        data-product-line="PokéPeace"
+        data-tags=""
+        data-region="Japan"
+        data-size=""
+        data-search="poképeace jirachi plush   poképeace takara tomy a.r.t.s 2025  takara tomy a.r.t.s poképeace 2025">
       <td><a href="/jir-archive/plush/jir-tomy-0009/">JIR-TOMY-0009</a></td>
       <td><a href="/jir-archive/plush/jir-tomy-0009/">PokéPeace Jirachi Plush</a></td>
       <td>Takara Tomy A.R.T.S</td>
@@ -3653,9 +3813,12 @@
         data-company="Pokémon Center US" 
         data-year="2024"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="saiko soda pop jirachi saiko soda pokémon center us 2024">
+        data-product-line="Saiko Soda"
+        data-tags=""
+        data-region="North America"
+        data-size=""
+        data-search="saiko soda pop jirachi   saiko soda pokémon center us 2024  pokémon center us saiko soda pop 2024">
       <td><a href="/jir-archive/plush/jir-uspc-0001/">JIR-USPC-0001</a></td>
       <td><a href="/jir-archive/plush/jir-uspc-0001/">Saiko Soda Pop Jirachi</a></td>
       <td>Pokémon Center US</td>
@@ -3671,9 +3834,12 @@
         data-company="Pokémon Center US" 
         data-year=""
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="sitting cuties jirachi sitting cuties pokémon center us ">
+        data-product-line="Sitting Cuties"
+        data-tags="special:sitting,variant:regional,size:small"
+        data-region="North America"
+        data-size=""
+        data-search="sitting cuties jirachi   sitting cuties pokémon center us  special:sitting variant:regional size:small ">
       <td><a href="/jir-archive/plush/jir-uspc-0002/">JIR-USPC-0002</a></td>
       <td><a href="/jir-archive/plush/jir-uspc-0002/">Sitting Cuties Jirachi</a></td>
       <td>Pokémon Center US</td>
@@ -3689,9 +3855,12 @@
         data-company="Pokémon Center US" 
         data-year="2023"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="glow-in-the-dark lifesize sleeping jirachi plush mythical lights pokémon center us 2023">
+        data-product-line="Mythical Lights"
+        data-tags=""
+        data-region="North America"
+        data-size=""
+        data-search="glow-in-the-dark lifesize sleeping jirachi plush sleeping jirachi mythical lights glow-in-the-dark plush  mythical lights pokémon center us 2023  ">
       <td><a href="/jir-archive/plush/jir-uspc-0003/">JIR-USPC-0003</a></td>
       <td><a href="/jir-archive/plush/jir-uspc-0003/">Glow-in-the-Dark Lifesize Sleeping Jirachi Plush</a></td>
       <td>Pokémon Center US</td>
@@ -3707,9 +3876,12 @@
         data-company="Pokémon Center US" 
         data-year="2023"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="glow-in-the-dark jirachi plush keychain mythical lights pokémon center us 2023">
+        data-product-line="Mythical Lights"
+        data-tags=""
+        data-region="North America"
+        data-size=""
+        data-search="glow-in-the-dark jirachi plush keychain sleeping jirachi mythical lights glow-in-the-dark plush keychain  mythical lights pokémon center us 2023  ">
       <td><a href="/jir-archive/plush/jir-uspc-0004/">JIR-USPC-0004</a></td>
       <td><a href="/jir-archive/plush/jir-uspc-0004/">Glow-in-the-Dark Jirachi Plush Keychain</a></td>
       <td>Pokémon Center US</td>
@@ -3725,9 +3897,12 @@
         data-company="Pokémon Center US" 
         data-year=""
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="comfy cuddlers jirachi comfy cuddlers pokémon center us ">
+        data-product-line="Comfy Cuddlers"
+        data-tags=""
+        data-region="North America"
+        data-size=""
+        data-search="comfy cuddlers jirachi jirachi pokemon comfy cuddlers plush  comfy cuddlers pokémon center us   ">
       <td><a href="/jir-archive/plush/jir-uspc-0005/">JIR-USPC-0005</a></td>
       <td><a href="/jir-archive/plush/jir-uspc-0005/">Comfy Cuddlers Jirachi</a></td>
       <td>Pokémon Center US</td>
@@ -3743,9 +3918,12 @@
         data-company="Pokémon Center US" 
         data-year="2014"
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="poké doll jirachi poké doll pokémon center us 2014">
+        data-product-line="Poké Doll"
+        data-tags=""
+        data-region="North America"
+        data-size=""
+        data-search="poké doll jirachi jirachi pokémon dolls plush  poké doll pokémon center us 2014  ">
       <td><a href="/jir-archive/plush/jir-uspc-0006/">JIR-USPC-0006</a></td>
       <td><a href="/jir-archive/plush/jir-uspc-0006/">Poké Doll Jirachi</a></td>
       <td>Pokémon Center US</td>
@@ -3761,9 +3939,12 @@
         data-company="Pokémon Center US" 
         data-year=""
         data-release-date=""
-        data-verification="Verified"
         data-availability="3"
-        data-search="poké plush jirachi poké plush pokémon center us ">
+        data-product-line="Poké Plush"
+        data-tags=""
+        data-region="North America"
+        data-size=""
+        data-search="poké plush jirachi poké plush jirachi  poké plush pokémon center us   ">
       <td><a href="/jir-archive/plush/jir-uspc-0007/">JIR-USPC-0007</a></td>
       <td><a href="/jir-archive/plush/jir-uspc-0007/">Poké Plush Jirachi</a></td>
       <td>Pokémon Center US</td>
@@ -3796,9 +3977,12 @@
           data-company="Banpresto"
           data-year="2003"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="13" super dx banpresto 2003">
+          data-product-line="Super DX"
+          data-tags="size:life-size,type:prize"
+          data-region="Japan"
+          data-size="13""
+          data-search="13" super dx nanayo no negaiboshi super dx  super dx banpresto 2003 size:life-size type:prize banpresto super dx 2003">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-BAN-0001">
           <span class="checklist-id">JIR-BAN-0001</span>
@@ -3814,9 +3998,12 @@
           data-company="Banpresto"
           data-year="2004"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="lottery movie promo banpresto 2004">
+          data-product-line="Nanayo no Negaiboshi Lottery"
+          data-tags="type:lottery,event:movie,size:medium"
+          data-region="Japan"
+          data-size=""
+          data-search="lottery movie promo nanayo no negaiboshi lottery movie promo  nanayo no negaiboshi lottery banpresto 2004 type:lottery event:movie size:medium banpresto nanayo no negaiboshi lottery 2004">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-BAN-0005">
           <span class="checklist-id">JIR-BAN-0005</span>
@@ -3832,9 +4019,12 @@
           data-company="Banpresto"
           data-year="2004"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="korotto manmaru plush banpresto 2004">
+          data-product-line="Korotto Manmaru"
+          data-tags="size:small"
+          data-region="Japan"
+          data-size="6.5""
+          data-search="korotto manmaru plush korotto manmaru nuigurumi  korotto manmaru banpresto 2004 size:small banpresto korotto manmaru 2004">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-BAN-0006">
           <span class="checklist-id">JIR-BAN-0006</span>
@@ -3850,9 +4040,12 @@
           data-company="Banpresto"
           data-year="2005"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="puppet plush banpresto 2005">
+          data-product-line="Ichiban Kuji"
+          data-tags="size:medium,type:lottery"
+          data-region="Japan"
+          data-size="8.5""
+          data-search="puppet plush ichiban kuji pocket monsters ag puppet  ichiban kuji banpresto 2005 size:medium type:lottery banpresto ichiban kuji 2005">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-BAN-0007">
           <span class="checklist-id">JIR-BAN-0007</span>
@@ -3868,9 +4061,12 @@
           data-company="Banpresto"
           data-year="2018"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="pokémon focus plush banpresto 2018">
+          data-product-line="Pokémon Focus"
+          data-tags="size:large"
+          data-region="Japan"
+          data-size=""
+          data-search="pokémon focus plush pokémon focus  pokémon focus banpresto 2018 size:large banpresto pokémon focus 2018">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-BAN-0008">
           <span class="checklist-id">JIR-BAN-0008</span>
@@ -3886,9 +4082,12 @@
           data-company="Banpresto"
           data-year="2019"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="yawaraka jirachi plush banpresto 2019">
+          data-product-line="Yawaraka Pokémon Nuigurumi 4"
+          data-tags=""
+          data-region="Japan"
+          data-size=""
+          data-search="yawaraka jirachi plush   yawaraka pokémon nuigurumi 4 banpresto 2019  banpresto yawaraka pokémon nuigurumi 4 2019">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-BAN-0009">
           <span class="checklist-id">JIR-BAN-0009</span>
@@ -3917,9 +4116,12 @@
           data-company="Bandai Spirits"
           data-year="2024"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="mecha mofugutto yellow ver. bandai spirits 2024">
+          data-product-line="Mecha Mofugutto"
+          data-tags=""
+          data-region="Japan"
+          data-size=""
+          data-search="mecha mofugutto yellow ver.   mecha mofugutto bandai spirits 2024  bandai spirits mecha mofugutto 2024">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-BNS-0001">
           <span class="checklist-id">JIR-BNS-0001</span>
@@ -3948,9 +4150,12 @@
           data-company="Pokémon Center Japan"
           data-year="2003"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="poké doll (velboa) pokémon center japan 2003">
+          data-product-line="Poké Doll"
+          data-tags="type:pokedoll"
+          data-region="Japan"
+          data-size=""
+          data-search="poké doll (velboa)   poké doll pokémon center japan 2003 type:pokedoll pokémon center japan poké doll 2003">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0001">
           <span class="checklist-id">JIR-JPPC-0001</span>
@@ -3966,9 +4171,12 @@
           data-company="Pokémon Center Japan"
           data-year="2009"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="poké doll (minky) pokémon center japan 2009">
+          data-product-line="Poké Doll"
+          data-tags="size:small,type:pokedoll"
+          data-region="Japan"
+          data-size="5.5""
+          data-search="poké doll (minky)   poké doll pokémon center japan 2009 size:small type:pokedoll pokémon center japan poké doll 2009">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0003">
           <span class="checklist-id">JIR-JPPC-0003</span>
@@ -3984,9 +4192,12 @@
           data-company="Pokémon Center Japan"
           data-year="2013"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="mini poké doll can pokémon center japan 2013">
+          data-product-line="Poké Doll"
+          data-tags="type:pokedoll"
+          data-region="Japan"
+          data-size=""
+          data-search="mini poké doll can   poké doll pokémon center japan 2013 type:pokedoll pokémon center japan mini poké doll can 2013">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0004">
           <span class="checklist-id">JIR-JPPC-0004</span>
@@ -4002,9 +4213,12 @@
           data-company="Pokémon Center Japan"
           data-year="2014"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="poké doll jirachi pokémon center japan 2014">
+          data-product-line="Poké Doll"
+          data-tags="type:pokedoll"
+          data-region="Japan"
+          data-size=""
+          data-search="poké doll jirachi   poké doll pokémon center japan 2014 type:pokedoll pokémon center japan poké doll 2014">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0005">
           <span class="checklist-id">JIR-JPPC-0005</span>
@@ -4020,9 +4234,12 @@
           data-company="Pokémon Center Japan"
           data-year="2016"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="kuttari sleeping pokémon center japan 2016">
+          data-product-line="Kuttari Nuigurumi"
+          data-tags="special:sleeping"
+          data-region="Japan"
+          data-size=""
+          data-search="kuttari sleeping kuttari nuigurumi sleeping  kuttari nuigurumi pokémon center japan 2016 special:sleeping pokémon center japan kuttari nuigurumi 2016">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0006">
           <span class="checklist-id">JIR-JPPC-0006</span>
@@ -4038,9 +4255,12 @@
           data-company="Pokémon Center Japan"
           data-year="2016"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="kuttari awake pokémon center japan 2016">
+          data-product-line="Kuttari Nuigurumi"
+          data-tags="special:sleeping"
+          data-region="Japan"
+          data-size=""
+          data-search="kuttari awake kuttari nuigurumi awake  kuttari nuigurumi pokémon center japan 2016 special:sleeping pokémon center japan kuttari nuigurumi 2016">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0007">
           <span class="checklist-id">JIR-JPPC-0007</span>
@@ -4056,9 +4276,12 @@
           data-company="Pokémon Center Japan"
           data-year="2017"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="kokeshi jirachi pokémon center japan 2017">
+          data-product-line="Tohoku Renewal"
+          data-tags=""
+          data-region="Japan"
+          data-size=""
+          data-search="kokeshi jirachi pokémon center tohoku renewal kokeshi  tohoku renewal pokémon center japan 2017  pokémon center japan tohoku renewal 2017">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0008">
           <span class="checklist-id">JIR-JPPC-0008</span>
@@ -4074,9 +4297,12 @@
           data-company="Pokémon Center Japan"
           data-year="2017"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="poncho pikachu (jirachi ver.) pokémon center japan 2017">
+          data-product-line="Tohoku Renewal"
+          data-tags=""
+          data-region="Japan"
+          data-size=""
+          data-search="poncho pikachu (jirachi ver.) poncho o kita pikachu - jirachi ver.  tohoku renewal pokémon center japan 2017  pokémon center japan tohoku renewal 2017">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0009">
           <span class="checklist-id">JIR-JPPC-0009</span>
@@ -4092,9 +4318,12 @@
           data-company="Pokémon Center Japan"
           data-year="2019"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="ditto transform! jirachi plush pokémon center japan 2019">
+          data-product-line="Henshin! Metamon"
+          data-tags="size:small,special:ditto"
+          data-region="Japan"
+          data-size="5.5""
+          data-search="ditto transform! jirachi plush henshin! metamon  henshin! metamon pokémon center japan 2019 size:small special:ditto pokémon center japan henshin! metamon 2019">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0010">
           <span class="checklist-id">JIR-JPPC-0010</span>
@@ -4110,9 +4339,12 @@
           data-company="Pokémon Center Japan"
           data-year="2019"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="ditto transform! jirachi mascot keychain pokémon center japan 2019">
+          data-product-line="Henshin! Metamon"
+          data-tags="size:mini,special:ditto"
+          data-region="Japan"
+          data-size="3""
+          data-search="ditto transform! jirachi mascot keychain henshin! metamon keychain  henshin! metamon pokémon center japan 2019 size:mini special:ditto pokémon center japan henshin! metamon 2019">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0011">
           <span class="checklist-id">JIR-JPPC-0011</span>
@@ -4128,9 +4360,12 @@
           data-company="Pokémon Center Japan"
           data-year="2021"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="pokémon fit jirachi pokémon center japan 2021">
+          data-product-line="Pokémon Fit"
+          data-tags="special:sitting,size:small"
+          data-region="Japan"
+          data-size=""
+          data-search="pokémon fit jirachi pokémon fit  pokémon fit pokémon center japan 2021 special:sitting size:small pokémon center japan pokémon fit 2021">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0012">
           <span class="checklist-id">JIR-JPPC-0012</span>
@@ -4146,9 +4381,12 @@
           data-company="Pokémon Center Japan"
           data-year="2021"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="speed star jirachi pokémon center japan 2021">
+          data-product-line="Speed Star"
+          data-tags=""
+          data-region="Japan"
+          data-size=""
+          data-search="speed star jirachi speed star  speed star pokémon center japan 2021  pokémon center japan speed star 2021">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0013">
           <span class="checklist-id">JIR-JPPC-0013</span>
@@ -4164,9 +4402,12 @@
           data-company="Pokémon Center Japan"
           data-year="2022"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="saiko soda jirachi pokémon center japan 2022">
+          data-product-line="Saiko Soda"
+          data-tags=""
+          data-region="Japan"
+          data-size=""
+          data-search="saiko soda jirachi   saiko soda pokémon center japan 2022  pokémon center japan saiko soda 2022">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0014">
           <span class="checklist-id">JIR-JPPC-0014</span>
@@ -4182,9 +4423,12 @@
           data-company="Pokémon Center Japan"
           data-year="2023"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="hoshi tsunagi mascot keychain pokémon center japan 2023">
+          data-product-line="Hoshi Tsunagi"
+          data-tags=""
+          data-region="Japan"
+          data-size=""
+          data-search="hoshi tsunagi mascot keychain hoshi tsunagi mascot  hoshi tsunagi pokémon center japan 2023  ">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0015">
           <span class="checklist-id">JIR-JPPC-0015</span>
@@ -4200,9 +4444,12 @@
           data-company="Pokémon Center Japan"
           data-year="2023"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="i choose you! jirachi pokémon center japan 2023">
+          data-product-line="I Choose You!"
+          data-tags=""
+          data-region="Japan"
+          data-size=""
+          data-search="i choose you! jirachi unknown  i choose you! pokémon center japan 2023  pokémon center japan i choose you!">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0016">
           <span class="checklist-id">JIR-JPPC-0016</span>
@@ -4218,9 +4465,12 @@
           data-company="Pokémon Center Japan"
           data-year="2023"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search=" pokémon center japan 2023">
+          data-product-line="Hoshi Tsunagi"
+          data-tags="size:life-size,special:sleeping"
+          data-region="Japan"
+          data-size=""
+          data-search="   hoshi tsunagi pokémon center japan 2023 size:life-size special:sleeping ">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0018">
           <span class="checklist-id">JIR-JPPC-0018</span>
@@ -4249,9 +4499,12 @@
           data-company="Pokémon Center Japan / PokéPark"
           data-year="2005"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="dx poké doll pokémon center japan / poképark 2005">
+          data-product-line="Poké Doll"
+          data-tags="size:medium,type:pokedoll"
+          data-region="Japan"
+          data-size="13""
+          data-search="dx poké doll   poké doll pokémon center japan / poképark 2005 size:medium type:pokedoll pokémon center japan / poképark dx poké doll 2005">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0002">
           <span class="checklist-id">JIR-JPPC-0002</span>
@@ -4280,9 +4533,12 @@
           data-company="Morishita / JPPC"
           data-year="2025"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="mochi mochi diecut pillow morishita / jppc 2025">
+          data-product-line="Mochi Mochi Diecut Makura"
+          data-tags=""
+          data-region="Japan"
+          data-size=""
+          data-search="mochi mochi diecut pillow   mochi mochi diecut makura morishita / jppc 2025  morishita / jppc mochi mochi diecut makura 2025">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-JPPC-0017">
           <span class="checklist-id">JIR-JPPC-0017</span>
@@ -4311,9 +4567,12 @@
           data-company="TOMY"
           data-year="2003"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="medium plush tomy 2003">
+          data-product-line="Fluffy TOMY Plush"
+          data-tags="size:medium"
+          data-region="Japan"
+          data-size="9""
+          data-search="medium plush   fluffy tomy plush tomy 2003 size:medium tomy medium plush 2003">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-TOMY-0001">
           <span class="checklist-id">JIR-TOMY-0001</span>
@@ -4329,9 +4588,12 @@
           data-company="TOMY"
           data-year="2003"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="lifesize jirachi tomy 2003">
+          data-product-line="Fluffy TOMY Plush"
+          data-tags="size:medium"
+          data-region="Japan"
+          data-size="13""
+          data-search="lifesize jirachi   fluffy tomy plush tomy 2003 size:medium tomy lifesize plush 2003">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-TOMY-0002">
           <span class="checklist-id">JIR-TOMY-0002</span>
@@ -4347,9 +4609,12 @@
           data-company="TOMY"
           data-year="2004"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="reversible poké ball jirachi tomy 2004">
+          data-product-line="Kururin Mascot Jumbo Part 3"
+          data-tags="type:keychain"
+          data-region="Japan"
+          data-size=""
+          data-search="reversible poké ball jirachi くるりんマスコット ジャンボ part 3  kururin mascot jumbo part 3 tomy 2004 type:keychain tomy kururin mascot jumbo part 3 2004">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-TOMY-0006">
           <span class="checklist-id">JIR-TOMY-0006</span>
@@ -4378,9 +4643,12 @@
           data-company="Takara Tomy A.R.T.S"
           data-year="2017"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="all star collection jirachi takara tomy a.r.t.s 2017">
+          data-product-line="All Star Collection"
+          data-tags=""
+          data-region="Japan"
+          data-size=""
+          data-search="all star collection jirachi all star collection  all star collection takara tomy a.r.t.s 2017  takara tomy a.r.t.s all star collection 2017">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-TOMY-0008">
           <span class="checklist-id">JIR-TOMY-0008</span>
@@ -4396,9 +4664,12 @@
           data-company="Takara Tomy A.R.T.S"
           data-year="2025"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="poképeace jirachi plush takara tomy a.r.t.s 2025">
+          data-product-line="PokéPeace"
+          data-tags=""
+          data-region="Japan"
+          data-size=""
+          data-search="poképeace jirachi plush   poképeace takara tomy a.r.t.s 2025  takara tomy a.r.t.s poképeace 2025">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-TOMY-0009">
           <span class="checklist-id">JIR-TOMY-0009</span>
@@ -4427,9 +4698,12 @@
           data-company="Pokémon Center US"
           data-year="2024"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="saiko soda pop jirachi pokémon center us 2024">
+          data-product-line="Saiko Soda"
+          data-tags=""
+          data-region="North America"
+          data-size=""
+          data-search="saiko soda pop jirachi   saiko soda pokémon center us 2024  pokémon center us saiko soda pop 2024">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-USPC-0001">
           <span class="checklist-id">JIR-USPC-0001</span>
@@ -4445,9 +4719,12 @@
           data-company="Pokémon Center US"
           data-year=""
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="sitting cuties jirachi pokémon center us ">
+          data-product-line="Sitting Cuties"
+          data-tags="special:sitting,variant:regional,size:small"
+          data-region="North America"
+          data-size=""
+          data-search="sitting cuties jirachi   sitting cuties pokémon center us  special:sitting variant:regional size:small ">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-USPC-0002">
           <span class="checklist-id">JIR-USPC-0002</span>
@@ -4463,9 +4740,12 @@
           data-company="Pokémon Center US"
           data-year="2023"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="glow-in-the-dark lifesize sleeping jirachi plush pokémon center us 2023">
+          data-product-line="Mythical Lights"
+          data-tags=""
+          data-region="North America"
+          data-size=""
+          data-search="glow-in-the-dark lifesize sleeping jirachi plush sleeping jirachi mythical lights glow-in-the-dark plush  mythical lights pokémon center us 2023  ">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-USPC-0003">
           <span class="checklist-id">JIR-USPC-0003</span>
@@ -4481,9 +4761,12 @@
           data-company="Pokémon Center US"
           data-year="2023"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="glow-in-the-dark jirachi plush keychain pokémon center us 2023">
+          data-product-line="Mythical Lights"
+          data-tags=""
+          data-region="North America"
+          data-size=""
+          data-search="glow-in-the-dark jirachi plush keychain sleeping jirachi mythical lights glow-in-the-dark plush keychain  mythical lights pokémon center us 2023  ">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-USPC-0004">
           <span class="checklist-id">JIR-USPC-0004</span>
@@ -4499,9 +4782,12 @@
           data-company="Pokémon Center US"
           data-year=""
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="comfy cuddlers jirachi pokémon center us ">
+          data-product-line="Comfy Cuddlers"
+          data-tags=""
+          data-region="North America"
+          data-size=""
+          data-search="comfy cuddlers jirachi jirachi pokemon comfy cuddlers plush  comfy cuddlers pokémon center us   ">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-USPC-0005">
           <span class="checklist-id">JIR-USPC-0005</span>
@@ -4517,9 +4803,12 @@
           data-company="Pokémon Center US"
           data-year="2014"
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="poké doll jirachi pokémon center us 2014">
+          data-product-line="Poké Doll"
+          data-tags=""
+          data-region="North America"
+          data-size=""
+          data-search="poké doll jirachi jirachi pokémon dolls plush  poké doll pokémon center us 2014  ">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-USPC-0006">
           <span class="checklist-id">JIR-USPC-0006</span>
@@ -4535,9 +4824,12 @@
           data-company="Pokémon Center US"
           data-year=""
           data-release-date=""
-          data-verification="Verified"
           data-availability="3"
-          data-search="poké plush jirachi pokémon center us ">
+          data-product-line="Poké Plush"
+          data-tags=""
+          data-region="North America"
+          data-size=""
+          data-search="poké plush jirachi poké plush jirachi  poké plush pokémon center us   ">
         <label class="checklist-label">
           <input type="checkbox" class="checklist-checkbox" data-id="JIR-USPC-0007">
           <span class="checklist-id">JIR-USPC-0007</span>
@@ -4557,7 +4849,7 @@
   <div class="empty-state-icon">🔍</div>
   <h3 class="empty-state-title">No plushes found</h3>
   <p class="empty-state-text">Try adjusting your search or filters to find what you're looking for.</p>
-  <button class="btn" id="clear-filters">Clear All Filters</button>
+  <button class="btn" id="clear-filters-empty" type="button">Clear All Filters</button>
 </div>
 
 <!-- Plush data for export and search -->
@@ -4574,16 +4866,82 @@ document.addEventListener('DOMContentLoaded', function() {
   // STATE MANAGEMENT
   // ======================
   const STORAGE_KEY = 'jirachi-collection';  // Must match collection.js
-  const STORAGE_KEY_LEGACY = 'jir-owned';
+  const STORAGE_KEY_LEGACY = 'jirachi-plush-collection';
+  const STORAGE_KEY_OLDER = 'jir-owned';
+  const plushData = JSON.parse(document.getElementById('plush-data').textContent);
+  const dataLists = buildFilterLists(plushData);
+  const yearBounds = dataLists.yearValues.length
+    ? { min: dataLists.yearValues[0], max: dataLists.yearValues[dataLists.yearValues.length - 1] }
+    : { min: 0, max: 0 };
   const state = {
     search: '',
     companies: [],
-    years: [],
-    verifications: [],
+    lines: [],
+    tags: [],
+    regions: [],
+    yearMin: yearBounds.min,
+    yearMax: yearBounds.max,
     collection: '',
     sort: 'date-asc',
     view: 'grid'
   };
+
+  function buildFilterLists(data) {
+    const buckets = {
+      companies: new Map(),
+      lines: new Map(),
+      tags: new Map(),
+      regions: new Map(),
+      yearValues: []
+    };
+
+    const bump = (map, value) => {
+      if (!value) return;
+      const key = String(value).trim();
+      if (!key) return;
+      map.set(key, (map.get(key) || 0) + 1);
+    };
+
+    const normalizeArray = (value) => {
+      if (Array.isArray(value)) return value;
+      if (typeof value === 'string' && value.trim()) {
+        return value.split(',').map(v => v.trim()).filter(Boolean);
+      }
+      return [];
+    };
+
+    data.forEach(item => {
+      bump(buckets.companies, item.company);
+      bump(buckets.lines, item.product_line);
+      bump(buckets.regions, item.region);
+
+      const tags = normalizeArray(item.tags);
+      tags.forEach(tag => bump(buckets.tags, tag));
+
+      const year = parseInt(item.year, 10);
+      if (Number.isFinite(year)) buckets.yearValues.push(year);
+    });
+
+    const sortEntries = (map) => [...map.entries()]
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .map(([label, count]) => ({ label, count }));
+
+    buckets.companies = sortEntries(buckets.companies);
+    buckets.lines = sortEntries(buckets.lines);
+    buckets.tags = sortEntries(buckets.tags);
+    buckets.regions = sortEntries(buckets.regions);
+    buckets.yearValues = [...new Set(buckets.yearValues)].sort((a, b) => a - b);
+    return buckets;
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
   
   // ======================
   // COLLECTION TRACKING (owned/wanted/trade)
@@ -4595,7 +4953,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return data; // { owned: [], wanted: [], trade: [] }
       }
       // Migrate from legacy format
-      const legacy = JSON.parse(localStorage.getItem(STORAGE_KEY_LEGACY)) || [];
+      const legacy = JSON.parse(localStorage.getItem(STORAGE_KEY_LEGACY)) || JSON.parse(localStorage.getItem(STORAGE_KEY_OLDER)) || [];
       const migrated = { owned: legacy, wanted: [], trade: [] };
       saveCollection(migrated);
       return migrated;
@@ -4669,10 +5027,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const params = new URLSearchParams();
     if (state.search) params.set('q', state.search);
     if (state.companies.length) params.set('company', state.companies.join(','));
-    if (state.years.length) params.set('year', state.years.join(','));
-    if (state.verifications.length) params.set('status', state.verifications.join(','));
+    if (state.lines.length) params.set('line', state.lines.join(','));
+    if (state.tags.length) params.set('tag', state.tags.join(','));
+    if (state.regions.length) params.set('region', state.regions.join(','));
+    if (state.yearMin !== yearBounds.min) params.set('yearMin', String(state.yearMin));
+    if (state.yearMax !== yearBounds.max) params.set('yearMax', String(state.yearMax));
     if (state.collection) params.set('collection', state.collection);
-    if (state.sort !== 'id-asc') params.set('sort', state.sort);
+    if (state.sort !== 'date-asc') params.set('sort', state.sort);
     if (state.view !== 'grid') params.set('view', state.view);
     
     const newURL = params.toString() ? `${location.pathname}?${params}` : location.pathname;
@@ -4683,10 +5044,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const params = new URLSearchParams(location.search);
     state.search = params.get('q') || '';
     state.companies = params.get('company')?.split(',').filter(Boolean) || [];
-    state.years = params.get('year')?.split(',').filter(Boolean) || [];
-    state.verifications = params.get('status')?.split(',').filter(Boolean) || [];
+    state.lines = params.get('line')?.split(',').filter(Boolean) || [];
+    state.tags = params.get('tag')?.split(',').filter(Boolean) || [];
+    state.regions = params.get('region')?.split(',').filter(Boolean) || [];
+    const legacyYears = params.get('year')?.split(',').filter(Boolean).map(v => parseInt(v, 10)).filter(Number.isFinite) || [];
+    state.yearMin = parseInt(params.get('yearMin'), 10);
+    state.yearMax = parseInt(params.get('yearMax'), 10);
+    if (!Number.isFinite(state.yearMin)) {
+      state.yearMin = legacyYears.length ? Math.min(...legacyYears) : yearBounds.min;
+    }
+    if (!Number.isFinite(state.yearMax)) {
+      state.yearMax = legacyYears.length ? Math.max(...legacyYears) : yearBounds.max;
+    }
     state.collection = params.get('collection') || '';
-    state.sort = params.get('sort') || 'id-asc';
+    state.sort = params.get('sort') || 'date-asc';
     state.view = params.get('view') || 'grid';
   }
   
@@ -4701,15 +5072,25 @@ document.addEventListener('DOMContentLoaded', function() {
       chips.push({ type: 'search', value: state.search, label: `"${state.search}"` });
     }
     state.companies.forEach(c => chips.push({ type: 'company', value: c, label: c }));
-    state.years.forEach(y => chips.push({ type: 'year', value: y, label: y }));
-    state.verifications.forEach(v => chips.push({ type: 'verification', value: v, label: v }));
+    state.lines.forEach(v => chips.push({ type: 'line', value: v, label: v }));
+    state.tags.forEach(v => chips.push({ type: 'tag', value: v, label: v }));
+    state.regions.forEach(v => chips.push({ type: 'region', value: v, label: v }));
+    if (state.yearMin !== yearBounds.min || state.yearMax !== yearBounds.max) {
+      chips.push({ type: 'year-range', value: `${state.yearMin}-${state.yearMax}`, label: `${state.yearMin}–${state.yearMax}` });
+    }
     if (state.collection) {
-      chips.push({ type: 'collection', value: state.collection, label: state.collection === 'owned' ? 'My Collection' : 'Not Owned' });
+      const collectionLabels = {
+        owned: 'Owned',
+        wanted: 'Wanted',
+        trade: 'For Trade',
+        'not-tracked': 'Not Tracked'
+      };
+      chips.push({ type: 'collection', value: state.collection, label: collectionLabels[state.collection] || state.collection });
     }
     
     container.innerHTML = chips.map(c => `
-      <span class="filter-chip" data-type="${c.type}" data-value="${c.value}">
-        ${c.label}
+      <span class="filter-chip" data-type="${escapeHtml(c.type)}" data-value="${escapeHtml(c.value)}">
+        ${escapeHtml(c.label)}
         <button class="chip-remove" aria-label="Remove filter">×</button>
       </span>
     `).join('') + (chips.length > 1 ? '<button class="chip-clear-all" id="chip-clear-all">Clear All</button>' : '');
@@ -4730,8 +5111,13 @@ document.addEventListener('DOMContentLoaded', function() {
     switch(type) {
       case 'search': state.search = ''; document.getElementById('search-input').value = ''; break;
       case 'company': state.companies = state.companies.filter(c => c !== value); break;
-      case 'year': state.years = state.years.filter(y => y !== value); break;
-      case 'verification': state.verifications = state.verifications.filter(v => v !== value); break;
+      case 'line': state.lines = state.lines.filter(v => v !== value); break;
+      case 'tag': state.tags = state.tags.filter(v => v !== value); break;
+      case 'region': state.regions = state.regions.filter(v => v !== value); break;
+      case 'year-range':
+        state.yearMin = yearBounds.min;
+        state.yearMax = yearBounds.max;
+        break;
       case 'collection': state.collection = ''; break;
     }
     syncUIFromState();
@@ -4741,10 +5127,14 @@ document.addEventListener('DOMContentLoaded', function() {
   function clearAllFilters() {
     state.search = '';
     state.companies = [];
-    state.years = [];
-    state.verifications = [];
+    state.lines = [];
+    state.tags = [];
+    state.regions = [];
+    state.yearMin = yearBounds.min;
+    state.yearMax = yearBounds.max;
     state.collection = '';
     document.getElementById('search-input').value = '';
+    document.getElementById('search-clear').classList.add('hidden');
     syncUIFromState();
     applyFiltersAndSort();
   }
@@ -4827,6 +5217,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let visibleCount = 0;
     const totalCount = allItems.length;
+    const yearRangeChanged = state.yearMin !== yearBounds.min || state.yearMax !== yearBounds.max;
     
     // Apply filters
     allElements.forEach(item => {
@@ -4845,14 +5236,29 @@ document.addEventListener('DOMContentLoaded', function() {
         show = false;
       }
       
-      // Year filter
-      if (state.years.length && !state.years.includes(item.dataset.year)) {
+      // Product line filter
+      if (state.lines.length && !state.lines.includes(item.dataset.productLine)) {
         show = false;
       }
-      
-      // Verification filter
-      if (state.verifications.length && !state.verifications.includes(item.dataset.verification)) {
+
+      // Tag filter
+      if (state.tags.length) {
+        const itemTags = (item.dataset.tags || '').split(',').map(v => v.trim()).filter(Boolean);
+        if (!state.tags.some(tag => itemTags.includes(tag))) show = false;
+      }
+
+      // Region filter
+      if (state.regions.length && !state.regions.includes(item.dataset.region)) {
         show = false;
+      }
+
+      // Year range filter
+      const itemYear = parseInt(item.dataset.year, 10);
+      const hasYear = Number.isFinite(itemYear);
+      if (yearRangeChanged) {
+        if (!hasYear || itemYear < state.yearMin || itemYear > state.yearMax) {
+          show = false;
+        }
       }
       
       // Collection filter
@@ -4884,8 +5290,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Show/hide no results
     const noResults = document.getElementById('no-results');
-    const hasFilters = state.search || state.companies.length || state.years.length || 
-                       state.verifications.length || state.collection;
+    const hasFilters = state.search || state.companies.length || state.lines.length ||
+                       state.tags.length || state.regions.length ||
+                       state.collection || state.yearMin !== yearBounds.min || state.yearMax !== yearBounds.max;
     noResults.classList.toggle('hidden', visibleCount > 0 || !hasFilters);
     
     // Update URL
@@ -4955,27 +5362,306 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateOwnedUI() { updateCollectionUI(); }
   
   // ======================
+  // FILTER PANEL RENDERING
+  // ======================
+  function renderFilterOptionList(containerId, items, type) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    container.innerHTML = items.map(item => `
+      <label class="filter-option">
+        <input type="checkbox" data-filter-type="${escapeHtml(type)}" value="${escapeHtml(item.label)}">
+        <span class="filter-option-label">${escapeHtml(item.label)}</span>
+        <span class="filter-option-count">${escapeHtml(item.count)}</span>
+      </label>
+    `).join('');
+  }
+
+  function renderTagFilterList() {
+    const container = document.getElementById('filter-tag-list');
+    if (!container) return;
+
+    const categories = {
+      size: [],
+      type: [],
+      event: [],
+      special: [],
+      variant: [],
+      other: []
+    };
+
+    dataLists.tags.forEach(item => {
+      const raw = String(item.label || '');
+      const [prefix, ...rest] = raw.split(':');
+      const value = rest.length ? rest.join(':') : raw;
+      const key = categories[prefix] ? prefix : 'other';
+      categories[key].push({ raw, value, count: item.count });
+    });
+
+    const sizeOrder = ['mini', 'small', 'medium', 'large', 'life-size'];
+    categories.size.sort((a, b) => {
+      const aIndex = sizeOrder.indexOf(a.value);
+      const bIndex = sizeOrder.indexOf(b.value);
+      if (aIndex !== -1 || bIndex !== -1) {
+        if (aIndex === -1) return 1;
+        if (bIndex === -1) return -1;
+        return aIndex - bIndex;
+      }
+      return a.value.localeCompare(b.value);
+    });
+    ['type', 'event', 'special', 'variant', 'other'].forEach(key => {
+      categories[key].sort((a, b) => a.value.localeCompare(b.value));
+    });
+
+    const ordered = [
+      ['size', 'Size'],
+      ['type', 'Type'],
+      ['event', 'Event'],
+      ['special', 'Special'],
+      ['variant', 'Variant'],
+      ['other', 'Other']
+    ];
+
+    const sections = ordered
+      .map(([key, title]) => {
+        const items = categories[key];
+        if (!items.length) return '';
+
+        const options = items.map(item => `
+          <label class="filter-option">
+            <input type="checkbox" data-filter-type="tag" value="${escapeHtml(item.raw)}">
+            <span class="filter-option-label">${escapeHtml(item.value)}</span>
+            <span class="filter-option-count">${escapeHtml(item.count)}</span>
+          </label>
+        `).join('');
+
+        return `
+          <details class="filter-tag-category" open>
+            <summary class="filter-tag-category-summary">
+              <span class="filter-tag-category-title">${escapeHtml(title)}</span>
+              <span class="filter-tag-category-arrow" aria-hidden="true">▾</span>
+            </summary>
+            <div class="filter-option-list filter-option-list-tags filter-tag-category-list">
+              ${options}
+            </div>
+          </details>
+        `;
+      })
+      .join('');
+
+    container.innerHTML = sections;
+  }
+
+  function renderFilterLists() {
+    renderFilterOptionList('filter-company-list', dataLists.companies, 'company');
+    renderFilterOptionList('filter-line-list', dataLists.lines, 'line');
+    renderTagFilterList();
+    renderFilterOptionList('filter-region-list', dataLists.regions, 'region');
+  }
+
+  function renderYearScale() {
+    const scale = document.getElementById('year-range-scale');
+    if (!scale) return;
+
+    const min = yearBounds.min;
+    const max = yearBounds.max;
+    if (!Number.isFinite(min) || !Number.isFinite(max) || max < min) {
+      scale.innerHTML = '';
+      return;
+    }
+
+    const span = Math.max(1, max - min);
+    let step = 1;
+    let majorStep = 1;
+
+    if (span > 120) {
+      step = 10;
+      majorStep = 20;
+    } else if (span > 60) {
+      step = 5;
+      majorStep = 10;
+    } else if (span > 30) {
+      step = 2;
+      majorStep = 5;
+    } else {
+      step = 1;
+      majorStep = 2;
+    }
+
+    const values = [];
+    for (let year = min; year <= max; year += step) {
+      values.push(year);
+    }
+    if (values[values.length - 1] !== max) values.push(max);
+
+    scale.innerHTML = [...new Set(values)].map(year => {
+      const pct = span === 0 ? 0 : ((year - min) / span) * 100;
+      const isMajor = year === min || year === max || ((year - min) % majorStep === 0);
+      return `
+        <span class="year-range-scale-item ${isMajor ? 'is-major' : ''}" style="left:${pct}%">
+          ${isMajor ? escapeHtml(year) : ''}
+        </span>
+      `;
+    }).join('');
+  }
+
+  function updateYearRangeUI() {
+    const timeline = document.getElementById('year-range-timeline');
+    const minHandle = document.getElementById('year-range-min-handle');
+    const maxHandle = document.getElementById('year-range-max-handle');
+    const fill = document.getElementById('year-range-fill');
+
+    if (state.yearMin > state.yearMax) {
+      [state.yearMin, state.yearMax] = [state.yearMax, state.yearMin];
+    }
+
+    const span = yearBounds.max - yearBounds.min;
+    const minPct = span > 0 ? ((state.yearMin - yearBounds.min) / span) * 100 : 0;
+    const maxPct = span > 0 ? ((state.yearMax - yearBounds.min) / span) * 100 : 100;
+
+    if (fill && yearBounds.max > yearBounds.min) {
+      fill.style.left = `${Math.max(0, Math.min(100, minPct))}%`;
+      fill.style.width = `${Math.max(0, Math.min(100, maxPct - minPct))}%`;
+    } else if (fill) {
+      fill.style.left = '0%';
+      fill.style.width = '100%';
+    }
+
+    if (minHandle) {
+      minHandle.style.left = `${Math.max(0, Math.min(100, minPct))}%`;
+      minHandle.setAttribute('aria-valuemin', String(yearBounds.min));
+      minHandle.setAttribute('aria-valuemax', String(state.yearMax));
+      minHandle.setAttribute('aria-valuenow', String(state.yearMin));
+      minHandle.setAttribute('aria-valuetext', String(state.yearMin));
+    }
+
+    if (maxHandle) {
+      maxHandle.style.left = `${Math.max(0, Math.min(100, maxPct))}%`;
+      maxHandle.setAttribute('aria-valuemin', String(state.yearMin));
+      maxHandle.setAttribute('aria-valuemax', String(yearBounds.max));
+      maxHandle.setAttribute('aria-valuenow', String(state.yearMax));
+      maxHandle.setAttribute('aria-valuetext', String(state.yearMax));
+    }
+
+    renderYearScale();
+  }
+
+  function setYearRange(nextMin, nextMax) {
+    const min = Math.max(yearBounds.min, Math.min(yearBounds.max, nextMin));
+    const max = Math.max(yearBounds.min, Math.min(yearBounds.max, nextMax));
+    state.yearMin = Math.min(min, max);
+    state.yearMax = Math.max(min, max);
+    updateYearRangeUI();
+    updateFilterSummaries();
+    applyFiltersAndSort();
+  }
+
+  function yearFromClientX(clientX) {
+    const timeline = document.getElementById('year-range-timeline');
+    if (!timeline) return yearBounds.min;
+
+    const rect = timeline.getBoundingClientRect();
+    if (!rect.width) return yearBounds.min;
+
+    const styles = getComputedStyle(timeline);
+    const leftInset = parseFloat(styles.paddingLeft) || 0;
+    const rightInset = parseFloat(styles.paddingRight) || 0;
+    const left = rect.left + leftInset;
+    const width = Math.max(1, rect.width - leftInset - rightInset);
+    const raw = (clientX - left) / width;
+    const pct = Math.max(0, Math.min(1, raw));
+    return Math.round(yearBounds.min + pct * (yearBounds.max - yearBounds.min));
+  }
+
+  function stepYearHandle(handle, delta) {
+    if (handle === 'min') {
+      setYearRange(Math.min(state.yearMin + delta, state.yearMax), state.yearMax);
+    } else if (handle === 'max') {
+      setYearRange(state.yearMin, Math.max(state.yearMax + delta, state.yearMin));
+    }
+  }
+
+  function handleYearHandleKeydown(e, handle) {
+    const step = e.shiftKey ? 5 : 1;
+    switch (e.key) {
+      case 'ArrowLeft':
+      case 'ArrowDown':
+        e.preventDefault();
+        stepYearHandle(handle, -step);
+        break;
+      case 'ArrowRight':
+      case 'ArrowUp':
+        e.preventDefault();
+        stepYearHandle(handle, step);
+        break;
+      case 'Home':
+        e.preventDefault();
+        if (handle === 'min') setYearRange(yearBounds.min, state.yearMax);
+        else setYearRange(state.yearMin, state.yearMin);
+        break;
+      case 'End':
+        e.preventDefault();
+        if (handle === 'min') setYearRange(state.yearMax, state.yearMax);
+        else setYearRange(state.yearMin, yearBounds.max);
+        break;
+    }
+  }
+
+  function updateFilterSummaries() {
+    const setSummary = (id, label, count) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = count ? `${count} selected` : label;
+    };
+
+    setSummary('company-summary', 'All companies', state.companies.length);
+    setSummary('line-summary', 'All lines', state.lines.length);
+    setSummary('tag-summary', 'All tags', state.tags.length);
+    setSummary('region-summary', 'All regions', state.regions.length);
+    setSummary('collection-summary', 'All plushes', state.collection ? 1 : 0);
+
+    const sortLabels = {
+      'date-asc': 'Release date',
+      'date-desc': 'Release date',
+      'id-asc': 'ID',
+      'id-desc': 'ID',
+      'name-asc': 'Name',
+      'name-desc': 'Name',
+      'availability-asc': 'Availability',
+      'availability-desc': 'Availability'
+    };
+    const sortSummary = document.getElementById('sort-summary');
+    if (sortSummary) sortSummary.textContent = sortLabels[state.sort] || 'Release date';
+  }
+
+  // ======================
   // SYNC UI FROM STATE
   // ======================
   function syncUIFromState() {
     document.getElementById('search-input').value = state.search;
-    document.getElementById('sort-by').value = state.sort;
-    document.getElementById('filter-collection').value = state.collection;
-    
-    // Multi-select sync
-    const companySelect = document.getElementById('filter-company');
-    [...companySelect.options].forEach(opt => {
-      opt.selected = state.companies.includes(opt.value);
+    document.getElementById('search-clear').classList.toggle('hidden', !state.search);
+    renderFilterLists();
+    updateYearRangeUI();
+    updateFilterSummaries();
+
+    document.querySelectorAll('input[name="sort-by"]').forEach(input => {
+      input.checked = input.value === state.sort;
     });
-    
-    const yearSelect = document.getElementById('filter-year');
-    [...yearSelect.options].forEach(opt => {
-      opt.selected = state.years.includes(opt.value);
+
+    document.querySelectorAll('input[name="collection-filter"]').forEach(input => {
+      input.checked = input.value === state.collection;
     });
-    
-    const verifySelect = document.getElementById('filter-verification');
-    [...verifySelect.options].forEach(opt => {
-      opt.selected = state.verifications.includes(opt.value);
+
+    const map = {
+      company: state.companies,
+      line: state.lines,
+      tag: state.tags,
+      region: state.regions
+    };
+    document.querySelectorAll('[data-filter-type]').forEach(input => {
+      const type = input.dataset.filterType;
+      if (map[type]) {
+        input.checked = map[type].includes(input.value);
+      }
     });
     
     // View toggle
@@ -5013,31 +5699,123 @@ document.addEventListener('DOMContentLoaded', function() {
     applyFiltersAndSort();
   });
   
-  // Dropdown filters (single-select)
-  document.getElementById('filter-company').addEventListener('change', (e) => {
-    state.companies = e.target.value ? [e.target.value] : [];
-    applyFiltersAndSort();
-  });
-  
-  document.getElementById('filter-year').addEventListener('change', (e) => {
-    state.years = e.target.value ? [e.target.value] : [];
-    applyFiltersAndSort();
-  });
-  
-  document.getElementById('filter-verification').addEventListener('change', (e) => {
-    state.verifications = e.target.value ? [e.target.value] : [];
-    applyFiltersAndSort();
-  });
-  
-  document.getElementById('filter-collection').addEventListener('change', (e) => {
-    state.collection = e.target.value;
-    applyFiltersAndSort();
-  });
-  
-  document.getElementById('sort-by').addEventListener('change', (e) => {
-    state.sort = e.target.value;
-    applyFiltersAndSort();
-  });
+  // Filter panel interactions
+  const filterPanel = document.getElementById('filter-panel');
+  if (filterPanel) {
+    const updatePanelState = () => {
+      const stateText = filterPanel.querySelector('.filter-panel-summary-text');
+      if (stateText) stateText.textContent = filterPanel.open ? 'Close filters' : 'Open filters';
+    };
+
+    updatePanelState();
+    filterPanel.addEventListener('toggle', updatePanelState);
+
+    filterPanel.addEventListener('change', (e) => {
+      const target = e.target;
+
+      if (target.matches('input[type="checkbox"][data-filter-type]')) {
+        const type = target.dataset.filterType;
+        const value = target.value;
+        const map = {
+          company: state.companies,
+          line: state.lines,
+          tag: state.tags,
+          region: state.regions
+        };
+        const list = map[type];
+        if (list) {
+          if (target.checked) {
+            if (!list.includes(value)) list.push(value);
+          } else {
+            map[type] = list.filter(v => v !== value);
+            if (type === 'company') state.companies = map[type];
+            if (type === 'line') state.lines = map[type];
+            if (type === 'tag') state.tags = map[type];
+            if (type === 'region') state.regions = map[type];
+          }
+        }
+        updateFilterSummaries();
+        applyFiltersAndSort();
+        return;
+      }
+
+      if (target.matches('input[name="collection-filter"]')) {
+        state.collection = target.value;
+        updateFilterSummaries();
+        applyFiltersAndSort();
+        return;
+      }
+
+      if (target.matches('input[name="sort-by"]')) {
+        state.sort = target.value;
+        updateFilterSummaries();
+        applyFiltersAndSort();
+        return;
+      }
+    });
+
+    const yearTimeline = document.getElementById('year-range-timeline');
+    const yearMinHandle = document.getElementById('year-range-min-handle');
+    const yearMaxHandle = document.getElementById('year-range-max-handle');
+    let activeYearHandle = null;
+
+    const dragYearHandle = (handle, clientX) => {
+      const year = yearFromClientX(clientX);
+      if (handle === 'min') {
+        setYearRange(Math.min(year, state.yearMax), state.yearMax);
+      } else if (handle === 'max') {
+        setYearRange(state.yearMin, Math.max(year, state.yearMin));
+      }
+    };
+
+    if (yearTimeline && yearMinHandle && yearMaxHandle) {
+      yearTimeline.addEventListener('pointerdown', (e) => {
+        const targetHandle = e.target.closest('.year-range-handle');
+        const clickedYear = yearFromClientX(e.clientX);
+        const handle = targetHandle === yearMinHandle
+          ? 'min'
+          : targetHandle === yearMaxHandle
+            ? 'max'
+            : (Math.abs(clickedYear - state.yearMin) <= Math.abs(clickedYear - state.yearMax) ? 'min' : 'max');
+
+        activeYearHandle = handle;
+        dragYearHandle(handle, e.clientX);
+
+        if (yearTimeline.setPointerCapture) {
+          try {
+            yearTimeline.setPointerCapture(e.pointerId);
+          } catch (err) {
+            // ignore
+          }
+        }
+
+        e.preventDefault();
+      });
+
+      window.addEventListener('pointermove', (e) => {
+        if (!activeYearHandle) return;
+        dragYearHandle(activeYearHandle, e.clientX);
+      });
+
+      window.addEventListener('pointerup', () => {
+        activeYearHandle = null;
+      });
+
+      window.addEventListener('pointercancel', () => {
+        activeYearHandle = null;
+      });
+
+      yearMinHandle.addEventListener('keydown', (e) => handleYearHandleKeydown(e, 'min'));
+      yearMaxHandle.addEventListener('keydown', (e) => handleYearHandleKeydown(e, 'max'));
+    }
+
+    const closeFilters = document.getElementById('close-filters');
+    if (closeFilters) {
+      closeFilters.addEventListener('click', () => {
+        filterPanel.open = false;
+      });
+    }
+  }
   
   // View toggle
   document.querySelectorAll('.view-btn').forEach(btn => {
@@ -5078,6 +5856,8 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Clear filters button
   document.getElementById('clear-filters').addEventListener('click', clearAllFilters);
+  const clearFiltersEmpty = document.getElementById('clear-filters-empty');
+  if (clearFiltersEmpty) clearFiltersEmpty.addEventListener('click', clearAllFilters);
   
   // Export functionality with format selection
   document.getElementById('export-btn').addEventListener('click', function() {
@@ -5249,7 +6029,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="container">
       <p>Jirachi Plush Archive · v1.0 · Official Jirachi plush documentation</p>
       <p class="footer-links">
-        <a href="/jir-archive/guide">How to Contribute</a> ·
+        <a href="/jir-archive/research#contribute-to-the-archive">How to Contribute</a> ·
         <a href="https://github.com/YOUR_USERNAME/jirachi-archive">GitHub</a>
       </p>
     </div>
@@ -5260,41 +6040,70 @@ document.addEventListener('DOMContentLoaded', function() {
   (function() {
     const toggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
+    const themeColorMeta = document.getElementById('theme-color-meta');
+    const themes = ['light', 'dark', 'stardust'];
+    const themeConfig = {
+      light: {
+        icon: '☀️',
+        label: 'Light',
+        next: 'Dark',
+        themeColor: '#faf9f7'
+      },
+      dark: {
+        icon: '🌙',
+        label: 'Dark',
+        next: 'Stardust',
+        themeColor: '#141413'
+      },
+      stardust: {
+        icon: '✨',
+        label: 'Stardust',
+        next: 'Light',
+        themeColor: '#f3de97'
+      }
+    };
     
     function getPreferredTheme() {
       const stored = localStorage.getItem('theme');
-      if (stored) return stored;
+      if (themes.includes(stored)) return stored;
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
     
-    function setTheme(theme) {
+    function updateThemeUI(theme) {
+      const config = themeConfig[theme] || themeConfig.light;
+      const icon = toggle.querySelector('.theme-toggle-icon');
+      const label = toggle.querySelector('.theme-toggle-label');
+
+      if (icon) icon.textContent = config.icon;
+      if (label) label.textContent = config.label;
+      toggle.setAttribute('aria-label', `Theme: ${config.label}. Click to switch to ${config.next}.`);
+      toggle.title = `Theme: ${config.label}. Click to switch to ${config.next}.`;
+
+      if (themeColorMeta) {
+        themeColorMeta.setAttribute('content', config.themeColor);
+      }
+    }
+
+    function setTheme(theme, persist = true) {
       html.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-      toggle.setAttribute('aria-pressed', theme === 'dark');
+      if (persist) localStorage.setItem('theme', theme);
+      updateThemeUI(theme);
     }
     
-    // Initialize aria-pressed
-    toggle.setAttribute('aria-pressed', getPreferredTheme() === 'dark');
+    const initialTheme = getPreferredTheme();
+    setTheme(initialTheme, false);
     
     toggle.addEventListener('click', function() {
       const current = html.getAttribute('data-theme') || getPreferredTheme();
-      setTheme(current === 'dark' ? 'light' : 'dark');
-    });
-    
-    // Keyboard support
-    toggle.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggle.click();
-      }
+      const nextTheme = themes[(themes.indexOf(current) + 1) % themes.length];
+      setTheme(nextTheme);
     });
     
     // Listen for system theme changes
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
       if (!localStorage.getItem('theme')) {
         const newTheme = e.matches ? 'dark' : 'light';
-        html.setAttribute('data-theme', newTheme);
-        toggle.setAttribute('aria-pressed', newTheme === 'dark');
+        setTheme(newTheme, false);
       }
     });
   })();

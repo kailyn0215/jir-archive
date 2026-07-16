@@ -12,7 +12,32 @@
   'use strict';
   
   const STORAGE_KEY = 'jirachi-collection';
+  const LEGACY_STORAGE_KEY = 'jirachi-plush-collection';
   const VALID_STATUSES = ['owned', 'wanted', 'trade'];
+
+  function normalizeCollection(raw) {
+    const normalized = { owned: [], wanted: [], trade: [] };
+
+    if (!raw || typeof raw !== 'object') {
+      return normalized;
+    }
+
+    if (Array.isArray(raw.owned) || Array.isArray(raw.wanted) || Array.isArray(raw.trade)) {
+      normalized.owned = Array.isArray(raw.owned) ? [...new Set(raw.owned)] : [];
+      normalized.wanted = Array.isArray(raw.wanted) ? [...new Set(raw.wanted)] : [];
+      normalized.trade = Array.isArray(raw.trade) ? [...new Set(raw.trade)] : [];
+      return normalized;
+    }
+
+    Object.keys(raw).forEach(id => {
+      const status = raw[id];
+      if (VALID_STATUSES.includes(status)) {
+        normalized[status].push(id);
+      }
+    });
+
+    return normalized;
+  }
   
   /**
    * Get the full collection object from localStorage.
@@ -22,12 +47,16 @@
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
-        const parsed = JSON.parse(stored);
-        return {
-          owned: Array.isArray(parsed.owned) ? parsed.owned : [],
-          wanted: Array.isArray(parsed.wanted) ? parsed.wanted : [],
-          trade: Array.isArray(parsed.trade) ? parsed.trade : []
-        };
+        return normalizeCollection(JSON.parse(stored));
+      }
+
+      const legacyStored = localStorage.getItem(LEGACY_STORAGE_KEY);
+      if (legacyStored) {
+        const parsed = JSON.parse(legacyStored);
+        const migrated = normalizeCollection(parsed);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+        localStorage.removeItem(LEGACY_STORAGE_KEY);
+        return migrated;
       }
     } catch (e) {
       console.warn('Failed to parse collection from localStorage:', e);
