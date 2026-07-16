@@ -35,7 +35,7 @@ price:
 price_display: $12.99
 
 # === TAXONOMY ===
-tags: []
+tags: [special:sleeping, variant:regional, size:small]
 search_terms: []
 
 # === VARIANTS & RELATIONSHIPS ===
@@ -44,10 +44,10 @@ variant_of:
 variant_type: 
 
 # === STATUS & VERIFICATION ===
-status: Research
+status: Master
 confidence:
-verification:
-availability: 
+verification: Verified
+availability: 4
 
 # === PROVENANCE ===
 sources:

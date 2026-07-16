@@ -47,7 +47,7 @@ variant_type:
 status: Research
 confidence:
 verification:
-availability: 
+availability: 4
 
 # === PROVENANCE ===
 sources:

@@ -35,7 +35,7 @@ price:
 price_display: Prize
 
 # === TAXONOMY ===
-tags: [event:holiday, size:medium]
+tags: [event:holiday, type:prize, size:medium]
 search_terms: ["banpresto", "super dx", 2003]
 
 # === VARIANTS & RELATIONSHIPS ===

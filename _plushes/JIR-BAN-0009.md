@@ -12,7 +12,7 @@ romaji_name:
 
 # === CLASSIFICATION ===
 product_line: Yawaraka Pokémon Nuigurumi 4
-product_line_id: yawaraka-pokemon-nuigurumi-4
+product_line_id: yawaraka-pokemon-nuigurumi
 manufacturer: 
 
 # === RELEASE INFO ===

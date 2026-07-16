@@ -11,8 +11,8 @@ japanese_name:
 romaji_name: 
 
 # === CLASSIFICATION ===
-product_line: Ichiban Kuji
-product_line_id: ichiban-kuji
+product_line: Nanayo no Negaiboshi
+product_line_id: nanayo-no-negaiboshi
 manufacturer: 
 
 # === RELEASE INFO ===
@@ -35,7 +35,7 @@ price:
 price_display: Prize
 
 # === TAXONOMY ===
-tags: ["size:large", "type:lottery"]
+tags: [event:movie, type:lottery, size:life-size]
 search_terms: ["banpresto", "ichiban kuji", 2003]
 
 # === VARIANTS & RELATIONSHIPS ===

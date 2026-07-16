@@ -35,7 +35,7 @@ price:
 price_display: $16.99
 
 # === TAXONOMY ===
-tags: []
+tags: [type:pokedoll, variant:regional, special:sitting, size:small]
 search_terms: []
 
 # === VARIANTS & RELATIONSHIPS ===
@@ -44,10 +44,10 @@ variant_of: JIR-JPPC-0005
 variant_type: Regional
 
 # === STATUS & VERIFICATION ===
-status: Research
+status: Master
 confidence:
-verification:
-availability: 
+verification: Verified
+availability: 5
 
 # === PROVENANCE ===
 sources:
@@ -64,6 +64,6 @@ sources:
 
 # === DOCUMENTATION ===
 notes: 
-last_updated: 2026-07-13
+last_updated: 2026-07-16
 ---
 

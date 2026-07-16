@@ -33,9 +33,8 @@ The **Jirachi Plush Archive** is a comprehensive, evidence-based catalog documen
 ### Key Principles
 
 1. **Evidence-Based**: Every entry requires verifiable sources
-2. **Scholarly**: We document with academic rigor
-3. **Complete**: All plushes—common to ultra-rare—are included
-4. **Open**: Anyone can contribute with proper evidence
+2. **Complete**: All plushes—common to ultra-rare—are included
+3. **Open**: Anyone can contribute with proper evidence
 </section>
 
 ---

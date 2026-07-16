@@ -5,7 +5,7 @@ company_id: BAN
 company: Banpresto
 
 # === NAMES ===
-current_name: Pokémon Focus Plush
+current_name: Pokémon Focus Jirachi
 official_name: Pokémon Focus
 japanese_name: 
 romaji_name: 
@@ -35,7 +35,7 @@ price:
 price_display: Prize
 
 # === TAXONOMY ===
-tags: [size:large]
+tags: [type:prize, size:large]
 search_terms: ["banpresto", "pokémon focus", 2018]
 
 # === VARIANTS & RELATIONSHIPS ===

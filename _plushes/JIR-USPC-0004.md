@@ -5,7 +5,7 @@ company_id: USPC
 company: Pokémon Center US
 
 # === NAMES ===
-current_name: Glow-in-the-Dark Jirachi Plush Keychain
+current_name: Mythical Lights Jirachi Keychain
 official_name: Sleeping Jirachi Mythical Lights Glow-in-the-Dark Plush Keychain
 japanese_name: 
 romaji_name: 
@@ -35,7 +35,7 @@ price:
 price_display: $16.99
 
 # === TAXONOMY ===
-tags: []
+tags: [special:glow-in-the-dark, type:keychain, variant:regional, size:mini]
 search_terms: []
 
 # === VARIANTS & RELATIONSHIPS ===
@@ -44,10 +44,10 @@ variant_of: JIR-JPPC-0015
 variant_type: Regional
 
 # === STATUS & VERIFICATION ===
-status: Research
+status: Master
 confidence:
-verification:
-availability: 
+verification: Verified
+availability: 3
 
 # === PROVENANCE ===
 sources:

@@ -35,7 +35,7 @@ price:
 price_display: Prize
 
 # === TAXONOMY ===
-tags: ["size:small"]
+tags: [type:prize, size:small]
 search_terms: ["banpresto", "korotto manmaru", 2004]
 
 # === VARIANTS & RELATIONSHIPS ===

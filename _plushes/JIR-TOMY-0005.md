@@ -11,8 +11,8 @@ japanese_name:
 romaji_name: 
 
 # === CLASSIFICATION ===
-product_line: Swing Nuiguru
-product_line_id: swing-nuiguru
+product_line: Nanayo no Negaiboshi
+product_line_id: nanayo-no-negaiboshi
 manufacturer: 
 
 # === RELEASE INFO ===
