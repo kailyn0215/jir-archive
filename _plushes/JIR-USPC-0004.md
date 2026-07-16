@@ -44,9 +44,9 @@ variant_of: JIR-JPPC-0015
 variant_type: Regional
 
 # === STATUS & VERIFICATION ===
-status: Master
+status: Research
 confidence:
-verification: Verified
+verification:
 availability: 
 
 # === PROVENANCE ===

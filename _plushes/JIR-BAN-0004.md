@@ -45,7 +45,7 @@ variant_type:
 
 # === STATUS & VERIFICATION ===
 status: Research
-confidence: Possible
+confidence:
 verification:
 availability: 
 

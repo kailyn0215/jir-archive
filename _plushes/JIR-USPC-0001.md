@@ -44,9 +44,9 @@ variant_of:
 variant_type: 
 
 # === STATUS & VERIFICATION ===
-status: Master
+status: Research
 confidence:
-verification: Verified
+verification:
 availability: 
 
 # === PROVENANCE ===

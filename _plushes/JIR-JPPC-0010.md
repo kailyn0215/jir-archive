@@ -5,10 +5,10 @@ company_id: JPPC
 company: Pokémon Center Japan
 
 # === NAMES ===
-current_name: Ditto Transform! Jirachi Plush
-official_name: Henshin! Metamon
-japanese_name: 
-romaji_name: 
+current_name: Transform! Ditto Jirachi Plush
+official_name: Transform! Ditto
+japanese_name: へんしん！メタモン
+romaji_name: Henshin！Metamon
 
 # === CLASSIFICATION ===
 product_line: Henshin! Metamon
@@ -32,7 +32,7 @@ materials: []
 price:
   amount: 1200
   currency: JPY
-price_display: 1200 yen
+price_display: ¥1200
 
 # === TAXONOMY ===
 tags: ["size:small", "special:ditto"]
@@ -44,9 +44,9 @@ variant_of:
 variant_type: 
 
 # === STATUS & VERIFICATION ===
-status: Master
+status: Research
 confidence:
-verification: Verified
+verification:
 availability: 
 
 # === PROVENANCE ===

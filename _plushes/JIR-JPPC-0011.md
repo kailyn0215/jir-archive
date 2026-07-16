@@ -32,7 +32,7 @@ materials: []
 price:
   amount: 800
   currency: JPY
-price_display: 800 yen
+price_display: ¥800
 
 # === TAXONOMY ===
 tags: ["size:mini", "special:ditto"]
@@ -44,9 +44,9 @@ variant_of:
 variant_type: 
 
 # === STATUS & VERIFICATION ===
-status: Master
+status: Research
 confidence:
-verification: Verified
+verification:
 availability: 
 
 # === PROVENANCE ===
