@@ -239,8 +239,8 @@ title: Archive
       <th class="sortable" data-sort="company">Company <span class="sort-arrow"></span></th>
       <th class="sortable" data-sort="year">Year <span class="sort-arrow"></span></th>
       <th>Product Line</th>
-      <th>Status</th>
-      <th>Status</th>
+      <th>Verification</th>
+      <th>Collection</th>
     </tr>
   </thead>
   <tbody id="table-body">
@@ -330,9 +330,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // ======================
   // STATE MANAGEMENT
   // ======================
-  const STORAGE_KEY = 'jirachi-collection';  // Must match collection.js
-  const STORAGE_KEY_LEGACY = 'jirachi-plush-collection';
-  const STORAGE_KEY_OLDER = 'jir-owned';
   const plushData = JSON.parse(document.getElementById('plush-data').textContent);
   const dataLists = buildFilterLists(plushData);
   const yearBounds = dataLists.yearValues.length
@@ -410,57 +407,34 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // ======================
   // COLLECTION TRACKING (owned/wanted/trade)
+  // Delegates to the shared JirachiCollection module (assets/js/collection.js)
+  // so there is a single source of truth for storage keys and migration logic.
   // ======================
   function getCollection() {
-    try {
-      const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if (data && typeof data === 'object' && !Array.isArray(data)) {
-        return data; // { owned: [], wanted: [], trade: [] }
-      }
-      // Migrate from legacy format
-      const legacy = JSON.parse(localStorage.getItem(STORAGE_KEY_LEGACY)) || JSON.parse(localStorage.getItem(STORAGE_KEY_OLDER)) || [];
-      const migrated = { owned: legacy, wanted: [], trade: [] };
-      saveCollection(migrated);
-      return migrated;
-    } catch { return { owned: [], wanted: [], trade: [] }; }
+    return window.JirachiCollection.getCollection();
   }
-  
+
   function saveCollection(data) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    // Persist via a single setStatus-per-id pass so JirachiCollection stays
+    // the source of truth and emits its 'collection:changed' event once.
+    localStorage.setItem(window.JirachiCollection.STORAGE_KEY, JSON.stringify(data));
+    document.dispatchEvent(new CustomEvent('collection:changed', { detail: { collection: data }, bubbles: true }));
   }
-  
+
   function getStatus(id) {
-    const col = getCollection();
-    if (col.owned.includes(id)) return 'owned';
-    if (col.wanted.includes(id)) return 'wanted';
-    if (col.trade.includes(id)) return 'trade';
-    return null;
+    return window.JirachiCollection.getStatus(id);
   }
-  
+
   function setStatus(id, status) {
-    const col = getCollection();
-    // Remove from all lists first
-    col.owned = col.owned.filter(x => x !== id);
-    col.wanted = col.wanted.filter(x => x !== id);
-    col.trade = col.trade.filter(x => x !== id);
-    // Add to appropriate list
-    if (status && col[status]) {
-      col[status].push(id);
-    }
-    saveCollection(col);
+    window.JirachiCollection.setStatus(id, status);
   }
-  
+
   function cycleStatus(id) {
-    const current = getStatus(id);
-    const order = [null, 'owned', 'wanted', 'trade'];  // + → ✓ → ♡ → ↔
-    const next = order[(order.indexOf(current) + 1) % order.length];
-    setStatus(id, next);
-    return next;
+    return window.JirachiCollection.cycleStatus(id);
   }
-  
-  // Legacy compatibility
+
   function getOwned() {
-    return getCollection().owned;
+    return window.JirachiCollection.getOwned();
   }
   
   // ======================
@@ -763,7 +737,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update URL
     stateToURL();
     renderChips();
-    updateOwnedUI();
+    updateCollectionUI();
   }
   
   // ======================
@@ -822,9 +796,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update total counts
     document.getElementById('owned-count').textContent = col.owned.length;
   }
-  
-  // Legacy alias
-  function updateOwnedUI() { updateCollectionUI(); }
   
   // ======================
   // FILTER PANEL RENDERING

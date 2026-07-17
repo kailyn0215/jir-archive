@@ -155,7 +155,7 @@ search_terms: []                  # Optional. Freeform search keywords
 # type:	      Distribution/product type	type:standard, type:prize, type:lottery, type:keychain, type:cushion, type:pokedoll
 # material:	  Fabric/material	        material:minky, material:velboa, material:polyester
 # event:	  Release context	        event:promo, event:movie, event:anniversary, event:holiday, event:regional
-# special:	  Pose or unique features	special:sleeping, special:sitting, special:standing, special:shiny
+# special:	  Pose or unique features	special:sleeping, special:sitting, special:standing, special:glow-in-the-dark, special:ditto
 # variant:	  Variant relationship	    variant:rerelease, variant:color, variant:size, variant:regional
 
 # === VARIANTS & RELATIONSHIPS ===

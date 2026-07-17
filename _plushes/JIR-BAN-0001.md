@@ -35,7 +35,7 @@ price:
 price_display: Prize
 
 # === TAXONOMY ===
-tags: [size:life-size, type:prize]
+tags: [size:large, type:prize]
 search_terms: ["banpresto", "super dx", 2003]
 
 # === VARIANTS & RELATIONSHIPS ===
@@ -44,9 +44,9 @@ variant_of:
 variant_type: 
 
 # === STATUS & VERIFICATION ===
-status: Master
+status: Research
 confidence:
-verification: Verified
+verification:
 availability: 
 
 # === PROVENANCE ===

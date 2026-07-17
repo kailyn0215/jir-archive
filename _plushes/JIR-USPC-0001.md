@@ -11,7 +11,7 @@ japanese_name:
 romaji_name: 
 
 # === CLASSIFICATION ===
-product_line: Saiko Soda
+product_line: Saiko Soda Pop
 product_line_id: saiko-soda
 manufacturer: 
 
@@ -32,22 +32,22 @@ materials: []
 price:
   amount: 19.99
   currency: USD
-price_display: 
+price_display: $19.99
 
 # === TAXONOMY ===
-tags: []
+tags: [special:sitting, variant:regional, size:small]
 search_terms: ["pokémon center us", "saiko soda pop", 2024]
 
 # === VARIANTS & RELATIONSHIPS ===
-sculpt_id: 
-variant_of: 
-variant_type: 
+sculpt_id: SC-006
+variant_of: JIR-JPPC-0014
+variant_type: Regional
 
 # === STATUS & VERIFICATION ===
 status: Master
 confidence:
 verification: Verified
-availability: 
+availability: 5
 
 # === PROVENANCE ===
 sources:

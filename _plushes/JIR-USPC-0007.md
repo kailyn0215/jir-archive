@@ -35,7 +35,7 @@ price:
 price_display: $17.99
 
 # === TAXONOMY ===
-tags: []
+tags: [size:medium, special:standing, type:standard]
 search_terms: []
 
 # === VARIANTS & RELATIONSHIPS ===
@@ -44,10 +44,10 @@ variant_of:
 variant_type: 
 
 # === STATUS & VERIFICATION ===
-status: Master
+status: Research
 confidence:
-verification: Verified
-availability: 
+verification:
+availability: 5
 
 # === PROVENANCE ===
 sources:

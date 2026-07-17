@@ -5,14 +5,14 @@ company_id: BAN
 company: Banpresto
 
 # === NAMES ===
-current_name: Lottery Movie Promo
+current_name: Movie Promo Lottery Jirachi Plush
 official_name: Nanayo no Negaiboshi Lottery Movie Promo
 japanese_name: 
 romaji_name: 
 
 # === CLASSIFICATION ===
-product_line: Nanayo no Negaiboshi Lottery
-product_line_id: nanayo-no-negaiboshi-lottery
+product_line: Nanayo no Negaiboshi
+product_line_id: nanayo-no-negaiboshi
 manufacturer: 
 
 # === RELEASE INFO ===
@@ -44,9 +44,9 @@ variant_of:
 variant_type: 
 
 # === STATUS & VERIFICATION ===
-status: Master
+status: Research
 confidence:
-verification: Verified
+verification:
 availability: 
 
 # === PROVENANCE ===

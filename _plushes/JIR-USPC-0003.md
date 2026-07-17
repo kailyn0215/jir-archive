@@ -5,7 +5,7 @@ company_id: USPC
 company: Pokémon Center US
 
 # === NAMES ===
-current_name: Glow-in-the-Dark Lifesize Sleeping Jirachi Plush
+current_name: Mythical Lights Sleeping Jirachi
 official_name: Sleeping Jirachi Mythical Lights Glow-in-the-Dark Plush
 japanese_name: 
 romaji_name: 
@@ -35,7 +35,7 @@ price:
 price_display: $39.99
 
 # === TAXONOMY ===
-tags: []
+tags: [special:glow-in-the-dark, variant:regional, size:life-size]
 search_terms: []
 
 # === VARIANTS & RELATIONSHIPS ===
@@ -47,7 +47,7 @@ variant_type: Regional
 status: Master
 confidence:
 verification: Verified
-availability: 
+availability: 3
 
 # === PROVENANCE ===
 sources:

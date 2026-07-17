@@ -33,9 +33,8 @@ The **Jirachi Plush Archive** is a comprehensive, evidence-based catalog documen
 ### Key Principles
 
 1. **Evidence-Based**: Every entry requires verifiable sources
-2. **Scholarly**: We document with academic rigor
-3. **Complete**: All plushes—common to ultra-rare—are included
-4. **Open**: Anyone can contribute with proper evidence
+2. **Complete**: All plushes—common to ultra-rare—are included
+3. **Open**: Anyone can contribute with proper evidence
 </section>
 
 ---
@@ -60,15 +59,15 @@ JIR-[COMPANY]-[NUMBER]
 
 ### Company Codes
 
+(Defined in `_data/companies.yml` — add new companies there as needed.)
+
 | Code | Company |
 |---|---|
-| `TOMY` | Tomy / Takara Tomy |
 | `BAN` | Banpresto |
+| `BNS` | Bandai Spirits |
 | `JPPC` | Pokémon Center Japan |
-| `USPC` | Pokémon Center US/International |
-| `SAN` | San-ei / All-Star Collection |
-| `BNS` | Build-A-Bear / Other specialty |
-| `UNK` | Unknown manufacturer |
+| `TOMY` | TOMY (includes Takara Tomy, Takara Tomy A.R.T.S) |
+| `USPC` | Pokémon Center US |
 
 ### Variants
 

@@ -35,18 +35,18 @@ price:
 price_display: 1300 yen
 
 # === TAXONOMY ===
-tags: []
+tags: [special:sitting, size:small]
 search_terms: ["pokémon center japan", "saiko soda", 2022]
 
 # === VARIANTS & RELATIONSHIPS ===
-sculpt_id: 
+sculpt_id: SC-006
 variant_of: 
 variant_type: 
 
 # === STATUS & VERIFICATION ===
-status: Master
+status: Research
 confidence:
-verification: Verified
+verification:
 availability: 
 
 # === PROVENANCE ===

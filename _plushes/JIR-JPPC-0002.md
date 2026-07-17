@@ -5,8 +5,8 @@ company_id: JPPC
 company: Pokémon Center Japan / PokéPark
 
 # === NAMES ===
-current_name: DX Poké Doll
-official_name: 
+current_name: DX Poké Doll Jirachi
+official_name: DX Poké Doll
 japanese_name: 
 romaji_name: 
 
@@ -21,9 +21,9 @@ release_date:
 region: Japan
 
 # === PHYSICAL ATTRIBUTES ===
-size: 13"
+size:
 dimensions:
-  height: 
+  height: 13"
   width: 
   depth: 
 materials: []
@@ -35,19 +35,19 @@ price:
 price_display: 
 
 # === TAXONOMY ===
-tags: ["size:medium", "type:pokedoll"]
+tags: [event:promo, type:pokedoll, size:large]
 search_terms: ["pokémon center japan / poképark", "dx poké doll", 2005]
 
 # === VARIANTS & RELATIONSHIPS ===
-sculpt_id: 
-variant_of: 
-variant_type: 
+sculpt_id: SC-005
+variant_of: JIR-JPPC-0005
+variant_type: Size
 
 # === STATUS & VERIFICATION ===
 status: Master
 confidence:
 verification: Verified
-availability: 
+availability: 1
 
 # === PROVENANCE ===
 sources:
@@ -58,7 +58,7 @@ sources:
     notes: 
 
 # === DOCUMENTATION ===
-notes: PokéPark / JPPC
-last_updated: 2026-07-13
+notes: Limited Exclusive Japan release for PokéPark.
+last_updated: 2026-07-15
 ---
 

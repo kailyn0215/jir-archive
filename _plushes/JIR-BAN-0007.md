@@ -5,7 +5,7 @@ company_id: BAN
 company: Banpresto
 
 # === NAMES ===
-current_name: Puppet Plush
+current_name: Jirachi Puppet Plush
 official_name: Ichiban Kuji Pocket Monsters AG Puppet
 japanese_name: 
 romaji_name: 
@@ -35,7 +35,7 @@ price:
 price_display: Prize
 
 # === TAXONOMY ===
-tags: ["size:medium", "type:lottery"]
+tags: [size:medium, type:lottery]
 search_terms: ["banpresto", "ichiban kuji", 2005]
 
 # === VARIANTS & RELATIONSHIPS ===
@@ -44,9 +44,9 @@ variant_of:
 variant_type: 
 
 # === STATUS & VERIFICATION ===
-status: Master
+status: Research
 confidence:
-verification: Verified
+verification:
 availability: 
 
 # === PROVENANCE ===
