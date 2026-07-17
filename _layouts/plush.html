@@ -174,10 +174,9 @@ layout: default
         <div class="sources-list">
           {% for source in page.sources %}
           <div class="source-item">
-            {% if source.reliability %}<span class="source-tier source-tier-{{ source.reliability | downcase }}" title="Reliability: {{ source.reliability }}">{{ source.reliability }}</span>{% endif %}
+            {% if source.tier %}<span class="source-tier source-tier-{{ source.tier | downcase }}" title="Reliability tier: {{ source.tier }}">{{ source.tier }}</span>{% endif %}
             <div class="source-content">
               <span class="source-type">{{ source.type | default: "Source" }}</span>
-              {% if source.description %}<p class="source-desc">{{ source.description }}</p>{% endif %}
               {% if source.url %}<a href="{{ source.url }}" class="source-url" target="_blank" rel="noopener">{{ source.url | truncate: 60 }}</a>{% endif %}
               {% if source.notes %}<p class="source-notes">{{ source.notes }}</p>{% endif %}
               {% if source.accessed %}<p class="source-accessed">Accessed: {{ source.accessed }}</p>{% endif %}

@@ -22,7 +22,7 @@ The Jirachi Plush Archive is the definitive reference for collectors and researc
 - **Static Site Generator**: [Jekyll](https://jekyllrb.com/)
 - **Hosting**: GitHub Pages (or any static host)
 - **Styling**: Custom CSS with design tokens (no frameworks)
-- **JavaScript**: Vanilla JS + Fuse.js for search
+- **JavaScript**: Vanilla JS (custom fuzzy-match search, no external search library)
 - **Data**: YAML front matter in Markdown files
 
 ## Getting Started
@@ -93,60 +93,59 @@ See [SCHEMA.md](SCHEMA.md) for complete schema documentation.
 
 ### Quick Reference
 
-Each plush is a Markdown file in `_plushes/` with YAML front matter:
+Each plush is a Markdown file in `_plushes/` with YAML front matter. See [SCHEMA.md](SCHEMA.md) for the full field reference; a minimal example:
 
 ```yaml
 ---
-layout: plush
 archive_id: JIR-TOMY-0001
-name: "Jirachi Plush"
-name_jp: "ジラーチ ぬいぐるみ"
-company: Tomy
+company_id: TOMY
+company: TOMY
+current_name: Jirachi Plush
+japanese_name: ジラーチ ぬいぐるみ
 product_line: Pokémon Plush Collection
+product_line_id: pokemon-plush-collection
 year: 2003
 region: Japan
 status: Master          # Master, Research, or Missing
-verification: Verified  # Verified, Strong, or Possible
+verification: Verified  # Verified, Strong, or Unverified (Master only)
 availability: 3         # 1-5 scale
-
-images:
-  primary: /assets/images/plushes/JIR-TOMY-0001/front.jpg
-  gallery:
-    - url: /assets/images/plushes/JIR-TOMY-0001/side.jpg
-      alt: Side view
-    - url: /assets/images/plushes/JIR-TOMY-0001/tush-tag.jpg
-      alt: Tush tag
 
 price:
   amount: 1200
   currency: JPY
 
 dimensions:
-  height_cm: 15
+  height: 15cm
 
 sources:
-  - type: MFC
-    description: "Tomy 2003 Product Catalog"
-    url: https://example.com
+  - type: catalog
     tier: S
+    url: https://example.com
+    accessed: 2024-01-15
+    notes: "Tomy 2003 Product Catalog"
 
 tags:
-  - standing
-  - open-eyes
+  - special:standing
 ---
 
 Optional notes about this plush go here as Markdown content.
 ```
+
+Note: images are auto-discovered from `assets/images/plushes/[ID]/` and do not need to be listed in frontmatter unless you want to override the default ordering (see the optional `images` field in SCHEMA.md).
 
 ## Adding a New Plush
 
 ### Option 1: Use the Helper Script
 
 ```bash
-ruby scripts/new_plush.rb
+ruby scripts/new_plush.rb COMPANY_ID [--status STATUS]
+
+# Example:
+ruby scripts/new_plush.rb JPPC
+ruby scripts/new_plush.rb BAN --status Master
 ```
 
-Follow the prompts to generate a new plush file.
+This generates the next sequential Archive ID for the given company, creates the entry file with the canonical field layout, and sets up the matching image folder under `assets/images/plushes/`.
 
 ### Option 2: Manual Creation
 
@@ -168,15 +167,15 @@ JIR-[COMPANY]-[NUMBER]
 
 **Company Codes:**
 
+(Defined in `_data/companies.yml` — add new companies there as needed.)
+
 | Code | Company |
 |------|---------|
-| TOMY | Tomy / Takara Tomy |
 | BAN | Banpresto |
+| BNS | Bandai Spirits |
 | JPPC | Pokémon Center Japan |
-| USPC | Pokémon Center US/International |
-| SAN | San-ei / All-Star Collection |
-| BNS | Build-A-Bear / Other specialty |
-| UNK | Unknown manufacturer |
+| TOMY | TOMY (includes Takara Tomy, Takara Tomy A.R.T.S) |
+| USPC | Pokémon Center US |
 
 ## Verification Levels
 
@@ -276,7 +275,6 @@ Code: MIT License
 
 - Maintained by [Your Name]
 - Built with Jekyll
-- Search powered by Fuse.js
 - Images sourced with attribution
 
 ---

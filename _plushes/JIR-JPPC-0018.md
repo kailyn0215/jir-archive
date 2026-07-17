@@ -5,7 +5,7 @@ company_id: JPPC
 company: Pokémon Center Japan
 
 # === NAMES ===
-current_name: 
+current_name: Hoshi Tsunagi Jirachi Glow-in-the-Dark Plush
 official_name: 
 japanese_name: 
 romaji_name: 
@@ -35,7 +35,7 @@ price:
 price_display: 
 
 # === TAXONOMY ===
-tags: ["size:life-size", "special:sleeping"]
+tags: [special:glow-in-the-dark, special:sleeping, size:life-size]
 search_terms: []
 
 # === VARIANTS & RELATIONSHIPS ===

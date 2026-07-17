@@ -59,15 +59,15 @@ JIR-[COMPANY]-[NUMBER]
 
 ### Company Codes
 
+(Defined in `_data/companies.yml` — add new companies there as needed.)
+
 | Code | Company |
 |---|---|
-| `TOMY` | Tomy / Takara Tomy |
 | `BAN` | Banpresto |
+| `BNS` | Bandai Spirits |
 | `JPPC` | Pokémon Center Japan |
-| `USPC` | Pokémon Center US/International |
-| `SAN` | San-ei / All-Star Collection |
-| `BNS` | Build-A-Bear / Other specialty |
-| `UNK` | Unknown manufacturer |
+| `TOMY` | TOMY (includes Takara Tomy, Takara Tomy A.R.T.S) |
+| `USPC` | Pokémon Center US |
 
 ### Variants
 

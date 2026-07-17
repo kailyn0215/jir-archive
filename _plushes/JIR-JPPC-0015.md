@@ -31,7 +31,7 @@ materials: []
 # === PRICING ===
 price:
   amount: 
-  currency: USD
+  currency: JPY
 price_display: 
 
 # === TAXONOMY ===
